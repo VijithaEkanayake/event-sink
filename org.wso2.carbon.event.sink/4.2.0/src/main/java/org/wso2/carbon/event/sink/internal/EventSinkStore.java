@@ -7,7 +7,7 @@ import java.util.*;
 
 public class EventSinkStore {
     private static EventSinkStore instance = new EventSinkStore();
-    private Map<String, EventSink> eventSinkMap = new HashMap<String, EventSink>(); //tenant id|sink name -> sink
+    private Map<String, EventSink> eventSinkMap = Collections.synchronizedMap(new HashMap<String, EventSink>()); //tenant id|sink name -> sink
 
     public static EventSinkStore getInstance() {
         return instance;
@@ -18,7 +18,6 @@ public class EventSinkStore {
 
     public void addEventSink(EventSink eventSink) {
         String key = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|" + eventSink.getName();
-        System.out.println("event sink " + eventSink.getName() + " added with key " + key);
         eventSinkMap.put(key, eventSink);
     }
 
@@ -35,9 +34,11 @@ public class EventSinkStore {
     public List<EventSink> getEventSinkList() {
         String tenantKey = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|";
         List<EventSink> list = new ArrayList<EventSink>();
-        for (Map.Entry<String, EventSink> entry : eventSinkMap.entrySet()) {
-            if (entry.getKey().startsWith(tenantKey)) {
-                list.add(entry.getValue());
+        synchronized (eventSinkMap) {
+            for (Map.Entry<String, EventSink> entry : eventSinkMap.entrySet()) {
+                if (entry.getKey().startsWith(tenantKey)) {
+                    list.add(entry.getValue());
+                }
             }
         }
         return list;
