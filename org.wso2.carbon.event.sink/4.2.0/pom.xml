@@ -78,7 +78,11 @@
             <artifactId>org.wso2.carbon.utils</artifactId>
             <version>${carbon.platform.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>commons-io.wso2</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.0.wso2v1</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.framework</artifactId>
@@ -130,6 +134,7 @@
                             org.wso2.carbon.event.sink.*,
                         </Export-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
+                        <Axis2Deployer>EventSinkDeployer</Axis2Deployer>
                     </instructions>
                 </configuration>
             </plugin>

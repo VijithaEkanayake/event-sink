@@ -87,7 +87,7 @@ public class EventSinkImpl implements EventSink {
         this.authenticationUrlSet = urlSet;
     }
 
-    public static EventSink createEventSink(OMElement eventSinkElement) throws EventSinkException {
+    public static EventSinkImpl createEventSink(OMElement eventSinkElement, String name) throws EventSinkException {
 
         EventSinkImpl eventSink = new EventSinkImpl();
 
@@ -113,7 +113,7 @@ public class EventSinkImpl implements EventSink {
             throw new EventSinkException(PASSWORD_Q.getLocalPart() + " attribute missing in thrift endpoint config");
         }
         eventSink.setPassword(base64DecodeAndDecrypt(password.getText()));
-
+        eventSink.setName(name);
         return eventSink;
     }
 

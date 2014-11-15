@@ -16,30 +16,11 @@
   -->
 
 <component xmlns="http://products.wso2.org/carbon">
-<!--     <menus>
-        <menu>
-            <id>event_processor_menu</id>
-            <i18n-key>event.processor</i18n-key>
-            <i18n-bundle>org.wso2.carbon.event.stream.manager.ui.i18n.Resources</i18n-bundle>
-            <parent-menu>manage_menu</parent-menu>
-            <link>#</link>
-            <region>region1</region>
-            <order>5</order>
-            <style-class>home</style-class>
-            <icon>../eventstream/images/eventProcessor.gif</icon>
-            <require-permission>/permission/admin/manage/event-streams</require-permission>
-        </menu>
-        <menu>
-            <id>eventstream_menu</id>
-            <i18n-key>event.streams</i18n-key>
-            <i18n-bundle>org.wso2.carbon.event.stream.manager.ui.i18n.Resources</i18n-bundle>
-            <parent-menu>event_processor_menu</parent-menu>
-            <link>../eventstream/index.jsp</link>
-            <region>region1</region>
-            <order>20</order>
-            <style-class>home</style-class>
-            <icon>../eventstream/images/event-stream.png</icon>
-            <require-permission>/permission/admin/manage/event-streams</require-permission>
-        </menu>
-    </menus> -->
+    <deployers>
+        <deployer>
+            <directory>event-sinks</directory>
+            <extension>xml</extension>
+            <class>org.wso2.carbon.event.sink.EventSinkDeployer</class>
+        </deployer>
+    </deployers>
 </component>

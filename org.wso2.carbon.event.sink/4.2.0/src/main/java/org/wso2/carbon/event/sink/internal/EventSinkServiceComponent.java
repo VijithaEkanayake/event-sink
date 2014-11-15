@@ -34,36 +34,20 @@ public class EventSinkServiceComponent {
 
     protected void activate(final ComponentContext componentContext) {
         final BundleContext bundleContext = componentContext.getBundleContext();
-//        // If Carbon is running as a webapp within some other servlet container, then we should
-//        // uninstall this component
-//        if (!CarbonUtils.isRunningInStandaloneMode()) {
-//            Thread th = new Thread() {
-//                public void run() {
-//                    try {
-//                        bundleContext.getBundle().uninstall();
-//                    } catch (Throwable e) {
-//                        log.warn("Error occurred while uninstalling webapp-mgt UI bundle", e);
-//                    }
-//                }
-//            };
-//            try {
-//                th.join();
-//            } catch (InterruptedException ignored) {
-//            }
-//            th.start();
-//        }
-        log.error("heeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeeeheeeeeeeeeeeee");
         serviceRegistration = bundleContext.
                 registerService(EventSinkService.class.getName(), new EventSinkServiceImpl(), null);
 
-//        //load configuration file
-//        MappingConfig config = MappingConfigManager.loadMappingConfiguration();
-//        HostUtil.setUrlSuffix(config.getPrefix());
-//        HostUtil.setAppend(config.isAppendDomain());
-//        System.setProperty("is.url.mapper.available",  "true");
+        if (log.isDebugEnabled()) {
+            log.debug("Started EventSinkService");
+        }
     }
 
     protected void deactivate(ComponentContext componentContext) {
-        serviceRegistration.unregister();
+        if (serviceRegistration != null) {
+            serviceRegistration.unregister();
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Stopped EventSinkService");
+        }
     }
 }
