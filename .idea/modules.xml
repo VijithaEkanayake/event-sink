@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/event-sink.iml" filepath="$PROJECT_DIR$/event-sink.iml" />
-      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.event.sink.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.event.sink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.event.sink/4.2.0/org.wso2.carbon.event.sink.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.event.sink/4.2.0/org.wso2.carbon.event.sink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.event.sink.config/4.2.0/org.wso2.carbon.event.sink.config.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.event.sink.config/4.2.0/org.wso2.carbon.event.sink.config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.event.sink.config.stub/4.2.0/org.wso2.carbon.event.sink.config.stub.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.event.sink.config.stub/4.2.0/org.wso2.carbon.event.sink.config.stub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.event.sink.config.ui/4.2.0/org.wso2.carbon.event.sink.config.ui.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.event.sink.config.ui/4.2.0/org.wso2.carbon.event.sink.config.ui.iml" />
     </modules>
   </component>
 </project>

@@ -23,11 +23,17 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="org.wso2.carbon.event.sink" />
+        <module name="org.wso2.carbon.event.sink.config" />
+        <module name="org.wso2.carbon.event.sink.config.stub" />
+        <module name="org.wso2.carbon.event.sink.config.ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="event-sink" target="1.6" />
       <module name="org.wso2.carbon.event.sink" target="1.6" />
+      <module name="org.wso2.carbon.event.sink.config" target="1.6" />
+      <module name="org.wso2.carbon.event.sink.config.stub" target="1.6" />
+      <module name="org.wso2.carbon.event.sink.config.ui" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
