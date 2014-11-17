@@ -8,11 +8,11 @@ import java.util.List;
 public class EventSinkServiceImpl implements EventSinkService {
     @Override
     public List<EventSink> getEventSinks() {
-        return null;
+        return EventSinkStore.getInstance().getEventSinkList();
     }
 
     @Override
     public EventSink getEventSink(String eventSinkName) {
-        return null;
+        return EventSinkStore.getInstance().getEventSink(eventSinkName);
     }
 }
