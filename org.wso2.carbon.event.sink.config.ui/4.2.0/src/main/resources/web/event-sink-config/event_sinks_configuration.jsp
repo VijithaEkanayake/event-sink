@@ -253,8 +253,9 @@ function isRemainPropertyExpressions() {
             resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
             request="<%=request%>"
             i18nObjectName="logi18n"/>
+    <div id="middle">
     <form action="update_event_sink_configuration.jsp" method="post">
-    <div>
+        <div id="workArea">
 
         <table class="normal" width="100%">
             <tr>
@@ -278,6 +279,7 @@ function isRemainPropertyExpressions() {
                                 <th width="15%"><fmt:message key="publishEvent.configuration.attribute.password"/></th>
                                 <th width="15%"><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></th>
                                 <th width="15%"><fmt:message key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
+                                <th width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
                             </tr>
                             <tbody id="propertytbody">
                             <%
@@ -293,7 +295,7 @@ function isRemainPropertyExpressions() {
                                            class="esb-edit small_textbox"
                                            value=""/>
                                 </td>
-                                <td><input type="text" name="propertyPassword<%=i%>" id="propertyPassword<%=i%>"
+                                <td><input type="password" name="propertyPassword<%=i%>" id="propertyPassword<%=i%>"
                                            class="esb-edit small_textbox"
                                            value=""/>
                                 </td>
@@ -342,5 +344,7 @@ function isRemainPropertyExpressions() {
             <input type="submit" value="Save" />
         </td>
     </tr>`
+
     </form>
+        </div>
 </fmt:bundle>

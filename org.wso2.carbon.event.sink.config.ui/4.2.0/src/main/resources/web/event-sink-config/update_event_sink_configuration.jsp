@@ -42,8 +42,9 @@
             for (int i = 0; i <= propertyCount; i++) {
                 EventSink eventSink = new EventSink();
                 String name = request.getParameter("propertyName" + i);
-                eventSink.setName(name);
+
                 if (name != null && !"".equals(name)) {
+                    eventSink.setName(name);
                     String valueId = "propertyUsername" + i;
                     String username = request.getParameter(valueId);
                     eventSink.setUsername(username);

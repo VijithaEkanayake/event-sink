@@ -2,9 +2,11 @@ package org.wso2.carbon.event.sink.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.event.formatter.core.exception.EventFormatterConfigurationException;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
+import org.wso2.carbon.event.formatter.core.internal.util.helper.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,12 +27,16 @@ public class EventSinkXmlWriter {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath,eventSink.getName()+".xml")));
-            bufferedWriter.write(eventSinkConfigXml.buildEventSink(eventSink.getUsername(),encryptAndBase64Encode(eventSink.getPassword()),eventSink.getReceiverUrl(),eventSink.getAuthenticatorUrl()).toString());
+            String unformatted = new XmlFormatter().format(eventSinkConfigXml.buildEventSink(eventSink.getUsername(),encryptAndBase64Encode(eventSink.getPassword()),eventSink.getReceiverUrl(),eventSink.getAuthenticatorUrl()).toString());
+            bufferedWriter.write(unformatted);
+
             bufferedWriter.flush();
             bufferedWriter.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (EventFormatterConfigurationException e) {
             e.printStackTrace();
         }
 

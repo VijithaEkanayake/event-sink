@@ -11,7 +11,7 @@
           <property key="Carbon-Component" value="UIBundle" />
           <property key="Export-Package" value="org.wso2.carbon.event.sink.config.ui.*,!javax.servlet,!javax.servlet.http," />
           <property key="Import-Package" value="!javax.xml.namespace,javax.xml.namespace; version=0.0.0,org.apache.axiom.om; version=0.0.0,org.wso2.carbon.event.sink.config.stub.*;version=&quot;[4.2.0, 4.3.0)&quot;,*;resolution:=optional" />
-          <property key="Include-Resource" value="META-INF/component.xml=$MODULE_DIR$/src/main/resources/META-INF/component.xml,org/wso2/carbon/event/sink/config/ui/i18n/JSResources.properties=$MODULE_DIR$/src/main/resources/org/wso2/carbon/event/sink/config/ui/i18n/JSResources.properties,org/wso2/carbon/event/sink/config/ui/i18n/Resources.properties=$MODULE_DIR$/src/main/resources/org/wso2/carbon/event/sink/config/ui/i18n/Resources.properties,web/event-sink-config/bam_server_profiles.jsp=$MODULE_DIR$/src/main/resources/web/event-sink-config/bam_server_profiles.jsp,web/event-sink-config/configure_server_profiles.jsp=$MODULE_DIR$/src/main/resources/web/event-sink-config/configure_server_profiles.jsp,web/event-sink-config/docs/images/filled-profile.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/filled-profile.png,web/event-sink-config/docs/images/filled-streams.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/filled-streams.png,web/event-sink-config/docs/images/no-profiles.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/no-profiles.png,web/event-sink-config/docs/images/with-many-profiles.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/with-many-profiles.png,web/event-sink-config/docs/userguide.html=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/userguide.html,web/event-sink-config/dropdown_ajaxprocessor.jsp=$MODULE_DIR$/src/main/resources/web/event-sink-config/dropdown_ajaxprocessor.jsp,web/event-sink-config/images/activity_monitor_icon.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/images/activity_monitor_icon.png,web/event-sink-config/images/save-button.gif=$MODULE_DIR$/src/main/resources/web/event-sink-config/images/save-button.gif" />
+          <property key="Include-Resource" value="META-INF/component.xml=$MODULE_DIR$/src/main/resources/META-INF/component.xml,org/wso2/carbon/event/sink/config/ui/i18n/JSResources.properties=$MODULE_DIR$/src/main/resources/org/wso2/carbon/event/sink/config/ui/i18n/JSResources.properties,org/wso2/carbon/event/sink/config/ui/i18n/Resources.properties=$MODULE_DIR$/src/main/resources/org/wso2/carbon/event/sink/config/ui/i18n/Resources.properties,web/event-sink-config/docs/images/filled-profile.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/filled-profile.png,web/event-sink-config/docs/images/filled-streams.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/filled-streams.png,web/event-sink-config/docs/images/no-profiles.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/no-profiles.png,web/event-sink-config/docs/images/with-many-profiles.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/images/with-many-profiles.png,web/event-sink-config/docs/userguide.html=$MODULE_DIR$/src/main/resources/web/event-sink-config/docs/userguide.html,web/event-sink-config/event_sinks_configuration.jsp=$MODULE_DIR$/src/main/resources/web/event-sink-config/event_sinks_configuration.jsp,web/event-sink-config/images/activity_monitor_icon.png=$MODULE_DIR$/src/main/resources/web/event-sink-config/images/activity_monitor_icon.png,web/event-sink-config/images/save-button.gif=$MODULE_DIR$/src/main/resources/web/event-sink-config/images/save-button.gif,web/event-sink-config/js/configuration-util.js=$MODULE_DIR$/src/main/resources/web/event-sink-config/js/configuration-util.js,web/event-sink-config/update_event_sink_configuration.jsp=$MODULE_DIR$/src/main/resources/web/event-sink-config/update_event_sink_configuration.jsp" />
         </additionalProperties>
         <additionalJARContents />
       </configuration>
@@ -303,6 +303,25 @@
     <orderEntry type="library" name="Maven: solr.wso2:solr:1.4.1.wso2v1" level="project" />
     <orderEntry type="module" module-name="org.wso2.carbon.event.sink.config.stub" />
     <orderEntry type="module" module-name="org.wso2.carbon.event.sink.config" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.formatter.core:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.core:4.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons:4.2.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.json.wso2:json:2.0.0.wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:13.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.identity.authentication:4.2.0" level="project" />
+    <orderEntry type="library" name="Maven: slf4j.wso2:slf4j:1.5.10.wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.output.adaptor.core:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.statistics:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.output.adaptor.manager.core:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.stream.manager.core:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.siddhi:siddhi-core:2.1.0-wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:1.3.172" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.siddhi:siddhi-api:2.1.0-wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.siddhi:siddhi-query:2.1.0-wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: org.mvel:mvel2:2.0.19" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.stratos.common:2.2.0" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

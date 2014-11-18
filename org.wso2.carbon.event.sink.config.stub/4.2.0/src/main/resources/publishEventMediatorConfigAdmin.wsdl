@@ -1,5 +1,5 @@
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ax2126="http://config.sink.event.carbon.wso2.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://services.config.sink.event.carbon.wso2.org" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.config.sink.event.carbon.wso2.org">
-    <wsdl:documentation>publishEventMediatorConfigAdmin</wsdl:documentation>
+    <wsdl:documentation>PublishEventMediatorConfigAdmin</wsdl:documentation>
     <wsdl:types>
         <xs:schema xmlns:ns="http://org.apache.axis2/xsd" xmlns:ax2127="http://config.sink.event.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://org.apache.axis2/xsd">
             <xs:import namespace="http://config.sink.event.carbon.wso2.org/xsd"></xs:import>
@@ -60,7 +60,7 @@
     <wsdl:message name="writeEventSinkResponse">
         <wsdl:part name="parameters" element="ns1:writeEventSinkResponse"></wsdl:part>
     </wsdl:message>
-    <wsdl:portType name="publishEventMediatorConfigAdminPortType">
+    <wsdl:portType name="PublishEventMediatorConfigAdminPortType">
         <wsdl:operation name="saveEventSinkConfig">
             <wsdl:input message="tns:saveEventSinkConfigRequest" wsaw:Action="urn:saveEventSinkConfig"></wsdl:input>
             <wsdl:output message="tns:saveEventSinkConfigResponse" wsaw:Action="urn:saveEventSinkConfigResponse"></wsdl:output>
@@ -70,7 +70,7 @@
             <wsdl:output message="tns:writeEventSinkResponse" wsaw:Action="urn:writeEventSinkResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="publishEventMediatorConfigAdminSoap11Binding" type="tns:publishEventMediatorConfigAdminPortType">
+    <wsdl:binding name="PublishEventMediatorConfigAdminSoap11Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
         <wsdl:operation name="saveEventSinkConfig">
             <soap:operation soapAction="urn:saveEventSinkConfig" style="document"></soap:operation>
@@ -91,7 +91,7 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:binding name="publishEventMediatorConfigAdminSoap12Binding" type="tns:publishEventMediatorConfigAdminPortType">
+    <wsdl:binding name="PublishEventMediatorConfigAdminSoap12Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
         <wsdl:operation name="saveEventSinkConfig">
             <soap12:operation soapAction="urn:saveEventSinkConfig" style="document"></soap12:operation>
@@ -112,7 +112,7 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:binding name="publishEventMediatorConfigAdminHttpBinding" type="tns:publishEventMediatorConfigAdminPortType">
+    <wsdl:binding name="PublishEventMediatorConfigAdminHttpBinding" type="tns:PublishEventMediatorConfigAdminPortType">
         <http:binding verb="POST"></http:binding>
         <wsdl:operation name="saveEventSinkConfig">
             <http:operation location="saveEventSinkConfig"></http:operation>
@@ -133,15 +133,15 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:service name="publishEventMediatorConfigAdmin">
-        <wsdl:port name="publishEventMediatorConfigAdminHttpsSoap11Endpoint" binding="tns:publishEventMediatorConfigAdminSoap11Binding">
-            <soap:address location="https://Vijithas-MacBook-Pro.local:8245/services/publishEventMediatorConfigAdmin.publishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
+    <wsdl:service name="PublishEventMediatorConfigAdmin">
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap11Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap11Binding">
+            <soap:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
         </wsdl:port>
-        <wsdl:port name="publishEventMediatorConfigAdminHttpsSoap12Endpoint" binding="tns:publishEventMediatorConfigAdminSoap12Binding">
-            <soap12:address location="https://Vijithas-MacBook-Pro.local:8245/services/publishEventMediatorConfigAdmin.publishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap12Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap12Binding">
+            <soap12:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
         </wsdl:port>
-        <wsdl:port name="publishEventMediatorConfigAdminHttpsEndpoint" binding="tns:publishEventMediatorConfigAdminHttpBinding">
-            <http:address location="https://Vijithas-MacBook-Pro.local:8245/services/publishEventMediatorConfigAdmin.publishEventMediatorConfigAdminHttpsEndpoint"></http:address>
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsEndpoint" binding="tns:PublishEventMediatorConfigAdminHttpBinding">
+            <http:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
