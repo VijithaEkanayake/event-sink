@@ -17,22 +17,22 @@ public class EventSinkStore {
     }
 
     public void addEventSink(EventSink eventSink) {
-        String key = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|" + eventSink.getName();
+        String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + eventSink.getName();
         eventSinkMap.put(key, eventSink);
     }
 
     public void removeEventSink(String eventSinkName) {
-        String key = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|" + eventSinkName;
+        String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + eventSinkName;
         eventSinkMap.remove(key);
     }
 
     public EventSink getEventSink(String name) {
-        String key = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|" + name;
+        String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + name;
         return eventSinkMap.get(key);
     }
 
     public List<EventSink> getEventSinkList() {
-        String tenantKey = PrivilegedCarbonContext.getCurrentContext().getTenantId() + "|";
+        String tenantKey = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|";
         List<EventSink> list = new ArrayList<EventSink>();
         synchronized (eventSinkMap) {
             for (Map.Entry<String, EventSink> entry : eventSinkMap.entrySet()) {

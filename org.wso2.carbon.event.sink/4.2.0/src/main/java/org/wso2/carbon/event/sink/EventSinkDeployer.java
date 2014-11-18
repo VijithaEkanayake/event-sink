@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.deployment.AbstractDeployer;
 import org.apache.axis2.deployment.Deployer;
 import org.apache.axis2.deployment.DeploymentException;
 import org.apache.axis2.deployment.repository.util.DeploymentFileData;
@@ -43,7 +44,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 
-public class EventSinkDeployer implements Deployer {
+public class EventSinkDeployer extends AbstractDeployer {
 
     private static final Log log = LogFactory.getLog(EventSinkDeployer.class);
 
