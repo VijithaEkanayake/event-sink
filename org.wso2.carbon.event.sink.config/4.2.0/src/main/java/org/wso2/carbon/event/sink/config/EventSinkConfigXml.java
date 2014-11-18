@@ -30,64 +30,26 @@ public class EventSinkConfigXml {
     private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
     private org.apache.axiom.om.OMNamespace synNS = SynapseConstants.SYNAPSE_OMNAMESPACE;
 
-    public OMElement buildServerProfile(String urlSet, String ip, String authenticationPort, String receiverPort,
-                                        String userName, String password, String secure, String loadbalancer){
-        OMElement serverProfileElement = this.serializeServerProfile();
-        serverProfileElement.addChild(this.serializeConnection(loadbalancer, secure, urlSet, ip, authenticationPort, receiverPort));
-        serverProfileElement.addChild(this.serializeCredential(userName, password));
-        return serverProfileElement;
-    }
+    public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl){
+        OMElement eventSinkElement = fac.createOMElement("eventSink", synNS);
 
-    private OMElement serializeConnection(String loadbalancer, String secure, String urlSet, String ip,
-                                          String authenticationPort, String receiverPort){
-        OMElement credentialElement = fac.createOMElement("connection", synNS);
-        credentialElement.addAttribute("loadbalancer", loadbalancer, null);
-        credentialElement.addAttribute("secure", secure, null);
-        credentialElement.addAttribute("urlSet", urlSet, null);
-        credentialElement.addAttribute("ip", ip, null);
-        credentialElement.addAttribute("authPort", authenticationPort, null);
-        credentialElement.addAttribute("receiverPort", receiverPort, null);
-        return credentialElement;
-    }
+        OMElement receiverUrlElement = fac.createOMElement("receiverUrl", synNS);
+        receiverUrlElement.setText(receiverUrl);
+        eventSinkElement.addChild(receiverUrlElement);
 
-    private OMElement serializeCredential(String userName, String password){
-        OMElement credentialElement = fac.createOMElement("credential", synNS);
-        credentialElement.addAttribute("userName", userName, null);
-        credentialElement.addAttribute("password", password, null);
-        return credentialElement;
-    }
+        OMElement authenticatorUrlElement = fac.createOMElement("authenticatorUrl", synNS);
+        authenticatorUrlElement.setText(authenticatorUrl);
+        eventSinkElement.addChild(authenticatorUrlElement);
 
-    private OMElement serializeServerProfile(){
-        return fac.createOMElement("serverProfile", synNS);
-    }
+        OMElement usernameElement = fac.createOMElement("username", synNS);
+        usernameElement.setText(username);
+        eventSinkElement.addChild(usernameElement);
 
-//    private OMElement serializePayload(){
-//        return fac.createOMElement("payload", synNS);
-//    }
-//
-//    private OMElement serializeEntry(String name, String value, String type){
-//        OMElement entryElement = fac.createOMElement("entry", synNS);
-//        entryElement.addAttribute("name", name, null);
-//        entryElement.addAttribute("value", value, null);
-//        entryElement.addAttribute("type", type, null);
-//        return entryElement;
-//    }
-//
-//    private OMElement serializeProperties(){
-//        return fac.createOMElement("properties", synNS);
-//    }
-//
-//    private OMElement serializeProperty(String name, String value, String type, boolean isExpression){
-//        OMElement propertyElement = fac.createOMElement("property", synNS);
-//        propertyElement.addAttribute("name", name, null);
-//        propertyElement.addAttribute("value", value, null);
-//        propertyElement.addAttribute("type", type, null);
-//        if(isExpression){
-//            propertyElement.addAttribute("isExpression", "true", null);
-//        } else {
-//            propertyElement.addAttribute("isExpression", "false", null);
-//        }
-//        return propertyElement;
-//    }
+        OMElement passwordElement = fac.createOMElement("password", synNS);
+        passwordElement.setText(password);
+        eventSinkElement.addChild(passwordElement);
+
+        return eventSinkElement;
+    }
 
 }

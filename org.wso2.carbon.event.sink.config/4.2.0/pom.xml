@@ -46,7 +46,6 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Carbon-Component>UIBundle</Carbon-Component>
                         <Export-Package>
                             org.wso2.carbon.event.sink.config.*,
                             !javax.servlet,
@@ -84,25 +83,8 @@
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.ui</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.governance.api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.registry.core</artifactId>
-            <version>${wso2carbon.version.registry-core}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.registry.common</artifactId>
-            <version>${wso2carbon.version.registry-common}</version>
-        </dependency>
     </dependencies>
 
-    <properties>
-        <wso2carbon.version.registry-core>${wso2carbon.version}</wso2carbon.version.registry-core>
-        <wso2carbon.version.registry-common>${wso2carbon.version}</wso2carbon.version.registry-common>
-    </properties>
+
 
 </project>

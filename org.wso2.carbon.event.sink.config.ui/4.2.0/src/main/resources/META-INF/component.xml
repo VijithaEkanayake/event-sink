@@ -23,7 +23,7 @@
             <i18n-key>config.menu.text</i18n-key>
             <i18n-bundle>org.wso2.carbon.event.sink.config.ui.i18n.Resources</i18n-bundle>
             <parent-menu>configure_menu</parent-menu>
-            <link>../event-sink-config/bam_server_profiles.jsp</link>
+            <link>../event-sink-config/event_sinks_configuration.jsp</link>
             <region>region1</region>
             <order>50</order>
             <style-class>manage</style-class>

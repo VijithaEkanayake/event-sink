@@ -23,7 +23,7 @@
 			<transport>https</transport>
 		</transports>
 		<description>
-			BAM Mediator Configuration Admin Service
+			PublishEvent Mediator Configuration Admin Service
 		</description>
 		<parameter name="ServiceClass">
             org.wso2.carbon.event.sink.config.services.EventSinkConfigAdmin

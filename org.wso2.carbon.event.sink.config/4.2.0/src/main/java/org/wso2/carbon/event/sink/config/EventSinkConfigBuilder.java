@@ -20,191 +20,58 @@ package org.wso2.carbon.event.sink.config;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.synapse.SynapseConstants;
+import org.apache.synapse.SynapseException;
+import org.apache.synapse.config.xml.XMLConfigConstants;
 
 import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder of EventSinkConfig from OMElements from the string fetched from EventSink xml file
  */
 public class EventSinkConfigBuilder {
 
+    public static final QName RECEIVER_URL_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "receiverUrl");
+    public static final QName AUTHENTICATOR_URL_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "authenticatorUrl");
+    public static final QName USERNAME_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "username");
+    public static final QName PASSWORD_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "password");
+
+    List<EventSink> eventSinksList = new ArrayList<EventSink>();
+
     private EventSink eventSink = new EventSink();
 
-    public boolean createEventSinkConfig(OMElement eventSinkConfigElement){
-        boolean credentialsOk = this.processCredentialElement(eventSinkConfigElement);
-        boolean connectionOk = this.processConnectionElement(eventSinkConfigElement);
-        //boolean streamsOk = this.processStreamsElement(bamServerConfigElement);
-        return credentialsOk && connectionOk;
-    }
+    public EventSink createEventSinkConfig(OMElement eventSinkConfigElement,String name){
 
-    private boolean processCredentialElement(OMElement eventSinkConfig){
-        OMElement credentialElement = eventSinkConfig.getFirstChildWithName(
-                new QName(SynapseConstants.SYNAPSE_NAMESPACE, "credential"));
-        if(credentialElement != null){
-            OMAttribute userNameAttr = credentialElement.getAttribute(new QName("userName"));
-            OMAttribute passwordAttr = credentialElement.getAttribute(new QName("password"));
-            if(this.isNotNullOrEmpty(userNameAttr) && this.isNotNullOrEmpty(passwordAttr)){
-                this.eventSink.setUsername(userNameAttr.getAttributeValue());
-                this.eventSink.setPassword(passwordAttr.getAttributeValue());
-            }
-            else {
-                return false;
-            }
+        eventSink.setName(name);
+
+        OMElement receiverUrl = eventSinkConfigElement.getFirstChildWithName(RECEIVER_URL_Q);
+        if (receiverUrl == null) {
+            throw new SynapseException(RECEIVER_URL_Q.getLocalPart() +" element missing");
         }
-        return true;
-    }
+        eventSink.setReceiverUrl(receiverUrl.getText());
 
-    private boolean processConnectionElement(OMElement eventSinkConfig){
-        OMElement connectionElement = eventSinkConfig.getFirstChildWithName(
-                new QName(SynapseConstants.SYNAPSE_NAMESPACE, "connection"));
-        if(connectionElement != null){
-            OMAttribute loadbalancerAttr = connectionElement.getAttribute(new QName("loadbalancer"));
-            OMAttribute secureAttr = connectionElement.getAttribute(new QName("secure"));
-            OMAttribute urlSet = connectionElement.getAttribute(new QName("urlSet"));
-            OMAttribute ipAttr = connectionElement.getAttribute(new QName("ip"));
-            OMAttribute authenticationPortAttr = connectionElement.getAttribute(new QName("authPort"));
-            OMAttribute receiverPortAttr = connectionElement.getAttribute(new QName("receiverPort"));
-            if(this.isNotNullOrEmpty(loadbalancerAttr) && "true".equals(loadbalancerAttr.getAttributeValue())){
-                this.eventSink.setLoadbalanced(true);
-                this.eventSink.setUrlSet(urlSet.getAttributeValue());
-            }
-            else {
-                if(this.isNotNullOrEmpty(ipAttr) && this.isNotNullOrEmpty(secureAttr) && this.isNotNullOrEmpty(authenticationPortAttr)){
-                    this.eventSink.setIp(ipAttr.getAttributeValue());
-                    if("true".equals(secureAttr.getAttributeValue())){
-                        this.eventSink.setSecurity(true);
-                    } else if ("false".equals(secureAttr.getAttributeValue())) {
-                        this.eventSink.setSecurity(false);
-                    } else {
-                        return false; // Secure attribute should have a value
-                    }
-                    this.eventSink.setAuthenticationPort(authenticationPortAttr.getAttributeValue());
-                    if(receiverPortAttr.getAttributeValue() != null && !receiverPortAttr.getAttributeValue().equals("")){
-                        this.eventSink.setReceiverPort(receiverPortAttr.getAttributeValue());
-                    } else {
-                        this.eventSink.setReceiverPort("");
-                    }
-
-                }
-                else {
-                    return false;
-                }
-            }
+        OMElement authenticatorUrl = eventSinkConfigElement.getFirstChildWithName(AUTHENTICATOR_URL_Q);
+        if (authenticatorUrl == null) {
+            throw new SynapseException(AUTHENTICATOR_URL_Q.getLocalPart() +" element missing");
         }
-        return true;
+        eventSink.setAuthenticatorUrl(authenticatorUrl.getText());
+
+        OMElement username = eventSinkConfigElement.getFirstChildWithName(USERNAME_Q);
+        if (username == null) {
+            throw new SynapseException(USERNAME_Q.getLocalPart() +" element missing");
+        }
+        eventSink.setUsername(username.getText());
+
+        OMElement password = eventSinkConfigElement.getFirstChildWithName(PASSWORD_Q);
+        if (password == null) {
+            throw new SynapseException(PASSWORD_Q.getLocalPart() +" element missing");
+        }
+        eventSink.setPassword(password.getText());
+        return eventSink;
     }
 
-//    private boolean processStreamsElement(OMElement bamServerConfigElement){
-//        OMElement streamsElement = bamServerConfigElement.getFirstChildWithName(
-//                new QName(SynapseConstants.SYNAPSE_NAMESPACE, "streams"));
-//        return streamsElement != null && this.processStreamElements(streamsElement);
-//    }
-//
-//    private boolean processStreamElements(OMElement streamsElement){
-//        OMElement streamElement;
-//        StreamConfiguration streamConfiguration;
-//        Iterator itr = streamsElement.getChildrenWithName(new QName("stream"));
-//        while (itr.hasNext()){
-//            streamElement = (OMElement)itr.next();
-//            streamConfiguration = new StreamConfiguration();
-//            if (streamElement != null && this.processStreamElement(streamElement, streamConfiguration)){
-//                this.eventSink.getStreamConfigurations().add(streamConfiguration);
-//            }
-//            else {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    private boolean processStreamElement(OMElement streamElement, StreamConfiguration streamConfiguration){
-//        OMAttribute nameAttr = streamElement.getAttribute(new QName("name"));
-//        OMAttribute versionAttr = streamElement.getAttribute(new QName("version"));
-//        OMAttribute nickNameAttr = streamElement.getAttribute(new QName("nickName"));
-//        OMAttribute descriptionAttr = streamElement.getAttribute(new QName("description"));
-//        if(this.isNotNullOrEmpty(nameAttr) && this.isNotNullOrEmpty(nickNameAttr) && this.isNotNullOrEmpty(descriptionAttr)){
-//            streamConfiguration.setName(nameAttr.getAttributeValue());
-//            streamConfiguration.setVersion(versionAttr.getAttributeValue());
-//            streamConfiguration.setNickname(nickNameAttr.getAttributeValue());
-//            streamConfiguration.setDescription(descriptionAttr.getAttributeValue());
-//
-//            boolean payloadElementOk = this.processPayloadElement(streamElement, streamConfiguration);
-//
-//            boolean propertiesElementOk = this.processPropertiesElement(streamElement, streamConfiguration);
-//
-//            return (payloadElementOk & propertiesElementOk);
-//        }
-//        return false; // Incomplete attributes are not accepted
-//    }
-//
-//    private boolean processPayloadElement(OMElement streamElement, StreamConfiguration streamConfiguration){
-//        OMElement payloadElement = streamElement.getFirstChildWithName(
-//                new QName(SynapseConstants.SYNAPSE_NAMESPACE, "payload"));
-//        return payloadElement != null && this.processEntryElements(payloadElement, streamConfiguration);
-//    }
-//
-//    private boolean processEntryElements(OMElement payloadElement, StreamConfiguration streamConfiguration){
-//        OMElement entryElement;
-//        Iterator itr = payloadElement.getChildrenWithName(new QName("entry"));
-//        while (itr.hasNext()){
-//            entryElement = (OMElement)itr.next();
-//            if (!(entryElement != null && this.processEntryElement(entryElement, streamConfiguration))){
-//                return false;
-//            }
-//        }
-//        return true; // Empty Entry elements are accepted
-//    }
-//
-//    private boolean processEntryElement(OMElement entryElement, StreamConfiguration streamConfiguration){
-//        OMAttribute nameAttr = entryElement.getAttribute(new QName("name"));
-//        OMAttribute valueAttr = entryElement.getAttribute(new QName("value"));
-//        OMAttribute typeAttr = entryElement.getAttribute(new QName("type"));
-//        if(this.isNotNullOrEmpty(nameAttr) && this.isNotNullOrEmpty(valueAttr) && this.isNotNullOrEmpty(typeAttr)){
-//            StreamEntry streamEntry = new StreamEntry();
-//            streamEntry.setName(nameAttr.getAttributeValue());
-//            streamEntry.setValue(valueAttr.getAttributeValue());
-//            streamEntry.setType(typeAttr.getAttributeValue());
-//            streamConfiguration.getEntries().add(streamEntry);
-//            return true;
-//        }
-//        return false; // Empty Entry elements and incomplete Entry parameters are not accepted
-//    }
-//
-//    private boolean processPropertiesElement(OMElement streamElement, StreamConfiguration streamConfiguration){
-//        OMElement propertiesElement = streamElement.getFirstChildWithName(
-//                new QName(SynapseConstants.SYNAPSE_NAMESPACE, "properties"));
-//        return propertiesElement == null || this.processPropertyElements(propertiesElement, streamConfiguration);
-//    }
-//
-//    private boolean processPropertyElements(OMElement propertiesElement, StreamConfiguration streamConfiguration){
-//        OMElement propertyElement;
-//        Iterator itr = propertiesElement.getChildrenWithName(new QName("property"));
-//        while (itr.hasNext()){
-//            propertyElement = (OMElement)itr.next();
-//            if (!(propertyElement != null && this.processPropertyElement(propertyElement, streamConfiguration))){
-//                return false;
-//            }
-//        }
-//        return true; // Empty Property elements are accepted
-//    }
-//
-//    private boolean processPropertyElement(OMElement propertyElement, StreamConfiguration streamConfiguration){
-//        OMAttribute nameAttr = propertyElement.getAttribute(new QName("name"));
-//        OMAttribute valueAttr = propertyElement.getAttribute(new QName("value"));
-//        OMAttribute typeAttr = propertyElement.getAttribute(new QName("type"));
-//        OMAttribute isExpressionAttr = propertyElement.getAttribute(new QName("isExpression"));
-//        if(this.isNotNullOrEmpty(nameAttr) && this.isNotNullOrEmpty(valueAttr) && this.isNotNullOrEmpty(typeAttr) && this.isNotNullOrEmpty(isExpressionAttr)){
-//            Property property = new Property();
-//            property.setKey(nameAttr.getAttributeValue());
-//            property.setValue(valueAttr.getAttributeValue());
-//            property.setType(typeAttr.getAttributeValue());
-//            property.setExpression("true".equals(isExpressionAttr.getAttributeValue()));
-//            streamConfiguration.getProperties().add(property);
-//            return true;
-//        }
-//        return false; // Empty Property elements and incomplete Property parameters are not accepted
-//    }
+
 
     private boolean isNotNullOrEmpty(OMAttribute omAttribute){
         return omAttribute != null && !omAttribute.getAttributeValue().equals("");

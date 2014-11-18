@@ -1,121 +1,66 @@
-/**
- * Copyright (c) WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- * <p/>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.wso2.carbon.event.sink.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.registry.common.services.RegistryAbstractAdmin;
+import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
+import org.wso2.carbon.utils.CarbonUtils;
+import org.wso2.carbon.utils.ServerConstants;
+
+import java.io.*;
+import java.util.ArrayList;
 
 /**
- * Does Configuration Registry operations required to store/fetch BAM server configurations
+ * Created by vijithae on 11/17/14.
  */
-public class EventSinkXmlWriter extends RegistryAbstractAdmin {
-
+public class EventSinkXmlWriter {
     private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
-//    private Registry registry;
-//    private Resource resource;
-//
-//    public EventSinkXmlWriter(){
-//        //registry = getConfigSystemRegistry();
-//        try {
-//            RegistryService registryService = ServiceHolder.getRegistryService();
-//            registry = registryService.getConfigSystemRegistry(MultitenantUtils.getTenantId(super.getConfigContext()));
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while getting the Registry Service. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//    }
-//
-//    public void saveResourceString(String resourceString, String gadgetResourcePath){
-//        try {
-//            resource = registry.newResource();
-//            resource.setContent(resourceString);
-//            resource.setMediaType("application/xml");
-//            registry.put(gadgetResourcePath, resource);
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while saving resource string from Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//    }
-//
-//    public boolean resourceAlreadyExists(String bamServerProfileLocation){
-//        try {
-//            return registry.resourceExists(bamServerProfileLocation);
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while checking resource string from Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//        return true;
-//    }
-//
-//    public boolean removeResource(String path){
-//        try {
-//            registry.delete(path);
-//            return true;
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while removing the resource from Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//        return false;
-//    }
-//
-//    public String getResourceString(String bamServerProfileLocation){
-//        try {
-//            resource = registry.get(bamServerProfileLocation);
-//            return new String((byte[])resource.getContent(), Charset.forName("UTF-8"));
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while getting the resource from Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//        return null;
-//    }
-//
-//    public boolean addCollection(String bamServerProfileCollectionLocation){
-//        try {
-//            resource = registry.newCollection();
-//            registry.put(bamServerProfileCollectionLocation, resource);
-//            return true;
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while adding the collection to the Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//        return false;
-//    }
-//
-//    public String[] getServerProfileNameList(String bamServerProfileCollectionLocation){
-//        try {
-//            return ((String[])registry.get(bamServerProfileCollectionLocation).getContent());
-//        } catch (RegistryException e) {
-//            String errorMsg = "Error while getting the Server Profile Name List from the Registry. " + e.getMessage();
-//            log.error(errorMsg, e);
-//        }
-//        return new String[0];
-//    }
 
-    /*public static ConfigurationContext getConfigContext() {
-        if (configContextService == null) {
-            log.error(new BamMediatorException("ConfigurationContextService is null"));
-        }
+    String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
+    String filePath = carbonHome + File.separator + "repository" + File.separator + "conf" + File.separator;
+    String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
+    EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
+    CryptographyManager cryptographyManager = new CryptographyManager();
+
+    public void writeEventSink(EventSink eventSink ){
+
         try {
-            return configContextService.getServerConfigContext();
-        } catch (Exception e) {
-            String errorMsg = "Error occurred while getting the Registry Service. " + e.getMessage();
-            log.error(e);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath,eventSink.getName()+".xml")));
+            bufferedWriter.write(eventSinkConfigXml.buildEventSink(eventSink.getUsername(),encryptAndBase64Encode(eventSink.getPassword()),eventSink.getReceiverUrl(),eventSink.getAuthenticatorUrl()).toString());
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }*/
 
+    }
+
+
+
+
+
+
+    public ArrayList<String> getEventSinkNames(){
+
+
+        ArrayList<String> eventSinkList=null;
+        File dir = new File(filePath);
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null){
+            for(File eventSink : directoryListing){
+                eventSinkList.add(eventSink.getName());
+            }
+        }
+
+        return eventSinkList;
+    }
+
+    public String encryptAndBase64Encode(String plainText) {
+        return cryptographyManager.encryptAndBase64Encode(plainText);
+    }
+
+    public String base64DecodeAndDecrypt(String cipherText) {
+        return cryptographyManager.base64DecodeAndDecrypt(cipherText);
+    }
 }

@@ -23,21 +23,44 @@ package org.wso2.carbon.event.sink.config;
  */
 public class EventSink {
 
+    private String name;
     private String username;
     private String password;
-    private String urlSet;
-    private String ip;
-    private String authenticationPort;
-    private String receiverPort;
-    private boolean security = true;
-    private boolean loadbalancer = false;
+    private String receiverUrl;
+    private String authenticatorUrl;
 
-    public boolean isLoadbalanced() {
-        return loadbalancer;
+    public EventSink(){}
+
+    public EventSink(String name,String username,String password, String receiverUrl,String authenticatorUrl){
+        this.setName(name);
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setReceiverUrl(receiverUrl);
+        this.setAuthenticatorUrl(authenticatorUrl);
     }
 
-    public void setLoadbalanced(boolean loadbalancer) {
-        this.loadbalancer = loadbalancer;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = this.name;
+    }
+
+    public String getReceiverUrl() {
+        return receiverUrl;
+    }
+
+    public void setReceiverUrl(String receiverUrl) {
+        this.receiverUrl = receiverUrl;
+    }
+
+    public String getAuthenticatorUrl() {
+        return authenticatorUrl;
+    }
+
+    public void setAuthenticatorUrl(String authenticatorUrl) {
+        this.authenticatorUrl = authenticatorUrl;
     }
 
     public String getUsername(){
@@ -54,46 +77,6 @@ public class EventSink {
 
     public void setPassword(String password){
         this.password = password;
-    }
-
-    public String getUrlSet() {
-        return urlSet;
-    }
-
-    public void setUrlSet(String urlSet) {
-        this.urlSet = urlSet;
-    }
-
-    public String getIp(){
-        return this.ip;
-    }
-
-    public void setIp(String ip){
-        this.ip = ip;
-    }
-
-    public String getAuthenticationPort(){
-        return this.authenticationPort;
-    }
-
-    public void setAuthenticationPort(String authenticationPort){
-        this.authenticationPort = authenticationPort;
-    }
-
-    public String getReceiverPort() {
-        return receiverPort;
-    }
-
-    public void setReceiverPort(String receiverPort) {
-        this.receiverPort = receiverPort;
-    }
-
-    public boolean isSecure() {
-        return security;
-    }
-
-    public void setSecurity(boolean security) {
-        this.security = security;
     }
 
 
