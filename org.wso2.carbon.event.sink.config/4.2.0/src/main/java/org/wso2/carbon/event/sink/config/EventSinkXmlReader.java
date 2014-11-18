@@ -16,18 +16,13 @@
 
 package org.wso2.carbon.event.sink.config;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.utils.ServerConstants;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Does Configuration Registry operations required to store/fetch BAM server configurations
@@ -37,30 +32,28 @@ public class EventSinkXmlReader {
     private static final Log log = LogFactory.getLog(EventSinkXmlReader.class);
 
     String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
-    String filePath = carbonHome + File.separator + "repository" + File.separator + "conf" + File.separator;
+    String filePath = carbonHome + File.separator + "repository" + File.separator + "deployemnt" + File.separator + "server" + File.separator + "deployemnt" + File.separator + "event-sinks" + File.separator;
+
+    public List<EventSink> getAllEventSinks(){
+        EventSink eventSink = new EventSink();
+        List<EventSink> eventSinkList = new ArrayList<EventSink>();
+
+        File dir = new File(filePath);
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File sink : directoryListing) {
 
 
-    BufferedInputStream inputStream;
-
-    {
-        try {
-            inputStream = new BufferedInputStream(new FileInputStream(new File(filePath)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            }
+        } else {
+            // Handle the case where dir is not really a directory.
+            // Checking dir.isDirectory() above would not be sufficient
+            // to avoid race conditions with another process that deletes
+            // directories.
         }
+
+        return  eventSinkList;
     }
-
-    XMLStreamReader reader;
-
-    {
-        try {
-            reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        }
-    }
-
-    StAXOMBuilder builder = new StAXOMBuilder(reader);
 
 
 

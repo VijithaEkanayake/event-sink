@@ -24,6 +24,9 @@ import org.wso2.carbon.event.sink.config.EventSink;
 import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
 
 /**
@@ -43,6 +46,13 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
         EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
         eventSinkXmlWriter.writeEventSink(eventSink);
         return true;
+    }
+
+    public List<EventSink> getEventSinks(){
+        List<EventSink> eventSinkList = new ArrayList<EventSink>();
+
+        return eventSinkList;
+
     }
 
 

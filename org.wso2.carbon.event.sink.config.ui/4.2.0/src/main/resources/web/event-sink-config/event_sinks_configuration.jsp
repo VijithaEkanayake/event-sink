@@ -325,6 +325,8 @@ function isRemainPropertyExpressions() {
                     </div>
                 </td>
             </tr>
+
+            <!--
             <tr>
                 <td>
                     <div style="margin-top:10px;">
@@ -336,6 +338,7 @@ function isRemainPropertyExpressions() {
                     </div>
                 </td>
             </tr>
+            -->
 
         </table>
     </div>
@@ -347,4 +350,6 @@ function isRemainPropertyExpressions() {
 
     </form>
         </div>
+    <button onclick="window.location.href = 'add_event_sink.jsp';">Add New EventSink</button>
+
 </fmt:bundle>
