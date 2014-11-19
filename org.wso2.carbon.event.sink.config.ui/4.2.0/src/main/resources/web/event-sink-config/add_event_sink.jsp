@@ -130,7 +130,15 @@
             <table class="normal" width="100%">
                 <tr>
                     <td>
-                        <h2><fmt:message key="publishEvent.configuration.header"/></h2>
+                        <h2>
+                            <%
+                                if (action.equals("add")) {
+                                    out.print("Add Event Sink");
+                                } else {
+                                    out.print("Edit Event Sink");
+                                }
+                            %>
+                        </h2>
                     </td>
                 </tr>
 
@@ -141,20 +149,13 @@
                         <div style="margin-top:0px;">
 
                             <table id="propertytable" class="styledInner">
-                                <thead>
-                                <tr>
-                                    <th width="10%"><fmt:message
-                                            key="publishEvent.configuration.attribute.name"/></th>
-                                    <th width="50%"><fmt:message
-                                            key="publishEvent.configuration.attribute.value"/></th>
-                                </tr>
                                 <tbody id="propertytbody">
                                 <%
                                     int i = 0;
 
                                 %>
                                 <tr>
-                                    <td><fmt:message key="publishEvent.configuration.attribute.name"/></td>
+                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/></td>
                                     <td>
                                         <%
                                             if (!action.equals("edit")) {
@@ -174,21 +175,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><fmt:message key="publishEvent.configuration.attribute.username"/></td>
+                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.username"/></td>
                                     <td><input type="text" name="propertyUsername0" id="propertyUsername0"
                                                class="esb-edit small_textbox"
                                                value="<%=username%>"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><fmt:message key="publishEvent.configuration.attribute.password"/></td>
+                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.password"/></td>
                                     <td><input type="password" name="propertyPassword0" id="propertyPassword0"
                                                class="esb-edit small_textbox"
                                                value="<%=password%>"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
+                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
                                     <td><input style="width: 98%;" type="text" name="propertyReceiverUrl0"
                                                id="propertyReceiverUrl0"
 
@@ -196,7 +197,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><fmt:message
+                                    <td width="15%"><fmt:message
                                             key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
                                     <td><input style="width: 98%;" type="text" name="propertyAuthenticatorUrl0"
                                                id="propertyAuthenticatorUrl0"
@@ -211,7 +212,6 @@
                                 <input type="hidden" name="action" id="action" value="<%=action%>"/>
 
                                 </tbody>
-                                </thead>
                             </table>
                         </div>
                     </td>
