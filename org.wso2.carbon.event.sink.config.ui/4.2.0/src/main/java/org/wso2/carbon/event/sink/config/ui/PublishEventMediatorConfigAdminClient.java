@@ -52,7 +52,6 @@ public class PublishEventMediatorConfigAdminClient {
 
     public boolean writeEventSinkXml(EventSink eventSink) throws RemoteException {
             stub.writeEventSink(eventSink.getName(),eventSink.getUsername(),eventSink.getPassword(), eventSink.getReceiverUrl(),eventSink.getAuthenticatorUrl());
-        System.out.println("+++++++++++++++++++++++++successfully written to xml+++++++++++++++++++++++++++++++++");
             return true;
     }
 
@@ -60,16 +59,6 @@ public class PublishEventMediatorConfigAdminClient {
         org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
         return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
     }
-
-//    public EventSink getEventSinkFromName(String name){
-//        EventSink eventSink;
-//        try {
-//            eventSink = stub.getEventSinkFromName(name);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//        return eventSink;
-//    }
 
     public String deleteEventSink(String name){
         try {
