@@ -61,6 +61,12 @@
 
 <%
     response.setHeader("Cache-Control", "no-cache");
+    String action=request.getParameter("action");
+    String name=request.getParameter("name");
+    String username=request.getParameter("username");
+    String password=request.getParameter("password");
+    String receiverUrl=request.getParameter("receiverUrl");
+    String authenticatorUrl=request.getParameter("authenticatorUrl");
 %>
 
 
@@ -107,42 +113,42 @@
                                 <td><fmt:message key="publishEvent.configuration.attribute.name"/></td>
                                 <td><input type="text" name="propertyName0" id="propertyName0"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=name%>"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="publishEvent.configuration.attribute.username"/></td>
                                 <td><input type="text" name="propertyUsername0" id="propertyUsername0"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=username%>"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="publishEvent.configuration.attribute.password"/></td>
                                 <td><input type="password" name="propertyPassword0" id="propertyPassword0"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=password%>"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
                                 <td><input type="text" name="propertyReceiverUrl0" id="propertyReceiverUrl0"
 
-                                           value=""/>
+                                           value="<%=receiverUrl%>"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
                                 <td><input type="text" name="propertyAuthenticatorUrl0" id="propertyAuthenticatorUrl0"
 
-                                           value=""/>
+                                           value="<%=authenticatorUrl%>"/>
                                 </td>
                             </tr>
                             <%
 
                             %>
                             <input type="hidden" name="propertyCount" id="propertyCount" value="0"/>
-                            <input type="hidden" name="action" id="action" value="add"/>
+                            <input type="hidden" name="action" id="action" value="<%=action%>"/>
 
                             </tbody>
                             </thead>

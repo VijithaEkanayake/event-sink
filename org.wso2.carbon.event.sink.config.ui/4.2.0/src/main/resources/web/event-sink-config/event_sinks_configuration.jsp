@@ -170,6 +170,25 @@ function resetDisplayStyle(displayStyle) {
     }
 }
 
+function editEventSink(i){
+    var name = document.getElementById("propertyName"+i).value;
+    var username = document.getElementById("propertyUsername"+i).value;
+    var password = document.getElementById("propertyPassword"+i).value;
+    var receiverUrl = document.getElementById("propertyReceiverUrl"+i).value;
+    var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl"+i).value;
+
+    var eventSinkParams = "name=" + name + "&"
+            + "username=" + username + "&"
+            + "password=" + password + "&"
+            + "receiverUrl=" + receiverUrl + "&"
+            + "authenticatorUrl=" + authenticatorUrl + "&"
+            + "action=edit";
+    window.location.href = "add_event_sink.jsp?" + eventSinkParams;
+
+    }
+
+
+
 </script>
 
 
@@ -251,6 +270,8 @@ function resetDisplayStyle(displayStyle) {
                                 <td><a href="#" class="delete-icon-link"
                                        onclick="deleteproperty(<%=i%>);return false;"><fmt:message
                                         key="publishEvent.configuration.action.delete"/></a></td>
+                                <td><a href="#" class="delete-icon-link"
+                                       onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
                             </tr>
                             <%
 
@@ -288,6 +309,6 @@ function resetDisplayStyle(displayStyle) {
 
     </form>
         </div>
-    <button class="button" onclick="window.location.href = 'add_event_sink.jsp';">Add New EventSink</button>
+    <button class="button" onclick="window.location.href = 'add_event_sink.jsp?action=add';">Add New EventSink</button>
 
 </fmt:bundle>
