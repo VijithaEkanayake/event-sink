@@ -240,7 +240,7 @@
                                                 key="publishEvent.configuration.attribute.receiverUrl"/></th>
                                         <th width="15%"><fmt:message
                                                 key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
-                                        <th width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
+                                        <th colspan="2" width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
                                     </tr>
                                     <tbody id="propertytbody">
                                     <%
