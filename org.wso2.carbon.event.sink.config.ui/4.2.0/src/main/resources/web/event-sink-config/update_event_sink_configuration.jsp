@@ -17,12 +17,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
-<%@ page import="org.jaxen.JaxenException" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
+<%@ page import="org.wso2.carbon.event.sink.config.EventSink" %>
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
-<%@ page import="org.wso2.carbon.event.sink.config.EventSink" %>
 <%
     String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
@@ -34,7 +33,7 @@
 
     String action = request.getParameter("action");
     String propertyCountParameter = request.getParameter("propertyCount");
-    if(action.equals("add")) {
+    if (action.equals("add")) {
 
         if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
             int propertyCount = 0;
@@ -62,43 +61,41 @@
             } catch (NumberFormatException ignored) {
                 throw new RuntimeException("Invalid number format");
             }
-        } else if (action.equals("delete")) {
-            String name = request.getParameter("name");
-            System.out.println(name);
-            String responseText = publishEventMediatorConfigAdminClient.deleteEventSink(name);
-            out.write(responseText);
-        } else if (action.equals("edit")) {
-            //String propertyCountParameter = request.getParameter("propertyCount");
-            if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
-                int propertyCount = 0;
-                try {
-                    propertyCount = Integer.parseInt(propertyCountParameter.trim());
-                    for (int i = 0; i <= propertyCount; i++) {
-                        EventSink eventSink = new EventSink();
-                        String name = request.getParameter("propertyName" + i);
+        }
+    } else if (action.equals("delete")) {
+        String name = request.getParameter("name");
+        System.out.println(name);
+        String responseText = publishEventMediatorConfigAdminClient.deleteEventSink(name);
+        out.write(responseText);
+    } else if (action.equals("edit")) {
+        //String propertyCountParameter = request.getParameter("propertyCount");
+        if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
+            int propertyCount = 0;
+            try {
+                propertyCount = Integer.parseInt(propertyCountParameter.trim());
+                for (int i = 0; i <= propertyCount; i++) {
+                    EventSink eventSink = new EventSink();
+                    String name = request.getParameter("propertyName" + i);
 
-                        if (name != null && !"".equals(name)) {
-                            eventSink.setName(name);
-                            String valueId = "propertyUsername" + i;
-                            String username = request.getParameter(valueId);
-                            eventSink.setUsername(username);
-                            String password = request.getParameter("propertyPassword" + i);
-                            eventSink.setPassword(password);
-                            String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
-                            eventSink.setReceiverUrl(receiverUrl);
-                            String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
-                            eventSink.setAuthenticatorUrl(authenticatorUrl);
-                        }
-                        publishEventMediatorConfigAdminClient.updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(), eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
-                        // out.write(responseText);
+                    if (name != null && !"".equals(name)) {
+                        eventSink.setName(name);
+                        String valueId = "propertyUsername" + i;
+                        String username = request.getParameter(valueId);
+                        eventSink.setUsername(username);
+                        String password = request.getParameter("propertyPassword" + i);
+                        eventSink.setPassword(password);
+                        String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
+                        eventSink.setReceiverUrl(receiverUrl);
+                        String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
+                        eventSink.setAuthenticatorUrl(authenticatorUrl);
                     }
-
-                } catch (NumberFormatException ignored) {
-                    throw new RuntimeException("Invalid number format");
+                    publishEventMediatorConfigAdminClient.updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(), eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+                    // out.write(responseText);
                 }
-            }
 
+            } catch (NumberFormatException ignored) {
+                throw new RuntimeException("Invalid number format");
+            }
         }
     }
-
 %>

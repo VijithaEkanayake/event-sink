@@ -21,10 +21,9 @@
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
+<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
-<%@ page import="java.util.List" %>
-<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -33,160 +32,160 @@
 
 <script type="text/javascript">
 
-function addproperty(name,nameemptymsg, valueemptymsg) {
+    function addproperty(name, nameemptymsg, valueemptymsg) {
 
-    if (!isValidProperties(nameemptymsg, valueemptymsg)) {
+        if (!isValidProperties(nameemptymsg, valueemptymsg)) {
+            return false;
+        }
+
+        var propertyCount = document.getElementById("propertyCount");
+        var i = propertyCount.value;
+
+        var currentCount = parseInt(i);
+        currentCount = currentCount + 1;
+
+        propertyCount.value = currentCount;
+
+        var propertytable = document.getElementById("propertytable");
+        propertytable.style.display = "";
+        var propertytbody = document.getElementById("propertytbody");
+
+        var propertyRaw = document.createElement("tr");
+        propertyRaw.setAttribute("id", "propertyRaw" + i);
+
+        var nameTD = document.createElement("td");
+        nameTD.innerHTML = "<input type='text' name='propertyName" + i + "' id='propertyName" + i + "'" +
+                " />";
+        var usernameTD = document.createElement("td");
+        usernameTD.innerHTML = "<input type='text' name='propertyUsername" + i + "' id='propertyUsername" + i + "'" +
+                " />";
+        var passwordTD = document.createElement("td");
+        passwordTD.innerHTML = "<input type='password' name='propertyPassword" + i + "' id='propertyPassword" + i + "'" +
+                " />";
+        var receiverUrlTD = document.createElement("td");
+        receiverUrlTD.innerHTML = "<input type='text' name='propertyReceiverUrl" + i + "' id='propertyReceiverUrl" + i + "'" +
+                " />";
+        var authenticatorUrlTD = document.createElement("td");
+        authenticatorUrlTD.innerHTML = "<input type='text' name='propertyAuthenticatorUrl" + i + "' id='propertyAuthenticatorUrl" + i + "'" +
+                " />";
+        var deleteTD = document.createElement("td");
+        deleteTD.innerHTML = "<a href='#' class='delete-icon-link' onclick='deleteproperty(" + i + ");return false;'>" + ["Delete"] + "</a>";
+
+        propertyRaw.appendChild(nameTD);
+        propertyRaw.appendChild(usernameTD);
+        propertyRaw.appendChild(passwordTD);
+        propertyRaw.appendChild(receiverUrlTD);
+        propertyRaw.appendChild(authenticatorUrlTD);
+        propertyRaw.appendChild(deleteTD);
+        propertytbody.appendChild(propertyRaw);
+        return true;
+    }
+
+    function isValidProperties(nameemptymsg, valueemptymsg) {
+
+        var nsCount = document.getElementById("propertyCount");
+        var i = nsCount.value;
+
+        var currentCount = parseInt(i);
+
+        if (currentCount >= 1) {
+            for (var k = 0; k < currentCount; k++) {
+                var prefix = document.getElementById("propertyName" + k);
+                if (prefix != null && prefix != undefined) {
+                    if (prefix.value == "") {
+                        CARBON.showWarningDialog(nameemptymsg)
+                        return false;
+                    }
+                }
+                var uri = document.getElementById("propertyValue" + k);
+                if (uri != null && uri != undefined) {
+                    if (uri.value == "") {
+                        CARBON.showWarningDialog(valueemptymsg)
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    function deleteproperty(i) {
+        var eventSinkName = document.getElementById("propertyName" + i).value;
+
+        CARBON.showConfirmationDialog("Are you sure, you want to delete event sink '" + eventSinkName + "'?", function () {
+
+            alert(eventSinkName);
+            jQuery.ajax({
+                type: "GET",
+                url: "../event-sink-config/update_event_sink_configuration.jsp",
+                data: {action: "delete", name: eventSinkName},
+                success: function (data) {
+                    CARBON.showInfoDialog("Deleted");
+                    var propRow = document.getElementById("propertyRaw" + i);
+                    if (propRow != undefined && propRow != null) {
+                        var parentTBody = propRow.parentNode;
+                        if (parentTBody != undefined && parentTBody != null) {
+                            parentTBody.removeChild(propRow);
+                            if (!isContainRaw(parentTBody)) {
+                                var propertyTable = document.getElementById("propertytable");
+                                propertyTable.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            })
+        });
+    }
+
+    function isContainRaw(tbody) {
+        if (tbody.childNodes == null || tbody.childNodes.length == 0) {
+            return false;
+        } else {
+            for (var i = 0; i < tbody.childNodes.length; i++) {
+                var child = tbody.childNodes[i];
+                if (child != undefined && child != null) {
+                    if (child.nodeName == "tr" || child.nodeName == "TR") {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
-    var propertyCount = document.getElementById("propertyCount");
-    var i = propertyCount.value;
+    function resetDisplayStyle(displayStyle) {
+        document.getElementById('ns-edior-th').style.display = displayStyle;
+        var nsCount = document.getElementById("propertyCount");
+        var i = nsCount.value;
 
-    var currentCount = parseInt(i);
-    currentCount = currentCount + 1;
+        var currentCount = parseInt(i);
 
-    propertyCount.value = currentCount;
-
-    var propertytable = document.getElementById("propertytable");
-    propertytable.style.display = "";
-    var propertytbody = document.getElementById("propertytbody");
-
-    var propertyRaw = document.createElement("tr");
-    propertyRaw.setAttribute("id", "propertyRaw" + i);
-
-    var nameTD = document.createElement("td");
-    nameTD.innerHTML = "<input type='text' name='propertyName" + i + "' id='propertyName" + i + "'" +
-            " />";
-    var usernameTD = document.createElement("td");
-    usernameTD.innerHTML = "<input type='text' name='propertyUsername" + i + "' id='propertyUsername" + i + "'" +
-            " />";
-    var passwordTD = document.createElement("td");
-    passwordTD.innerHTML = "<input type='password' name='propertyPassword" + i + "' id='propertyPassword" + i + "'" +
-            " />";
-    var receiverUrlTD = document.createElement("td");
-    receiverUrlTD.innerHTML = "<input type='text' name='propertyReceiverUrl" + i + "' id='propertyReceiverUrl" + i + "'" +
-            " />";
-    var authenticatorUrlTD = document.createElement("td");
-    authenticatorUrlTD.innerHTML = "<input type='text' name='propertyAuthenticatorUrl" + i + "' id='propertyAuthenticatorUrl" + i + "'" +
-            " />";
-    var deleteTD = document.createElement("td");
-    deleteTD.innerHTML =  "<a href='#' class='delete-icon-link' onclick='deleteproperty(" + i + ");return false;'>" + ["Delete"] + "</a>";
-
-    propertyRaw.appendChild(nameTD);
-    propertyRaw.appendChild(usernameTD);
-    propertyRaw.appendChild(passwordTD);
-    propertyRaw.appendChild(receiverUrlTD);
-    propertyRaw.appendChild(authenticatorUrlTD);
-    propertyRaw.appendChild(deleteTD);
-    propertytbody.appendChild(propertyRaw);
-    return true;
-}
-
-function isValidProperties(nameemptymsg, valueemptymsg) {
-
-    var nsCount = document.getElementById("propertyCount");
-    var i = nsCount.value;
-
-    var currentCount = parseInt(i);
-
-    if (currentCount >= 1) {
-        for (var k = 0; k < currentCount; k++) {
-            var prefix = document.getElementById("propertyName" + k);
-            if (prefix != null && prefix != undefined) {
-                if (prefix.value == "") {
-                    CARBON.showWarningDialog(nameemptymsg)
-                    return false;
-                }
-            }
-            var uri = document.getElementById("propertyValue" + k);
-            if (uri != null && uri != undefined) {
-                if (uri.value == "") {
-                    CARBON.showWarningDialog(valueemptymsg)
-                    return false;
+        if (currentCount >= 1) {
+            for (var k = 0; k < currentCount; k++) {
+                var nsEditorButtonTD = document.getElementById("nsEditorButtonTD" + k);
+                if (nsEditorButtonTD != undefined && nsEditorButtonTD != null) {
+                    nsEditorButtonTD.style.display = displayStyle;
                 }
             }
         }
     }
-    return true;
-}
 
-function deleteproperty(i) {
-    var eventSinkName=document.getElementById("propertyName" + i).value;
-    alert(eventSinkName);
-    jQuery.ajax({
-        type:"GET",
-        url:"../event-sink-config/update_event_sink_configuration.jsp",
-        data:{action:"delete", name:eventSinkName},
-        success:function(data){
-            CARBON.showInfoDialog("Deleted");
-        }
-    })
-    CARBON.showConfirmationDialog("Are you sure, you want to delete this Configuration?",function(){
+    function editEventSink(i) {
+        var name = document.getElementById("propertyName" + i).value;
+        var username = document.getElementById("propertyUsername" + i).value;
+        var password = document.getElementById("propertyPassword" + i).value;
+        var receiverUrl = document.getElementById("propertyReceiverUrl" + i).value;
+        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl" + i).value;
 
-        var propRow = document.getElementById("propertyRaw" + i);
-        if (propRow != undefined && propRow != null) {
-            var parentTBody = propRow.parentNode;
-            if (parentTBody != undefined && parentTBody != null) {
-                parentTBody.removeChild(propRow);
-                if (!isContainRaw(parentTBody)) {
-                    var propertyTable = document.getElementById("propertytable");
-                    propertyTable.style.display = "none";
-                }
-            }
-        }
-    });
-}
-
-function isContainRaw(tbody) {
-    if (tbody.childNodes == null || tbody.childNodes.length == 0) {
-        return false;
-    } else {
-        for (var i = 0; i < tbody.childNodes.length; i++) {
-            var child = tbody.childNodes[i];
-            if (child != undefined && child != null) {
-                if (child.nodeName == "tr" || child.nodeName == "TR") {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-function resetDisplayStyle(displayStyle) {
-    document.getElementById('ns-edior-th').style.display = displayStyle;
-    var nsCount = document.getElementById("propertyCount");
-    var i = nsCount.value;
-
-    var currentCount = parseInt(i);
-
-    if (currentCount >= 1) {
-        for (var k = 0; k < currentCount; k++) {
-            var nsEditorButtonTD = document.getElementById("nsEditorButtonTD" + k);
-            if (nsEditorButtonTD != undefined && nsEditorButtonTD != null) {
-                nsEditorButtonTD.style.display = displayStyle;
-            }
-        }
-    }
-}
-
-function editEventSink(i){
-    var name = document.getElementById("propertyName"+i).value;
-    var username = document.getElementById("propertyUsername"+i).value;
-    var password = document.getElementById("propertyPassword"+i).value;
-    var receiverUrl = document.getElementById("propertyReceiverUrl"+i).value;
-    var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl"+i).value;
-
-    var eventSinkParams = "name=" + name + "&"
-            + "username=" + username + "&"
-            + "password=" + password + "&"
-            + "receiverUrl=" + receiverUrl + "&"
-            + "authenticatorUrl=" + authenticatorUrl + "&"
-            + "action=edit";
-    window.location.href = "add_event_sink.jsp?" + eventSinkParams;
+        var eventSinkParams = "name=" + name + "&"
+                + "username=" + username + "&"
+                + "password=" + password + "&"
+                + "receiverUrl=" + receiverUrl + "&"
+                + "authenticatorUrl=" + authenticatorUrl + "&"
+                + "action=edit";
+        window.location.href = "add_event_sink.jsp?" + eventSinkParams;
 
     }
-
 
 
 </script>
@@ -205,92 +204,99 @@ function editEventSink(i){
 
 %>
 
-<fmt:bundle basename="org.wso2.carbon.event.sink.config.ui.i18n.Resources" >
+<fmt:bundle basename="org.wso2.carbon.event.sink.config.ui.i18n.Resources">
     <carbon:jsi18n
             resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
             request="<%=request%>"
             i18nObjectName="logi18n"/>
     <div id="middle">
-    <form action="update_event_sink_configuration.jsp" method="post">
-        <div id="workArea">
+        <form action="update_event_sink_configuration.jsp" method="post">
+            <div id="workArea">
 
-        <table class="normal" width="100%">
-            <tr>
-                <td>
-                    <h2><fmt:message key="publishEvent.configuration.header"/></h2>
-                </td>
-            </tr>
+                <table class="normal" width="100%">
+                    <tr>
+                        <td>
+                            <h2><fmt:message key="publishEvent.configuration.header"/></h2>
+                        </td>
+                    </tr>
 
-            <tr>
-                <td>
-                    <h3 class="mediator">
-                        <fmt:message key="publishEvent.configuration.attributes"/></h3>
+                    <tr>
+                        <td>
+                            <h3 class="mediator">
+                                <fmt:message key="publishEvent.configuration.attributes"/></h3>
 
-                    <div style="margin-top:0px;">
+                            <div style="margin-top:0px;">
 
-                        <table id="propertytable" class="styledInner">
-                            <thead>
-                            <tr>
-                                <th width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/></th>
-                                <th width="10%"><fmt:message key="publishEvent.configuration.attribute.username"/></th>
-                                <th width="15%"><fmt:message key="publishEvent.configuration.attribute.password"/></th>
-                                <th width="15%"><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></th>
-                                <th width="15%"><fmt:message key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
-                                <th width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
-                            </tr>
-                            <tbody id="propertytbody">
-                            <%
-                                int i = 0;
-                                for(EventSink eventSink : eventSinkList){
-                             %>
-                            <tr id="propertyRaw<%=i%>">
-                                <td><input type="text" name="propertyName<%=i%>" id="propertyName<%=i%>"
-                                           class="esb-edit small_textbox"
-                                           value="<%=eventSink.getName()%>"/>
-                                </td>
-                                <td><input type="text" name="propertyUsername<%=i%>" id="propertyUsername<%=i%>"
-                                           class="esb-edit small_textbox"
-                                           value="<%=eventSink.getUsername()%>"/>
-                                </td>
-                                <td><input type="password" name="propertyPassword<%=i%>" id="propertyPassword<%=i%>"
-                                           class="esb-edit small_textbox"
-                                           value="<%=eventSink.getPassword()%>"/>
-                                </td>
-                                <td><input type="text" name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>"
-                                           class="esb-edit small_textbox"
-                                           value="<%=eventSink.getReceiverUrl()%>"/>
-                                </td>
-                                <td><input type="text" name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>"
-                                           class="esb-edit small_textbox"
-                                           value="<%=eventSink.getAuthenticatorUrl()%>"/>
-                                </td>
+                                <table id="propertytable" class="styledInner">
+                                    <thead>
+                                    <tr>
+                                        <th width="15%"><fmt:message
+                                                key="publishEvent.configuration.attribute.name"/></th>
+                                        <th width="10%"><fmt:message
+                                                key="publishEvent.configuration.attribute.username"/></th>
+                                        <th width="15%"><fmt:message
+                                                key="publishEvent.configuration.attribute.password"/></th>
+                                        <th width="15%"><fmt:message
+                                                key="publishEvent.configuration.attribute.receiverUrl"/></th>
+                                        <th width="15%"><fmt:message
+                                                key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
+                                        <th width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
+                                    </tr>
+                                    <tbody id="propertytbody">
+                                    <%
+                                        int i = 0;
+                                        for (EventSink eventSink : eventSinkList) {
+                                    %>
+                                    <tr id="propertyRaw<%=i%>">
+                                        <td><input type="text" name="propertyName<%=i%>" id="propertyName<%=i%>"
+                                                   class="esb-edit small_textbox"
+                                                   value="<%=eventSink.getName()%>"/>
+                                        </td>
+                                        <td><input type="text" name="propertyUsername<%=i%>" id="propertyUsername<%=i%>"
+                                                   class="esb-edit small_textbox"
+                                                   value="<%=eventSink.getUsername()%>"/>
+                                        </td>
+                                        <td><input type="password" name="propertyPassword<%=i%>"
+                                                   id="propertyPassword<%=i%>"
+                                                   class="esb-edit small_textbox"
+                                                   value="<%=eventSink.getPassword()%>"/>
+                                        </td>
+                                        <td><input type="text" name="propertyReceiverUrl<%=i%>"
+                                                   id="propertyReceiverUrl<%=i%>"
+                                                   class="esb-edit small_textbox"
+                                                   value="<%=eventSink.getReceiverUrl()%>"/>
+                                        </td>
+                                        <td><input type="text" name="propertyAuthenticatorUrl<%=i%>"
+                                                   id="propertyAuthenticatorUrl<%=i%>"
+                                                   class="esb-edit small_textbox"
+                                                   value="<%=eventSink.getAuthenticatorUrl()%>"/>
+                                        </td>
 
 
+                                        <td><a href="#" class="delete-icon-link"
+                                               onclick="deleteproperty(<%=i%>);return false;"><fmt:message
+                                                key="publishEvent.configuration.action.delete"/></a></td>
+                                        <td><a href="#" class="delete-icon-link"
+                                               onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
+                                    </tr>
+                                    <%
 
-                                <td><a href="#" class="delete-icon-link"
-                                       onclick="deleteproperty(<%=i%>);return false;"><fmt:message
-                                        key="publishEvent.configuration.action.delete"/></a></td>
-                                <td><a href="#" class="delete-icon-link"
-                                       onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
-                            </tr>
-                            <%
+                                    %>
+                                    <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
+                                    <%
+                                            i++;
+                                        }
 
-                            %>
-                            <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
-                            <%
-                                i++;
-                            }
+                                    %>
 
-                            %>
+                                    </tbody>
+                                    </thead>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
 
-                            </tbody>
-                            </thead>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-
-            <!--
+                    <!--
             <tr>
                 <td>
                     <div style="margin-top:10px;">
@@ -304,11 +310,11 @@ function editEventSink(i){
             </tr>
             -->
 
-        </table>
-    </div>
+                </table>
+            </div>
 
-    </form>
-        </div>
+        </form>
+    </div>
     <button class="button" onclick="window.location.href = 'add_event_sink.jsp?action=add';">Add New EventSink</button>
 
 </fmt:bundle>
