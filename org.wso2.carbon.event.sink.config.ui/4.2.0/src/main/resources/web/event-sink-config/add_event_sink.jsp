@@ -48,47 +48,48 @@
             CARBON.showErrorDialog(eventSinki18n["specify.AuthenticatorUrl"]);
             return false;
         }
-
         return true;
     }
     function configureEventSink() {
 
-        if(eventSinkValidate()){
+        if (eventSinkValidate()) {
 
-        var name = document.getElementById("propertyName0").value;
-        var username = document.getElementById("propertyUsername0").value;
-        var password = document.getElementById("propertyPassword0").value;
-        var receiverUrl = document.getElementById("propertyReceiverUrl0").value;
-        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl0").value;
-        var propertyCount = document.getElementById("propertyCount").value;
-        var action = document.getElementById("action").value;
+            var username = document.getElementById("propertyUsername0").value;
+            var password = document.getElementById("propertyPassword0").value;
+            var receiverUrl = document.getElementById("propertyReceiverUrl0").value;
+            var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl0").value;
+            var propertyCount = document.getElementById("propertyCount").value;
+            var action = document.getElementById("action").value;
 
-        if(action=="add"){
-            jQuery.ajax({
-                type: "GET",
-                url: "../event-sink-config/update_event_sink_configuration.jsp",
-                data: {action: "add", propertyName0: name,propertyCount:propertyCount,propertyUsername0:username,propertyPassword0:password,propertyReceiverUrl0:receiverUrl,propertyAuthenticatorUrl0:authenticatorUrl},
-                success: function (data) {
-                    CARBON.showInfoDialog("Successfully Added Event Sink");
-                    window.location.href = "event_sinks_configuration.jsp";
+            if (action == "add") {
+                var name = document.getElementById("propertyName0").value;
 
-                }
-            });
-        }else if(action=="edit"){
-            jQuery.ajax({
-                type: "GET",
-                url: "../event-sink-config/update_event_sink_configuration.jsp",
-                data: {action: "edit", propertyName0: name,propertyCount:propertyCount,propertyUsername0:username,propertyPassword0:password,propertyReceiverUrl0:receiverUrl,propertyAuthenticatorUrl0:authenticatorUrl},
-                success: function (data) {
-                    CARBON.showInfoDialog("Successfully Updated Event Sink");
-                    window.location.href = "event_sinks_configuration.jsp";
+                jQuery.ajax({
+                    type: "GET",
+                    url: "../event-sink-config/update_event_sink_configuration.jsp",
+                    data: {action: "add", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
+                    success: function (data) {
+                        CARBON.showInfoDialog("Successfully Added Event Sink");
+                        window.location.href = "event_sinks_configuration.jsp";
 
-                }
-            });
+                    }
+                });
+            } else if (action == "edit") {
+                var name = document.getElementById("propertyName0").innerHTML.trim();
+
+                jQuery.ajax({
+                    type: "GET",
+                    url: "../event-sink-config/update_event_sink_configuration.jsp",
+                    data: {action: "edit", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
+                    success: function (data) {
+                        CARBON.showInfoDialog("Successfully Updated Event Sink");
+                        window.location.href = "event_sinks_configuration.jsp";
+
+                    }
+                });
+            }
+
         }
-
-        }
-
     }
 
 </script>
@@ -101,7 +102,7 @@
     String password = "";
     String receiverUrl = "";
     String authenticatorUrl = "";
-    if(action.equals("edit")){
+    if (action.equals("edit")) {
         name = request.getParameter("name");
         username = request.getParameter("username");
         password = request.getParameter("password");
@@ -124,96 +125,107 @@
             i18nObjectName="eventSinki18n"/>
     <div id="middle">
 
-            <div id="workArea">
+        <div id="workArea">
 
-                <table class="normal" width="100%">
-                    <tr>
-                        <td>
-                            <h2><fmt:message key="publishEvent.configuration.header"/></h2>
-                        </td>
-                    </tr>
+            <table class="normal" width="100%">
+                <tr>
+                    <td>
+                        <h2><fmt:message key="publishEvent.configuration.header"/></h2>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>
+                <tr>
+                    <td>
 
 
-                            <div style="margin-top:0px;">
+                        <div style="margin-top:0px;">
 
-                                <table id="propertytable" class="styledInner">
-                                    <thead>
-                                    <tr>
-                                        <th width="10%"><fmt:message
-                                                key="publishEvent.configuration.attribute.name"/></th>
-                                        <th width="50%"><fmt:message
-                                                key="publishEvent.configuration.attribute.value"/></th>
-                                    </tr>
-                                    <tbody id="propertytbody">
-                                    <%
-                                        int i = 0;
+                            <table id="propertytable" class="styledInner">
+                                <thead>
+                                <tr>
+                                    <th width="10%"><fmt:message
+                                            key="publishEvent.configuration.attribute.name"/></th>
+                                    <th width="50%"><fmt:message
+                                            key="publishEvent.configuration.attribute.value"/></th>
+                                </tr>
+                                <tbody id="propertytbody">
+                                <%
+                                    int i = 0;
 
-                                    %>
-                                    <tr>
-                                        <td><fmt:message key="publishEvent.configuration.attribute.name"/></td>
-                                        <td><input type="text" name="propertyName0" id="propertyName0"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=name%>"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><fmt:message key="publishEvent.configuration.attribute.username"/></td>
-                                        <td><input type="text" name="propertyUsername0" id="propertyUsername0"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=username%>"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><fmt:message key="publishEvent.configuration.attribute.password"/></td>
-                                        <td><input type="password" name="propertyPassword0" id="propertyPassword0"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=password%>"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
-                                        <td><input type="text" name="propertyReceiverUrl0" id="propertyReceiverUrl0"
+                                %>
+                                <tr>
+                                    <td><fmt:message key="publishEvent.configuration.attribute.name"/></td>
+                                    <td>
+                                        <%
+                                            if (!action.equals("edit")) {
+                                        %>
 
-                                                   value="<%=receiverUrl%>"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><fmt:message
-                                                key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
-                                        <td><input type="text" name="propertyAuthenticatorUrl0"
-                                                   id="propertyAuthenticatorUrl0"
+                                        <input type="text" name="propertyName0" id="propertyName0"
+                                               class="esb-edit small_textbox"
+                                               value="<%=name%>"/>
+                                        <%
+                                            } else {
+                                        %>
+                                        <div id="propertyName0"><%=name%></div>
+                                        <%
+                                            }
+                                        %>
 
-                                                   value="<%=authenticatorUrl%>"/>
-                                        </td>
-                                    </tr>
-                                    <%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><fmt:message key="publishEvent.configuration.attribute.username"/></td>
+                                    <td><input type="text" name="propertyUsername0" id="propertyUsername0"
+                                               class="esb-edit small_textbox"
+                                               value="<%=username%>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><fmt:message key="publishEvent.configuration.attribute.password"/></td>
+                                    <td><input type="password" name="propertyPassword0" id="propertyPassword0"
+                                               class="esb-edit small_textbox"
+                                               value="<%=password%>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
+                                    <td><input style="width: 98%;" type="text" name="propertyReceiverUrl0"
+                                               id="propertyReceiverUrl0"
 
-                                    %>
-                                    <input type="hidden" name="propertyCount" id="propertyCount" value="0"/>
-                                    <input type="hidden" name="action" id="action" value="<%=action%>"/>
+                                               value="<%=receiverUrl%>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><fmt:message
+                                            key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
+                                    <td><input style="width: 98%;" type="text" name="propertyAuthenticatorUrl0"
+                                               id="propertyAuthenticatorUrl0"
 
-                                    </tbody>
-                                    </thead>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                                               value="<%=authenticatorUrl%>"/>
+                                    </td>
+                                </tr>
+                                <%
+
+                                %>
+                                <input type="hidden" name="propertyCount" id="propertyCount" value="0"/>
+                                <input type="hidden" name="action" id="action" value="<%=action%>"/>
+
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <tr>
             <td>
                 <div style="margin-top:10px;">
                                     <span><a onClick='javaScript:configureEventSink();' style='background-image:
-                                        url(images/save-button.gif);'class='icon-link addIcon'>Save</a></span>
+                                        url(images/save-button.gif);' class='icon-link addIcon'>Save</a></span>
 
                 </div>
             </td>
         </tr>
-            `
-
-
     </div>
 </fmt:bundle>
