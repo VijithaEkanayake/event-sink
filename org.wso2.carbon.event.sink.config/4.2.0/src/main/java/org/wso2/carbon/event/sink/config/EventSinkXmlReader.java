@@ -43,7 +43,8 @@ public class EventSinkXmlReader {
     private static final Log log = LogFactory.getLog(EventSinkXmlReader.class);
 
     String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
-    String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" + File.separator + "event-sinks" + File.separator;
+    String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server"
+                        + File.separator + "event-sinks" + File.separator;
 
     public List<EventSink> getAllEventSinks() {
         EventSink eventSink;
@@ -102,9 +103,7 @@ public class EventSinkXmlReader {
 
     public void deleteEventSinkFromName(String name) {
         File eventSinkFile = new File(filePath + name + ".xml");
-        System.out.println("++++++++++++++++++++++" + eventSinkFile);
         if (eventSinkFile.exists()) {
-
             try {
                 eventSinkFile.delete();
             } catch (Exception e) {

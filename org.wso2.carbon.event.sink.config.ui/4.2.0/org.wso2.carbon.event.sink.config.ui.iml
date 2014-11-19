@@ -305,7 +305,7 @@
     <orderEntry type="module" module-name="org.wso2.carbon.event.sink.config" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.event.formatter.core:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.core:4.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons:4.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.json.wso2:json:2.0.0.wso2v1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:13.0.1" level="project" />
@@ -322,6 +322,11 @@
     <orderEntry type="library" name="Maven: org.mvel:mvel2:2.0.19" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.stratos.common:2.2.0" level="project" />
+    <orderEntry type="module" module-name="org.wso2.carbon.event.sink" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.agent.thrift:4.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons.thrift:4.2.0" level="project" />
+    <orderEntry type="library" name="Maven: libthrift.wso2:libthrift:0.7.wso2v1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents.wso2:httpclient:4.1.1-wso2v1" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

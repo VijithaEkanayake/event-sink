@@ -113,8 +113,6 @@
         var eventSinkName = document.getElementById("propertyName" + i).value;
 
         CARBON.showConfirmationDialog("Are you sure, you want to delete event sink '" + eventSinkName + "'?", function () {
-
-            alert(eventSinkName);
             jQuery.ajax({
                 type: "GET",
                 url: "../event-sink-config/update_event_sink_configuration.jsp",
@@ -210,7 +208,7 @@
             request="<%=request%>"
             i18nObjectName="logi18n"/>
     <div id="middle">
-        <form action="update_event_sink_configuration.jsp" method="post">
+
             <div id="workArea">
 
                 <table class="normal" width="100%">
@@ -222,8 +220,7 @@
 
                     <tr>
                         <td>
-                            <h3 class="mediator">
-                                <fmt:message key="publishEvent.configuration.attributes"/></h3>
+
 
                             <div style="margin-top:0px;">
 
@@ -271,13 +268,13 @@
                                                    class="esb-edit small_textbox"
                                                    value="<%=eventSink.getAuthenticatorUrl()%>"/>
                                         </td>
-
+                                        <td><a href="#" class="edit-icon-link"
+                                               onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
 
                                         <td><a href="#" class="delete-icon-link"
                                                onclick="deleteproperty(<%=i%>);return false;"><fmt:message
                                                 key="publishEvent.configuration.action.delete"/></a></td>
-                                        <td><a href="#" class="delete-icon-link"
-                                               onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
+
                                     </tr>
                                     <%
 
@@ -295,26 +292,19 @@
                             </div>
                         </td>
                     </tr>
-
-                    <!--
-            <tr>
-                <td>
-                    <div style="margin-top:10px;">
-                        <a name="addNameLink"></a>
-                        <a class="add-icon-link"
-                           href="#addNameLink"
-                           onclick="addproperty('Namespaces','Name of a property is empty. Cannot add further properties','Value of a property is empty.Cannot add further properties')"><fmt:message
-                                key="publishEvent.configuration.addProperty"/></a>
-                    </div>
-                </td>
-            </tr>
-            -->
+                    <tr>
+                        <td>
+                            <div style="margin-top:10px;">
+                                <a class="add-icon-link"
+                                   href="add_event_sink.jsp?action=add">Add Event Sink</a>
+                            </div>
+                        </td>
+                    </tr>
 
                 </table>
             </div>
 
-        </form>
+
     </div>
-    <button class="button" onclick="window.location.href = 'add_event_sink.jsp?action=add';">Add New EventSink</button>
 
 </fmt:bundle>

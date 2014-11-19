@@ -24,43 +24,91 @@
     function eventSinkValidate() {
         var name = document.getElementById('propertyName0');
         if (name && name.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.StreamName"]);
+            CARBON.showErrorDialog(eventSinki18n["specify.EventSinkName"]);
             return false;
         }
         var username = document.getElementById('propertyUsername0');
         if (username && username.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            CARBON.showErrorDialog(eventSinki18n["specify.Username"]);
             return false;
         }
 
         var password = document.getElementById('propertyPassword0');
         if (password && password.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            CARBON.showErrorDialog(eventSinki18n["specify.Password"]);
             return false;
         }
         var receiverUrl = document.getElementById('propertyReceiverUrl0');
         if (receiverUrl && receiverUrl.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            CARBON.showErrorDialog(eventSinki18n["specify.ReceiverUrl"]);
             return false;
         }
         var authenticatorUrl = document.getElementById('propertyAuthenticatorUrl0');
         if (authenticatorUrl && authenticatorUrl.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            CARBON.showErrorDialog(eventSinki18n["specify.AuthenticatorUrl"]);
             return false;
         }
 
         return true;
     }
+    function configureEventSink() {
+
+        if(eventSinkValidate()){
+
+        var name = document.getElementById("propertyName0").value;
+        var username = document.getElementById("propertyUsername0").value;
+        var password = document.getElementById("propertyPassword0").value;
+        var receiverUrl = document.getElementById("propertyReceiverUrl0").value;
+        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl0").value;
+        var propertyCount = document.getElementById("propertyCount").value;
+        var action = document.getElementById("action").value;
+
+        if(action=="add"){
+            jQuery.ajax({
+                type: "GET",
+                url: "../event-sink-config/update_event_sink_configuration.jsp",
+                data: {action: "add", propertyName0: name,propertyCount:propertyCount,propertyUsername0:username,propertyPassword0:password,propertyReceiverUrl0:receiverUrl,propertyAuthenticatorUrl0:authenticatorUrl},
+                success: function (data) {
+                    CARBON.showInfoDialog("Successfully Added Event Sink");
+                    window.location.href = "event_sinks_configuration.jsp";
+
+                }
+            });
+        }else if(action=="edit"){
+            jQuery.ajax({
+                type: "GET",
+                url: "../event-sink-config/update_event_sink_configuration.jsp",
+                data: {action: "edit", propertyName0: name,propertyCount:propertyCount,propertyUsername0:username,propertyPassword0:password,propertyReceiverUrl0:receiverUrl,propertyAuthenticatorUrl0:authenticatorUrl},
+                success: function (data) {
+                    CARBON.showInfoDialog("Successfully Updated Event Sink");
+                    window.location.href = "event_sinks_configuration.jsp";
+
+                }
+            });
+        }
+
+        }
+
+    }
+
 </script>
 
 <%
     response.setHeader("Cache-Control", "no-cache");
     String action = request.getParameter("action");
-    String name = request.getParameter("name");
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
-    String receiverUrl = request.getParameter("receiverUrl");
-    String authenticatorUrl = request.getParameter("authenticatorUrl");
+    String name = "";
+    String username = "";
+    String password = "";
+    String receiverUrl = "";
+    String authenticatorUrl = "";
+    if(action.equals("edit")){
+        name = request.getParameter("name");
+        username = request.getParameter("username");
+        password = request.getParameter("password");
+        receiverUrl = request.getParameter("receiverUrl");
+        authenticatorUrl = request.getParameter("authenticatorUrl");
+    }
+
 %>
 
 
@@ -75,7 +123,7 @@
             request="<%=request%>"
             i18nObjectName="eventSinki18n"/>
     <div id="middle">
-        <form action="update_event_sink_configuration.jsp" method="post" onsubmit="return eventSinkValidate()">
+
             <div id="workArea">
 
                 <table class="normal" width="100%">
@@ -87,8 +135,7 @@
 
                     <tr>
                         <td>
-                            <h3 class="mediator">
-                                <fmt:message key="publishEvent.configuration.attributes"/></h3>
+
 
                             <div style="margin-top:0px;">
 
@@ -156,13 +203,17 @@
                     </tr>
                 </table>
             </div>
-            <tr>
-                <td>
-                    <input type="submit" value="Save" class="button"/>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <div style="margin-top:10px;">
+                                    <span><a onClick='javaScript:configureEventSink();' style='background-image:
+                                        url(images/save-button.gif);'class='icon-link addIcon'>Save</a></span>
+
+                </div>
+            </td>
+        </tr>
             `
 
-        </form>
+
     </div>
 </fmt:bundle>

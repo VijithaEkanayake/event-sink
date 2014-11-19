@@ -58,7 +58,7 @@ public class PublishEventMediatorConfigAdminClient {
 
     public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() throws RemoteException {
         org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
-       return eventSinkList;
+        return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
     }
 
 //    public EventSink getEventSinkFromName(String name){
