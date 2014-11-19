@@ -21,8 +21,10 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.event.sink.EventSinkException;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
+import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
 
 import javax.xml.stream.XMLInputFactory;
@@ -42,15 +44,28 @@ public class EventSinkXmlReader {
 
     private static final Log log = LogFactory.getLog(EventSinkXmlReader.class);
 
-    String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
-    String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server"
-                        + File.separator + "event-sinks" + File.separator;
+
+
+    public String getTenantDeployementDirectoryPath(){
+        String filePath="";
+        int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
+        String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
+        if(tenantId>0 && !(tenantId==-1234)){
+            filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks"  + File.separator;
+        }else if(tenantId==-1234){
+            String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
+            filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" +  File.separator + "event-sinks" + File.separator;
+        }
+
+        return filePath;
+    }
 
     public List<EventSink> getAllEventSinks() {
+        String filePath="";
         EventSink eventSink;
         EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
         List<EventSink> eventSinkList = new ArrayList<EventSink>();
-
+        filePath = this.getTenantDeployementDirectoryPath();
         File dir = new File(filePath);
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
@@ -81,8 +96,10 @@ public class EventSinkXmlReader {
     }
 
     public EventSink getEventSinkFromName(String name) {
+        String filePath="";
         EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
         EventSink eventSink = new EventSink();
+        filePath = this.getTenantDeployementDirectoryPath();
         File eventSinkFile = new File(filePath + name + ".xml");
 
         // if the directory does not exist, create it
@@ -102,6 +119,8 @@ public class EventSinkXmlReader {
     }
 
     public void deleteEventSinkFromName(String name) {
+        String filePath="";
+        filePath = this.getTenantDeployementDirectoryPath();
         File eventSinkFile = new File(filePath + name + ".xml");
         if (eventSinkFile.exists()) {
             try {

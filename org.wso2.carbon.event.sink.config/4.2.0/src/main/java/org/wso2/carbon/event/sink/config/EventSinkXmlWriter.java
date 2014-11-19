@@ -5,12 +5,12 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,16 +23,30 @@ import java.util.ArrayList;
  */
 public class EventSinkXmlWriter {
     private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
-    String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
-    String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" +  File.separator + "event-sinks";
-    String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
-    EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
+
+    public String getTenantDeployementDirectoryPath(){
+        String filePath="";
+        int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
+        String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
+        if(tenantId>0 && !(tenantId==-1234)){
+            filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks";
+        }else if(tenantId==-1234){
+            String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
+            filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" +  File.separator + "event-sinks";
+        }
+
+        return filePath;
+    }
 
     public void writeEventSink(EventSink eventSink) {
+        String filePath="";
+        filePath = this.getTenantDeployementDirectoryPath();
         this.createEventSinkDirectory(filePath);
+        EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath, eventSink.getName() + ".xml")));
-            String unFormattedXml = eventSinkConfigXml.buildEventSink(eventSink.getUsername(), encryptAndBase64Encode(eventSink.getPassword()), eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl()).toString();
+            String unFormattedXml = eventSinkConfigXml.buildEventSink(eventSink.getUsername(), encryptAndBase64Encode(eventSink.getPassword()),
+                                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl()).toString();
 
             ///formatting xml
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -63,6 +77,8 @@ public class EventSinkXmlWriter {
     }
 
     public void updateEventSink(EventSink eventSink){
+        String filePath="";
+        filePath = this.getTenantDeployementDirectoryPath();
         File eventSinkFile = new File(filePath+File.separator+eventSink.getName()+".xml");
         if (eventSinkFile.exists())
         {
@@ -92,6 +108,7 @@ public class EventSinkXmlWriter {
 
     public ArrayList<String> getEventSinkNames() {
 
+        String filePath=this.getTenantDeployementDirectoryPath();
 
         ArrayList<String> eventSinkList = null;
         File dir = new File(filePath);
