@@ -24,8 +24,6 @@ import org.apache.synapse.SynapseException;
 import org.apache.synapse.config.xml.XMLConfigConstants;
 
 import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Builder of EventSinkConfig from OMElements from the string fetched from EventSink xml file
@@ -37,11 +35,10 @@ public class EventSinkConfigBuilder {
     public static final QName USERNAME_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "username");
     public static final QName PASSWORD_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "password");
 
-    List<EventSink> eventSinksList = new ArrayList<EventSink>();
 
-    private EventSink eventSink = new EventSink();
 
     public EventSink createEventSinkConfig(OMElement eventSinkConfigElement,String name){
+        EventSink eventSink = new EventSink();
 
         eventSink.setName(name);
 
@@ -75,10 +72,6 @@ public class EventSinkConfigBuilder {
 
     private boolean isNotNullOrEmpty(OMAttribute omAttribute){
         return omAttribute != null && !omAttribute.getAttributeValue().equals("");
-    }
-
-    public EventSink getEventSink(){
-        return this.eventSink;
     }
 
 }

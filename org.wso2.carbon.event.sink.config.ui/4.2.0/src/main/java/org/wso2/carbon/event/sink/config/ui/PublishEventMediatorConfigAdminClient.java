@@ -56,4 +56,38 @@ public class PublishEventMediatorConfigAdminClient {
             return true;
     }
 
+    public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() throws RemoteException {
+        org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
+       return eventSinkList;
+    }
+
+//    public EventSink getEventSinkFromName(String name){
+//        EventSink eventSink;
+//        try {
+//            eventSink = stub.getEventSinkFromName(name);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//        return eventSink;
+//    }
+
+    public String deleteEventSink(String name){
+        try {
+            stub.deleteEventSink(name);
+            return "Event Sink Successfully Deleted";
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return "Error Occured while deleting Event Sink";
+        }
+    }
+
+    public void updateEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
+        try {
+            stub.updateEventSink(name,username,password,receiverUrl,authenticatorUrl);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -21,10 +21,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.core.AbstractAdmin;
 import org.wso2.carbon.event.sink.config.EventSink;
+import org.wso2.carbon.event.sink.config.EventSinkXmlReader;
 import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
-import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
@@ -34,12 +33,6 @@ import java.util.List;
  */
 public class EventSinkConfigAdmin extends AbstractAdmin {
     private static final Log log = LogFactory.getLog(EventSinkConfigAdmin.class);
-    private CryptographyManager cryptographyManager;
-
-    public EventSinkConfigAdmin() {
-        cryptographyManager = new CryptographyManager();
-    }
-
 
     public boolean writeEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
         EventSink eventSink = new EventSink(name,username,password,receiverUrl,authenticatorUrl);
@@ -48,24 +41,30 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
         return true;
     }
 
-    public List<EventSink> getEventSinks(){
-        List<EventSink> eventSinkList = new ArrayList<EventSink>();
-
+    public List<EventSink> getAllEventSinks(){
+        List<EventSink> eventSinkList;
+        eventSinkList = new EventSinkXmlReader().getAllEventSinks();
         return eventSinkList;
+    }
 
+    public EventSink getEventSinkFromName(String name){
+        EventSink eventSink;
+        eventSink = new EventSinkXmlReader().getEventSinkFromName(name);
+        return eventSink;
+    }
+
+    public void deleteEventSink(String name){
+        new EventSinkXmlReader().deleteEventSinkFromName(name);
+    }
+
+    public boolean updateEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
+        EventSink eventSink = new EventSink(name,username,password,receiverUrl,authenticatorUrl);
+        EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
+        eventSinkXmlWriter.updateEventSink(eventSink);
+        return true;
     }
 
 
-
-
-
-
-
-
-
-    public boolean saveEventSinkConfig(EventSink eventSinkConfig){
-        return true; // TODO Implement
-    }
     
 
 

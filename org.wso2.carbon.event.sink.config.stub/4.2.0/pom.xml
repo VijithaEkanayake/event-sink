@@ -94,6 +94,7 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Export-Package>
                             org.wso2.carbon.event.sink.config.stub.*; version="${carbon.platform.package.export.version}",
+                            org.wso2.carbon.event.sink.config.xsd.*,
                         </Export-Package>
                         <Import-Package>
                             !org.wso2.carbon.event.sink.config.stub.*

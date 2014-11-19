@@ -21,17 +21,54 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="saveEventSinkConfig">
+            <xs:element name="updateEventSink">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element minOccurs="0" name="eventSinkConfig" nillable="true" type="ax2127:EventSink"></xs:element>
+                        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"></xs:element>
+                        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string"></xs:element>
+                        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
+                        <xs:element minOccurs="0" name="receiverUrl" nillable="true" type="xs:string"></xs:element>
+                        <xs:element minOccurs="0" name="authenticatorUrl" nillable="true" type="xs:string"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="saveEventSinkConfigResponse">
+            <xs:element name="updateEventSinkResponse">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element minOccurs="0" name="return" type="xs:boolean"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getEventSinkFromName">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getEventSinkFromNameResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2127:EventSink"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllEventSinks">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllEventSinksResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2127:EventSink"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="deleteEventSink">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -48,11 +85,20 @@
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
-    <wsdl:message name="saveEventSinkConfigRequest">
-        <wsdl:part name="parameters" element="ns1:saveEventSinkConfig"></wsdl:part>
+    <wsdl:message name="getAllEventSinksRequest">
+        <wsdl:part name="parameters" element="ns1:getAllEventSinks"></wsdl:part>
     </wsdl:message>
-    <wsdl:message name="saveEventSinkConfigResponse">
-        <wsdl:part name="parameters" element="ns1:saveEventSinkConfigResponse"></wsdl:part>
+    <wsdl:message name="getAllEventSinksResponse">
+        <wsdl:part name="parameters" element="ns1:getAllEventSinksResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getEventSinkFromNameRequest">
+        <wsdl:part name="parameters" element="ns1:getEventSinkFromName"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getEventSinkFromNameResponse">
+        <wsdl:part name="parameters" element="ns1:getEventSinkFromNameResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteEventSinkRequest">
+        <wsdl:part name="parameters" element="ns1:deleteEventSink"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="writeEventSinkRequest">
         <wsdl:part name="parameters" element="ns1:writeEventSink"></wsdl:part>
@@ -60,26 +106,58 @@
     <wsdl:message name="writeEventSinkResponse">
         <wsdl:part name="parameters" element="ns1:writeEventSinkResponse"></wsdl:part>
     </wsdl:message>
+    <wsdl:message name="updateEventSinkRequest">
+        <wsdl:part name="parameters" element="ns1:updateEventSink"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updateEventSinkResponse">
+        <wsdl:part name="parameters" element="ns1:updateEventSinkResponse"></wsdl:part>
+    </wsdl:message>
     <wsdl:portType name="PublishEventMediatorConfigAdminPortType">
-        <wsdl:operation name="saveEventSinkConfig">
-            <wsdl:input message="tns:saveEventSinkConfigRequest" wsaw:Action="urn:saveEventSinkConfig"></wsdl:input>
-            <wsdl:output message="tns:saveEventSinkConfigResponse" wsaw:Action="urn:saveEventSinkConfigResponse"></wsdl:output>
+        <wsdl:operation name="getAllEventSinks">
+            <wsdl:input message="tns:getAllEventSinksRequest" wsaw:Action="urn:getAllEventSinks"></wsdl:input>
+            <wsdl:output message="tns:getAllEventSinksResponse" wsaw:Action="urn:getAllEventSinksResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getEventSinkFromName">
+            <wsdl:input message="tns:getEventSinkFromNameRequest" wsaw:Action="urn:getEventSinkFromName"></wsdl:input>
+            <wsdl:output message="tns:getEventSinkFromNameResponse" wsaw:Action="urn:getEventSinkFromNameResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteEventSink">
+            <wsdl:input message="tns:deleteEventSinkRequest" wsaw:Action="urn:deleteEventSink"></wsdl:input>
         </wsdl:operation>
         <wsdl:operation name="writeEventSink">
             <wsdl:input message="tns:writeEventSinkRequest" wsaw:Action="urn:writeEventSink"></wsdl:input>
             <wsdl:output message="tns:writeEventSinkResponse" wsaw:Action="urn:writeEventSinkResponse"></wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="updateEventSink">
+            <wsdl:input message="tns:updateEventSinkRequest" wsaw:Action="urn:updateEventSink"></wsdl:input>
+            <wsdl:output message="tns:updateEventSinkResponse" wsaw:Action="urn:updateEventSinkResponse"></wsdl:output>
+        </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="PublishEventMediatorConfigAdminSoap11Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
-        <wsdl:operation name="saveEventSinkConfig">
-            <soap:operation soapAction="urn:saveEventSinkConfig" style="document"></soap:operation>
+        <wsdl:operation name="getAllEventSinks">
+            <soap:operation soapAction="urn:getAllEventSinks" style="document"></soap:operation>
             <wsdl:input>
                 <soap:body use="literal"></soap:body>
             </wsdl:input>
             <wsdl:output>
                 <soap:body use="literal"></soap:body>
             </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getEventSinkFromName">
+            <soap:operation soapAction="urn:getEventSinkFromName" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteEventSink">
+            <soap:operation soapAction="urn:deleteEventSink" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
         </wsdl:operation>
         <wsdl:operation name="writeEventSink">
             <soap:operation soapAction="urn:writeEventSink" style="document"></soap:operation>
@@ -90,17 +168,41 @@
                 <soap:body use="literal"></soap:body>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="updateEventSink">
+            <soap:operation soapAction="urn:updateEventSink" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
     </wsdl:binding>
     <wsdl:binding name="PublishEventMediatorConfigAdminSoap12Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
-        <wsdl:operation name="saveEventSinkConfig">
-            <soap12:operation soapAction="urn:saveEventSinkConfig" style="document"></soap12:operation>
+        <wsdl:operation name="getAllEventSinks">
+            <soap12:operation soapAction="urn:getAllEventSinks" style="document"></soap12:operation>
             <wsdl:input>
                 <soap12:body use="literal"></soap12:body>
             </wsdl:input>
             <wsdl:output>
                 <soap12:body use="literal"></soap12:body>
             </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getEventSinkFromName">
+            <soap12:operation soapAction="urn:getEventSinkFromName" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteEventSink">
+            <soap12:operation soapAction="urn:deleteEventSink" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
         </wsdl:operation>
         <wsdl:operation name="writeEventSink">
             <soap12:operation soapAction="urn:writeEventSink" style="document"></soap12:operation>
@@ -111,17 +213,41 @@
                 <soap12:body use="literal"></soap12:body>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="updateEventSink">
+            <soap12:operation soapAction="urn:updateEventSink" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
     </wsdl:binding>
     <wsdl:binding name="PublishEventMediatorConfigAdminHttpBinding" type="tns:PublishEventMediatorConfigAdminPortType">
         <http:binding verb="POST"></http:binding>
-        <wsdl:operation name="saveEventSinkConfig">
-            <http:operation location="saveEventSinkConfig"></http:operation>
+        <wsdl:operation name="getAllEventSinks">
+            <http:operation location="getAllEventSinks"></http:operation>
             <wsdl:input>
                 <mime:content type="text/xml" part="parameters"></mime:content>
             </wsdl:input>
             <wsdl:output>
                 <mime:content type="text/xml" part="parameters"></mime:content>
             </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getEventSinkFromName">
+            <http:operation location="getEventSinkFromName"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteEventSink">
+            <http:operation location="deleteEventSink"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
         </wsdl:operation>
         <wsdl:operation name="writeEventSink">
             <http:operation location="writeEventSink"></http:operation>
@@ -132,16 +258,25 @@
                 <mime:content type="text/xml" part="parameters"></mime:content>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="updateEventSink">
+            <http:operation location="updateEventSink"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="PublishEventMediatorConfigAdmin">
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap11Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap11Binding">
-            <soap:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
+            <soap:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
         </wsdl:port>
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap12Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap12Binding">
-            <soap12:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
+            <soap12:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
         </wsdl:port>
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsEndpoint" binding="tns:PublishEventMediatorConfigAdminHttpBinding">
-            <http:address location="https://Vijithas-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
+            <http:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

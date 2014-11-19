@@ -26,6 +26,39 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<script>
+    function eventSinkValidate() {
+        var name = document.getElementById('propertyName0');
+        if (name && name.value == "") {
+            CARBON.showErrorDialog(eventSinki18n["specify.StreamName"]);
+            return false;
+        }
+        var username = document.getElementById('propertyUsername0');
+        if (username && username.value == "") {
+            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            return false;
+        }
+
+        var password = document.getElementById('propertyPassword0');
+        if (password && password.value == "") {
+            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            return false;
+        }
+        var receiverUrl = document.getElementById('propertyReceiverUrl0');
+        if (receiverUrl && receiverUrl.value == "") {
+            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            return false;
+        }
+        var authenticatorUrl = document.getElementById('propertyAuthenticatorUrl0');
+        if (authenticatorUrl && authenticatorUrl.value == "") {
+            CARBON.showErrorDialog(eventSinki18n["specify.StreamVersion"]);
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 <%
     response.setHeader("Cache-Control", "no-cache");
 %>
@@ -40,9 +73,9 @@
     <carbon:jsi18n
             resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
             request="<%=request%>"
-            i18nObjectName="logi18n"/>
+            i18nObjectName="eventSinki18n"/>
     <div id="middle">
-    <form action="update_event_sink_configuration.jsp" method="post">
+    <form action="update_event_sink_configuration.jsp" method="post" onsubmit="return eventSinkValidate()">
         <div id="workArea">
 
         <table class="normal" width="100%">
@@ -86,7 +119,7 @@
                             </tr>
                             <tr>
                                 <td><fmt:message key="publishEvent.configuration.attribute.password"/></td>
-                                <td><input type="text" name="propertyPassword0" id="propertyPassword0"
+                                <td><input type="password" name="propertyPassword0" id="propertyPassword0"
                                            class="esb-edit small_textbox"
                                            value=""/>
                                 </td>
@@ -109,6 +142,7 @@
 
                             %>
                             <input type="hidden" name="propertyCount" id="propertyCount" value="0"/>
+                            <input type="hidden" name="action" id="action" value="add"/>
 
                             </tbody>
                             </thead>
@@ -120,7 +154,7 @@
     </div>
     <tr>
         <td>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Save" class="button"/>
         </td>
     </tr>`
 

@@ -27,7 +27,7 @@ public class EventSinkXmlWriter {
     String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" +  File.separator + "event-sinks";
     String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
     EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
-    CryptographyManager cryptographyManager = new CryptographyManager();
+
 
     public void writeEventSink(EventSink eventSink) {
         this.createEventSinkDirectory(filePath);
@@ -63,6 +63,19 @@ public class EventSinkXmlWriter {
         }
     }
 
+    public void updateEventSink(EventSink eventSink){
+        File eventSinkFile = new File(filePath+File.separator+eventSink.getName()+".xml");
+        if (eventSinkFile.exists())
+        {
+            try{
+                eventSinkFile.delete();
+                writeEventSink(eventSink);
+            }catch (Exception e){
+                log.error("Error occured while updating event-sink xmml file");
+            }
+        }
+    }
+
     private void createEventSinkDirectory(String filePath)
     {
         File eventSinksDir = new File(filePath);
@@ -73,7 +86,7 @@ public class EventSinkXmlWriter {
             try{
                 eventSinksDir.mkdir();
             }catch (Exception e){
-                log.error("Error occured while creating event-sinks file");
+                log.error("Error occured while creating event-sinks directory");
             }
         }
     }
@@ -95,10 +108,7 @@ public class EventSinkXmlWriter {
     }
 
     public String encryptAndBase64Encode(String plainText) {
+        CryptographyManager cryptographyManager = new CryptographyManager();
         return cryptographyManager.encryptAndBase64Encode(plainText);
-    }
-
-    public String base64DecodeAndDecrypt(String cipherText) {
-        return cryptographyManager.base64DecodeAndDecrypt(cipherText);
     }
 }

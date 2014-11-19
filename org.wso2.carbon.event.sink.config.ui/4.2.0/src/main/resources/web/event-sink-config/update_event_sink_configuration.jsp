@@ -1,4 +1,4 @@
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%--
   ~  Copyright (c) 2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
@@ -23,7 +23,6 @@
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%@ page import="org.wso2.carbon.event.sink.config.EventSink" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
@@ -33,34 +32,44 @@
     PublishEventMediatorConfigAdminClient publishEventMediatorConfigAdminClient =
             new PublishEventMediatorConfigAdminClient(cookie, backendServerURL, configContext, request.getLocale());
 
+    String action = request.getParameter("action");
 
-    String propertyCountParameter = request.getParameter("propertyCount");
-    if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
-        int propertyCount = 0;
-        try {
-            propertyCount = Integer.parseInt(propertyCountParameter.trim());
-            for (int i = 0; i <= propertyCount; i++) {
-                EventSink eventSink = new EventSink();
-                String name = request.getParameter("propertyName" + i);
+    if(action.equals("add")){
+        String propertyCountParameter = request.getParameter("propertyCount");
+        if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
+            int propertyCount = 0;
+            try {
+                propertyCount = Integer.parseInt(propertyCountParameter.trim());
+                for (int i = 0; i <= propertyCount; i++) {
+                    EventSink eventSink = new EventSink();
+                    String name = request.getParameter("propertyName" + i);
 
-                if (name != null && !"".equals(name)) {
-                    eventSink.setName(name);
-                    String valueId = "propertyUsername" + i;
-                    String username = request.getParameter(valueId);
-                    eventSink.setUsername(username);
-                    String password = request.getParameter("propertyPassword" + i);
-                    eventSink.setPassword(password);
-                    String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
-                    eventSink.setReceiverUrl(receiverUrl);
-                    String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
-                    eventSink.setAuthenticatorUrl(authenticatorUrl);
+                    if (name != null && !"".equals(name)) {
+                        eventSink.setName(name);
+                        String valueId = "propertyUsername" + i;
+                        String username = request.getParameter(valueId);
+                        eventSink.setUsername(username);
+                        String password = request.getParameter("propertyPassword" + i);
+                        eventSink.setPassword(password);
+                        String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
+                        eventSink.setReceiverUrl(receiverUrl);
+                        String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
+                        eventSink.setAuthenticatorUrl(authenticatorUrl);
+                    }
+                    publishEventMediatorConfigAdminClient.writeEventSinkXml(eventSink);
+
                 }
-               publishEventMediatorConfigAdminClient.writeEventSinkXml(eventSink);
+            } catch (NumberFormatException ignored) {
+                throw new RuntimeException("Invalid number format");
             }
-        } catch (NumberFormatException ignored) {
-            throw new RuntimeException("Invalid number format");
+        }else if (action.equals("delete")){
+            String name = request.getParameter("name");
+            System.out.println(name);
+            String responseText = publishEventMediatorConfigAdminClient.deleteEventSink(name);
+            out.write(responseText);
         }
     }
+
 
 
 %>

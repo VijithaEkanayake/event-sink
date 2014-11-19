@@ -18,12 +18,13 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
-<%@ page import="org.wso2.carbon.utils.ServerConstants" %>
-<%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
-<%@ page import="org.wso2.carbon.event.sink.config.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
+<%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
+<%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -109,33 +110,19 @@ function isValidProperties(nameemptymsg, valueemptymsg) {
     return true;
 }
 
-
-function createproperttypecombobox(id, i, name) {
-    // Create the element:
-    var combo_box = document.createElement('select');
-
-    // Set some properties:
-    combo_box.name = id;
-    combo_box.setAttribute("id", id);
-    combo_box.onchange = function () {
-        onPropertyTypeSelectionChange(i, name)
-    };
-    // Add some choices:
-    var choice = document.createElement('option');
-    choice.value = 'literal';
-    choice.appendChild(document.createTextNode('Value'));
-    combo_box.appendChild(choice);
-
-    choice = document.createElement('option');
-    choice.value = 'expression';
-    choice.appendChild(document.createTextNode('Expression'));
-    combo_box.appendChild(choice);
-
-    return combo_box;
-}
-
 function deleteproperty(i) {
-    CARBON.showConfirmationDialog(logi18n["mediator.log.delete.confirm"],function(){
+    var eventSinkName=document.getElementById("propertyName" + i).value;
+    alert(eventSinkName);
+    jQuery.ajax({
+        type:"GET",
+        url:"../event-sink-config/update_event_sink_configuration.jsp",
+        data:{action:"delete", name:eventSinkName},
+        success:function(data){
+            CARBON.showInfoDialog("Deleted");
+        }
+    })
+    CARBON.showConfirmationDialog("Are you sure, you want to delete this Configuration?",function(){
+
         var propRow = document.getElementById("propertyRaw" + i);
         if (propRow != undefined && propRow != null) {
             var parentTBody = propRow.parentNode;
@@ -166,43 +153,6 @@ function isContainRaw(tbody) {
     return false;
 }
 
-
-function onPropertyTypeSelectionChange(i, name) {
-    var propertyType = getSelectedValue('propertyTypeSelection' + i);
-    if (propertyType != null) {
-        settype(propertyType, i, name);
-    }
-}
-
-function settype(type, i, name) {
-    var nsEditorButtonTD = document.getElementById("nsEditorButtonTD" + i);
-    if (nsEditorButtonTD == null || nsEditorButtonTD == undefined) {
-        return;
-    }
-    if ("expression" == type) {
-        resetDisplayStyle("");
-        nsEditorButtonTD.innerHTML = "<a href='#nsEditorLink' class='nseditor-icon-link' style='padding-left:40px' onclick=\"showNameSpaceEditor('propertyValue" + i + "')\">" + name + "</a>";
-    } else {
-        nsEditorButtonTD.innerHTML = "";
-        if (!isRemainPropertyExpressions()) {
-            resetDisplayStyle("none");
-        }
-    }
-}
-
-function getSelectedValue(id) {
-    var propertyType = document.getElementById(id);
-    var propertyType_indexstr = null;
-    var propertyType_value = null;
-    if (propertyType != null) {
-        propertyType_indexstr = propertyType.selectedIndex;
-        if (propertyType_indexstr != null) {
-            propertyType_value = propertyType.options[propertyType_indexstr].value;
-        }
-    }
-    return propertyType_value;
-}
-
 function resetDisplayStyle(displayStyle) {
     document.getElementById('ns-edior-th').style.display = displayStyle;
     var nsCount = document.getElementById("propertyCount");
@@ -220,30 +170,18 @@ function resetDisplayStyle(displayStyle) {
     }
 }
 
-function isRemainPropertyExpressions() {
-    var nsCount = document.getElementById("propertyCount");
-    var i = nsCount.value;
-
-    var currentCount = parseInt(i);
-
-    if (currentCount >= 1) {
-        for (var k = 0; k < currentCount; k++) {
-            var propertyType = getSelectedValue('propertyTypeSelection' + k);
-            if ("expression" == propertyType) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-
-
-
 </script>
 
 
 <%
+    String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
+    String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
+    ConfigurationContext configContext =
+            (ConfigurationContext) config.getServletContext().getAttribute(CarbonConstants.CONFIGURATION_CONTEXT);
+
+    PublishEventMediatorConfigAdminClient publishEventMediatorConfigAdminClient =
+            new PublishEventMediatorConfigAdminClient(cookie, backendServerURL, configContext, request.getLocale());
+    EventSink[] eventSinkList = publishEventMediatorConfigAdminClient.getAllEventSinks();
     //String propertyTableStyle = mediatorPropertyList.isEmpty() ? "display:none;" : "";
 
 %>
@@ -284,28 +222,28 @@ function isRemainPropertyExpressions() {
                             <tbody id="propertytbody">
                             <%
                                 int i = 0;
-
-                            %>
+                                for(EventSink eventSink : eventSinkList){
+                             %>
                             <tr id="propertyRaw<%=i%>">
                                 <td><input type="text" name="propertyName<%=i%>" id="propertyName<%=i%>"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=eventSink.getName()%>"/>
                                 </td>
                                 <td><input type="text" name="propertyUsername<%=i%>" id="propertyUsername<%=i%>"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=eventSink.getUsername()%>"/>
                                 </td>
                                 <td><input type="password" name="propertyPassword<%=i%>" id="propertyPassword<%=i%>"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=eventSink.getPassword()%>"/>
                                 </td>
                                 <td><input type="text" name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=eventSink.getReceiverUrl()%>"/>
                                 </td>
                                 <td><input type="text" name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>"
                                            class="esb-edit small_textbox"
-                                           value=""/>
+                                           value="<%=eventSink.getAuthenticatorUrl()%>"/>
                                 </td>
 
 
@@ -318,6 +256,11 @@ function isRemainPropertyExpressions() {
 
                             %>
                             <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
+                            <%
+                                i++;
+                            }
+
+                            %>
 
                             </tbody>
                             </thead>
@@ -342,14 +285,9 @@ function isRemainPropertyExpressions() {
 
         </table>
     </div>
-    <tr>
-        <td>
-            <input type="submit" value="Save" />
-        </td>
-    </tr>`
 
     </form>
         </div>
-    <button onclick="window.location.href = 'add_event_sink.jsp';">Add New EventSink</button>
+    <button class="button" onclick="window.location.href = 'add_event_sink.jsp';">Add New EventSink</button>
 
 </fmt:bundle>
