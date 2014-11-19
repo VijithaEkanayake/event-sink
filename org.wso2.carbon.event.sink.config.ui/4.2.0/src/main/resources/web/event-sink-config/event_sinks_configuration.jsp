@@ -169,11 +169,11 @@
     }
 
     function editEventSink(i) {
-        var name = document.getElementById("propertyName" + i).value;
-        var username = document.getElementById("propertyUsername" + i).value;
-        var password = document.getElementById("propertyPassword" + i).value;
-        var receiverUrl = document.getElementById("propertyReceiverUrl" + i).value;
-        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl" + i).value;
+        var name = document.getElementById("propertyName" + i).innerHTML.trim();
+        var username = document.getElementById("propertyUsername" + i).innerHTML.trim();
+        var password = document.getElementById("password" + i).value;
+        var receiverUrl = document.getElementById("propertyReceiverUrl" + i).innerHTML.trim();
+        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl" + i).innerHTML.trim();
 
         var eventSinkParams = "name=" + name + "&"
                 + "username=" + username + "&"
@@ -232,8 +232,6 @@
                                         <th width="10%"><fmt:message
                                                 key="publishEvent.configuration.attribute.username"/></th>
                                         <th width="15%"><fmt:message
-                                                key="publishEvent.configuration.attribute.password"/></th>
-                                        <th width="15%"><fmt:message
                                                 key="publishEvent.configuration.attribute.receiverUrl"/></th>
                                         <th width="15%"><fmt:message
                                                 key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
@@ -245,28 +243,25 @@
                                         for (EventSink eventSink : eventSinkList) {
                                     %>
                                     <tr id="propertyRaw<%=i%>">
-                                        <td><input type="text" name="propertyName<%=i%>" id="propertyName<%=i%>"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=eventSink.getName()%>"/>
+                                        <td>
+                                            <div name="propertyName<%=i%>" id="propertyName<%=i%>">
+                                                <%=eventSink.getName()%>
+                                            </div>
                                         </td>
-                                        <td><input type="text" name="propertyUsername<%=i%>" id="propertyUsername<%=i%>"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=eventSink.getUsername()%>"/>
+                                        <td>
+                                            <div name="propertyUsername<%=i%>" id="propertyUsername<%=i%>">
+                                                <%=eventSink.getUsername()%>
+                                            </div>
                                         </td>
-                                        <td><input type="password" name="propertyPassword<%=i%>"
-                                                   id="propertyPassword<%=i%>"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=eventSink.getPassword()%>"/>
+                                        <td>
+                                            <div name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>">
+                                                <%=eventSink.getReceiverUrl()%>
+                                            </div>
                                         </td>
-                                        <td><input type="text" name="propertyReceiverUrl<%=i%>"
-                                                   id="propertyReceiverUrl<%=i%>"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=eventSink.getReceiverUrl()%>"/>
-                                        </td>
-                                        <td><input type="text" name="propertyAuthenticatorUrl<%=i%>"
-                                                   id="propertyAuthenticatorUrl<%=i%>"
-                                                   class="esb-edit small_textbox"
-                                                   value="<%=eventSink.getAuthenticatorUrl()%>"/>
+                                        <td>
+                                            <div name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>">
+                                                <%=eventSink.getAuthenticatorUrl()%>
+                                            </div>
                                         </td>
                                         <td><a href="#" class="edit-icon-link"
                                                onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
@@ -276,10 +271,8 @@
                                                 key="publishEvent.configuration.action.delete"/></a></td>
 
                                     </tr>
-                                    <%
-
-                                    %>
                                     <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
+                                    <input type="hidden" name="password" id="password<%=i%>" value="<%=eventSink.getPassword()%>"/>
                                     <%
                                             i++;
                                         }
