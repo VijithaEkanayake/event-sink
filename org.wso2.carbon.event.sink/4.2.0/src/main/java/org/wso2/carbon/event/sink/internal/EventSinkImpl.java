@@ -29,6 +29,8 @@ import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.lb.ReceiverGroup;
 import org.wso2.carbon.databridge.agent.thrift.util.DataPublisherUtil;
 import org.wso2.carbon.event.sink.EventSink;
+import org.wso2.carbon.event.sink.EventSinkConstants;
+import org.wso2.carbon.event.sink.EventSinkException;
 
 import javax.xml.namespace.QName;
 import java.nio.charset.Charset;
@@ -36,11 +38,6 @@ import java.util.ArrayList;
 
 public class EventSinkImpl implements EventSink {
     private static final Log log = LogFactory.getLog(EventSinkImpl.class);
-    static final QName RECEIVER_URL_Q = new QName("receiverUrl");
-    static final QName AUTHENTICATOR_URL_Q = new QName("authenticatorUrl");
-    static final QName USERNAME_Q = new QName("userName");
-    static final QName PASSWORD_Q = new QName("password");
-
     private String name;
     private String receiverUrlSet;
     private String authenticationUrlSet;
@@ -106,26 +103,26 @@ public class EventSinkImpl implements EventSink {
 
         EventSinkImpl eventSink = new EventSinkImpl();
 
-        OMElement receiverUrl = eventSinkElement.getFirstChildWithName(RECEIVER_URL_Q);
+        OMElement receiverUrl = eventSinkElement.getFirstChildWithName(EventSinkConstants.RECEIVER_URL_Q);
         if (receiverUrl == null || "".equals(receiverUrl.getText())) {
-            throw new EventSinkException(RECEIVER_URL_Q.getLocalPart() + " is missing in thrift endpoint config");
+            throw new EventSinkException(EventSinkConstants.RECEIVER_URL_Q.getLocalPart() + " is missing in thrift endpoint config");
         }
         eventSink.setReceiverUrlSet(receiverUrl.getText());
 
-        OMElement authenticatorUrl = eventSinkElement.getFirstChildWithName(AUTHENTICATOR_URL_Q);
+        OMElement authenticatorUrl = eventSinkElement.getFirstChildWithName(EventSinkConstants.AUTHENTICATOR_URL_Q);
         if (authenticatorUrl != null) {
             eventSink.setAuthenticationUrlSet(authenticatorUrl.getText());
         }
 
-        OMElement userName = eventSinkElement.getFirstChildWithName(USERNAME_Q);
+        OMElement userName = eventSinkElement.getFirstChildWithName(EventSinkConstants.USERNAME_Q);
         if (userName == null || "".equals(userName.getText())) {
-            throw new EventSinkException(USERNAME_Q.getLocalPart() + " is missing in thrift endpoint config");
+            throw new EventSinkException(EventSinkConstants.USERNAME_Q.getLocalPart() + " is missing in thrift endpoint config");
         }
         eventSink.setUsername(userName.getText());
 
-        OMElement password = eventSinkElement.getFirstChildWithName(PASSWORD_Q);
+        OMElement password = eventSinkElement.getFirstChildWithName(EventSinkConstants.PASSWORD_Q);
         if (password == null || "".equals(password.getText())) {
-            throw new EventSinkException(PASSWORD_Q.getLocalPart() + " attribute missing in thrift endpoint config");
+            throw new EventSinkException(EventSinkConstants.PASSWORD_Q.getLocalPart() + " attribute missing in thrift endpoint config");
         }
         eventSink.setPassword(base64DecodeAndDecrypt(password.getText()));
         eventSink.setName(name);

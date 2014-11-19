@@ -20,7 +20,9 @@ package org.wso2.carbon.event.sink.config;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.synapse.SynapseConstants;
+import org.wso2.carbon.event.sink.EventSinkConstants;
+
+import javax.xml.namespace.QName;
 
 /**
  * Creates the XML string to be stored in the Registry
@@ -28,29 +30,26 @@ import org.apache.synapse.SynapseConstants;
 public class EventSinkConfigXml {
 
     private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
-    private org.apache.axiom.om.OMNamespace synNS = SynapseConstants.SYNAPSE_OMNAMESPACE;
 
-    public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl){
-        OMElement eventSinkElement = fac.createOMElement("eventSink", synNS);
+    public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
+        OMElement eventSinkElement = fac.createOMElement(EventSinkConstants.EVENT_SINK_Q);
 
-        OMElement receiverUrlElement = fac.createOMElement("receiverUrl", synNS);
+        OMElement receiverUrlElement = fac.createOMElement(EventSinkConstants.RECEIVER_URL_Q);
         receiverUrlElement.setText(receiverUrl);
         eventSinkElement.addChild(receiverUrlElement);
 
-        OMElement authenticatorUrlElement = fac.createOMElement("authenticatorUrl", synNS);
+        OMElement authenticatorUrlElement = fac.createOMElement(EventSinkConstants.AUTHENTICATOR_URL_Q);
         authenticatorUrlElement.setText(authenticatorUrl);
         eventSinkElement.addChild(authenticatorUrlElement);
 
-        OMElement usernameElement = fac.createOMElement("username", synNS);
+        OMElement usernameElement = fac.createOMElement(EventSinkConstants.USERNAME_Q);
         usernameElement.setText(username);
         eventSinkElement.addChild(usernameElement);
 
-        OMElement passwordElement = fac.createOMElement("password", synNS);
+        OMElement passwordElement = fac.createOMElement(EventSinkConstants.PASSWORD_Q);
         passwordElement.setText(password);
         eventSinkElement.addChild(passwordElement);
 
         return eventSinkElement;
     }
-
-
 }

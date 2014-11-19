@@ -28,7 +28,6 @@ public class EventSinkXmlWriter {
     String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
     EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
 
-
     public void writeEventSink(EventSink eventSink) {
         this.createEventSinkDirectory(filePath);
         try {
@@ -90,7 +89,6 @@ public class EventSinkXmlWriter {
             }
         }
     }
-
 
     public ArrayList<String> getEventSinkNames() {
 

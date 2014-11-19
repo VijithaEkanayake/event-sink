@@ -78,6 +78,4 @@ public class EventSink {
     public void setPassword(String password){
         this.password = password;
     }
-
-
 }

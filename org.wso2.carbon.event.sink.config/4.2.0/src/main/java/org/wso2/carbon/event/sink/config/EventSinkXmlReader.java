@@ -21,6 +21,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.event.sink.EventSinkException;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.wso2.carbon.utils.ServerConstants;
 
@@ -44,7 +45,7 @@ public class EventSinkXmlReader {
     String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
     String filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator + "server" + File.separator + "event-sinks" + File.separator;
 
-    public List<EventSink> getAllEventSinks(){
+    public List<EventSink> getAllEventSinks() {
         EventSink eventSink;
         EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
         List<EventSink> eventSinkList = new ArrayList<EventSink>();
@@ -55,20 +56,18 @@ public class EventSinkXmlReader {
             for (File sink : directoryListing) {
 
                 try {
-                    if(FilenameUtils.getExtension(sink.getName()).equals("xml")){
+                    if (FilenameUtils.getExtension(sink.getName()).equals("xml")) {
                         FileInputStream fileInputStream = new FileInputStream(sink);
-                        eventSink=eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),FilenameUtils.removeExtension(sink.getName()));
+                        eventSink = eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream), FilenameUtils.removeExtension(sink.getName()));
                         eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
                         eventSinkList.add(eventSink);
                     }
 
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    log.error("Failed to read file to load event sink. Error: " + e.getLocalizedMessage());
                 } catch (EventSinkException e) {
-                    e.printStackTrace();
+                    log.error("Failed to read event sink from file. File: " + sink.getAbsolutePath() + ", Error: " + e.getLocalizedMessage());
                 }
-
-
             }
         } else {
             // Handle the case where dir is not really a directory.
@@ -77,21 +76,20 @@ public class EventSinkXmlReader {
             // directories.
         }
 
-        return  eventSinkList;
+        return eventSinkList;
     }
 
-    public EventSink getEventSinkFromName(String name){
+    public EventSink getEventSinkFromName(String name) {
         EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
         EventSink eventSink = new EventSink();
-        File eventSinkFile = new File(filePath+name+".xml");
+        File eventSinkFile = new File(filePath + name + ".xml");
 
         // if the directory does not exist, create it
-        if (eventSinkFile.exists())
-        {
+        if (eventSinkFile.exists()) {
             eventSink.setName(eventSinkFile.getName());
             try {
                 FileInputStream fileInputStream = new FileInputStream(eventSinkFile);
-                eventSink=eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),eventSink.getName());
+                eventSink = eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream), eventSink.getName());
                 eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -101,15 +99,15 @@ public class EventSinkXmlReader {
         }
         return eventSink;
     }
-    public void deleteEventSinkFromName(String name){
-        File eventSinkFile = new File(filePath+name+".xml");
-        System.out.println("++++++++++++++++++++++"+eventSinkFile);
-        if (eventSinkFile.exists())
-        {
 
-            try{
+    public void deleteEventSinkFromName(String name) {
+        File eventSinkFile = new File(filePath + name + ".xml");
+        System.out.println("++++++++++++++++++++++" + eventSinkFile);
+        if (eventSinkFile.exists()) {
+
+            try {
                 eventSinkFile.delete();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("Error occured while deleting event-sink xml file");
             }
         }
@@ -139,7 +137,4 @@ public class EventSinkXmlReader {
         CryptographyManager cryptographyManager = new CryptographyManager();
         return cryptographyManager.base64DecodeAndDecrypt(cipherText);
     }
-
-
-
 }

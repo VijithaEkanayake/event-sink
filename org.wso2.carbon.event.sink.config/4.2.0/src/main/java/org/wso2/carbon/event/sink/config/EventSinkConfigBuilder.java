@@ -18,60 +18,43 @@
 
 package org.wso2.carbon.event.sink.config;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.synapse.SynapseException;
-import org.apache.synapse.config.xml.XMLConfigConstants;
-
-import javax.xml.namespace.QName;
+import org.wso2.carbon.event.sink.EventSinkConstants;
+import org.wso2.carbon.event.sink.EventSinkException;
 
 /**
  * Builder of EventSinkConfig from OMElements from the string fetched from EventSink xml file
  */
 public class EventSinkConfigBuilder {
-
-    public static final QName RECEIVER_URL_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "receiverUrl");
-    public static final QName AUTHENTICATOR_URL_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "authenticatorUrl");
-    public static final QName USERNAME_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "username");
-    public static final QName PASSWORD_Q = new QName(XMLConfigConstants.SYNAPSE_NAMESPACE, "password");
-
-
-
-    public EventSink createEventSinkConfig(OMElement eventSinkConfigElement,String name){
+    public EventSink createEventSinkConfig(OMElement eventSinkConfigElement, String name) throws EventSinkException {
         EventSink eventSink = new EventSink();
 
         eventSink.setName(name);
 
-        OMElement receiverUrl = eventSinkConfigElement.getFirstChildWithName(RECEIVER_URL_Q);
+        OMElement receiverUrl = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.RECEIVER_URL_Q);
         if (receiverUrl == null) {
-            throw new SynapseException(RECEIVER_URL_Q.getLocalPart() +" element missing");
+            throw new EventSinkException(EventSinkConstants.RECEIVER_URL_Q.getLocalPart() +" element missing");
         }
         eventSink.setReceiverUrl(receiverUrl.getText());
 
-        OMElement authenticatorUrl = eventSinkConfigElement.getFirstChildWithName(AUTHENTICATOR_URL_Q);
+        OMElement authenticatorUrl = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.AUTHENTICATOR_URL_Q);
         if (authenticatorUrl == null) {
-            throw new SynapseException(AUTHENTICATOR_URL_Q.getLocalPart() +" element missing");
+            throw new EventSinkException(EventSinkConstants.AUTHENTICATOR_URL_Q.getLocalPart() +" element missing");
         }
         eventSink.setAuthenticatorUrl(authenticatorUrl.getText());
 
-        OMElement username = eventSinkConfigElement.getFirstChildWithName(USERNAME_Q);
+        OMElement username = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.USERNAME_Q);
         if (username == null) {
-            throw new SynapseException(USERNAME_Q.getLocalPart() +" element missing");
+            throw new EventSinkException(EventSinkConstants.USERNAME_Q.getLocalPart() +" element missing");
         }
         eventSink.setUsername(username.getText());
 
-        OMElement password = eventSinkConfigElement.getFirstChildWithName(PASSWORD_Q);
+        OMElement password = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.PASSWORD_Q);
         if (password == null) {
-            throw new SynapseException(PASSWORD_Q.getLocalPart() +" element missing");
+            throw new EventSinkException(EventSinkConstants.PASSWORD_Q.getLocalPart() +" element missing");
         }
         eventSink.setPassword(password.getText());
         return eventSink;
-    }
-
-
-
-    private boolean isNotNullOrEmpty(OMAttribute omAttribute){
-        return omAttribute != null && !omAttribute.getAttributeValue().equals("");
     }
 
 }

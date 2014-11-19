@@ -26,8 +26,6 @@ import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
 
 import java.util.List;
 
-//import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
-
 /**
  * Admin service class to expose all web services
  */
@@ -63,9 +61,4 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
         eventSinkXmlWriter.updateEventSink(eventSink);
         return true;
     }
-
-
-    
-
-
 }
