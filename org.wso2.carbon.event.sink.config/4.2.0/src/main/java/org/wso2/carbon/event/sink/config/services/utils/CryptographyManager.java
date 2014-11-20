@@ -35,6 +35,12 @@ public class CryptographyManager {
 		cryptoUtil = CryptoUtil.getDefaultCryptoUtil();
 	}
 
+	/**
+	 * Encrypts and encodes a given plainText to a cipher text
+	 *
+	 * @param plainText
+	 * @return Encrypted and encoded String
+	 */
 	public String encryptAndBase64Encode(String plainText) {
 		try {
 			return cryptoUtil.encryptAndBase64Encode(plainText.getBytes(Charset.forName("UTF-8")));
@@ -45,6 +51,12 @@ public class CryptographyManager {
 		return null;
 	}
 
+	/**
+	 * Decode and decrypts a given cipher text to plain text
+	 *
+	 * @param cipherText
+	 * @return Plain Text as a String
+	 */
 	public String base64DecodeAndDecrypt(String cipherText) {
 		try {
 			return new String(cryptoUtil.base64DecodeAndDecrypt(cipherText), Charset.forName("UTF-8"));

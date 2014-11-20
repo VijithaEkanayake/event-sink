@@ -34,9 +34,8 @@ public class EventSinkServiceComponent {
 
 	protected void activate(final ComponentContext componentContext) {
 		final BundleContext bundleContext = componentContext.getBundleContext();
-		serviceRegistration = bundleContext.
-				                                   registerService(EventSinkService.class.getName(),
-				                                                   new EventSinkServiceImpl(), null);
+		serviceRegistration = bundleContext.registerService(EventSinkService.class.getName(),
+		                                                    new EventSinkServiceImpl(), null);
 
 		if (log.isDebugEnabled()) {
 			log.debug("Started EventSinkService");
