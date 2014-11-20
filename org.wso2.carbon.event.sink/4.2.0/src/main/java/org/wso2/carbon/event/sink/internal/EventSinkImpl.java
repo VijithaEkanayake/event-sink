@@ -98,6 +98,13 @@ public class EventSinkImpl implements EventSink {
 		this.loadBalancingDataPublisher = loadBalancingDataPublisher;
 	}
 
+	/**
+	 * Generates an event sink from XML configuration element
+	 * @param eventSinkElement XML configuration element of event sink
+	 * @param name Name to be set for the created event sink
+	 * @return Generated event sink
+	 * @throws EventSinkException
+	 */
 	public static EventSinkImpl createEventSink(OMElement eventSinkElement, String name) throws EventSinkException {
 
 		EventSinkImpl eventSink = new EventSinkImpl();
@@ -174,17 +181,12 @@ public class EventSinkImpl implements EventSink {
 		return eventSink;
 	}
 
-	private static String encryptAndBase64Encode(String plainText) {
-		try {
-			return CryptoUtil.getDefaultCryptoUtil()
-			                 .encryptAndBase64Encode(plainText.getBytes(Charset.forName("UTF-8")));
-		} catch (CryptoException e) {
-			String errorMsg = "Encryption and Base64 encoding error. " + e.getMessage();
-			log.error(errorMsg, e);
-		}
-		return null;
-	}
-
+	/**
+	 * base64 decodes and and decrypts given text
+	 *
+	 * @param cipherText Text to be decoded and decrypted
+	 * @return decoded and decrypted text
+	 */
 	private static String base64DecodeAndDecrypt(String cipherText) {
 		try {
 			return new String(CryptoUtil.getDefaultCryptoUtil().base64DecodeAndDecrypt(cipherText),
