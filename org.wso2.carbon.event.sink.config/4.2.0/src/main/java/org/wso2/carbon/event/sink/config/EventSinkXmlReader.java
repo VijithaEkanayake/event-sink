@@ -38,14 +38,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Does Configuration Registry operations required to store/fetch BAM server configurations
+ * Does Event Sinks xml file reading
  */
 public class EventSinkXmlReader {
 
     private static final Log log = LogFactory.getLog(EventSinkXmlReader.class);
 
 
-
+    /**
+     * Obtain corresponding tenant Event Sink deployment directory path
+     * @return directorypath
+     */
     public String getTenantDeployementDirectoryPath(){
         String filePath="";
         int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
@@ -59,6 +62,11 @@ public class EventSinkXmlReader {
 
         return filePath;
     }
+
+    /**
+     * Obtain all the Event Sinks
+     * @return EventSinks List
+     */
 
     public List<EventSink> getAllEventSinks() {
         String filePath="";
@@ -95,6 +103,13 @@ public class EventSinkXmlReader {
         return eventSinkList;
     }
 
+    /**
+     * Finds Event Sink with specific name
+     *
+     * @param name the Event Sink name to obtain
+     * @return EventSink
+     */
+
     public EventSink getEventSinkFromName(String name) {
         String filePath="";
         EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
@@ -117,6 +132,12 @@ public class EventSinkXmlReader {
         }
         return eventSink;
     }
+
+    /**
+     * Deletes Event Sink with Specific name
+     *
+     * @param name the Event Sink name to delete
+     */
 
     public void deleteEventSinkFromName(String name) {
         String filePath="";
@@ -151,6 +172,12 @@ public class EventSinkXmlReader {
         }
     }
 
+    /**
+     * Decode and decrypts a given encrypted and encoded string
+     *
+     * @param cipherText the String to be converted
+     * @return Decoded and decrypted String
+     */
     public String base64DecodeAndDecrypt(String cipherText) {
         CryptographyManager cryptographyManager = new CryptographyManager();
         return cryptographyManager.base64DecodeAndDecrypt(cipherText);

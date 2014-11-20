@@ -26,6 +26,8 @@ import org.wso2.carbon.event.sink.EventSinkException;
  * Builder of EventSinkConfig from OMElements from the string fetched from EventSink xml file
  */
 public class EventSinkConfigBuilder {
+
+
     public EventSink createEventSinkConfig(OMElement eventSinkConfigElement, String name) throws EventSinkException {
         EventSink eventSink = new EventSink();
 

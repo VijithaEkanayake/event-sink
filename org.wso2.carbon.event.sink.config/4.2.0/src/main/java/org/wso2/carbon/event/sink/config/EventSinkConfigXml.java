@@ -22,14 +22,13 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.wso2.carbon.event.sink.EventSinkConstants;
 
-import javax.xml.namespace.QName;
-
 /**
  * Creates the XML string to be stored in the Registry
  */
 public class EventSinkConfigXml {
 
     private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
+
 
     public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
         OMElement eventSinkElement = fac.createOMElement(EventSinkConstants.EVENT_SINK_Q);

@@ -16,7 +16,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Created by vijithae on 11/17/14.
@@ -24,6 +23,10 @@ import java.util.ArrayList;
 public class EventSinkXmlWriter {
     private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
 
+    /**
+     * Obtain corresponding tenant Event Sink deployment directory path
+     * @return directorypath
+     */
     public String getTenantDeployementDirectoryPath(){
         String filePath="";
         int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
@@ -38,6 +41,11 @@ public class EventSinkXmlWriter {
         return filePath;
     }
 
+    /**
+     * Writes given Event Sink details to xml file
+     *
+     * @param eventSink the Event Sink to be write
+     */
     public void writeEventSink(EventSink eventSink) {
         String filePath="";
         filePath = this.getTenantDeployementDirectoryPath();
@@ -76,6 +84,11 @@ public class EventSinkXmlWriter {
         }
     }
 
+    /**
+     * Updates given Event Sink details
+     *
+     * @param eventSink the Event Sink to be updated
+     */
     public void updateEventSink(EventSink eventSink){
         String filePath="";
         filePath = this.getTenantDeployementDirectoryPath();
@@ -90,6 +103,7 @@ public class EventSinkXmlWriter {
             }
         }
     }
+
 
     private void createEventSinkDirectory(String filePath)
     {
@@ -106,22 +120,12 @@ public class EventSinkXmlWriter {
         }
     }
 
-    public ArrayList<String> getEventSinkNames() {
-
-        String filePath=this.getTenantDeployementDirectoryPath();
-
-        ArrayList<String> eventSinkList = null;
-        File dir = new File(filePath);
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File eventSink : directoryListing) {
-                eventSinkList.add(eventSink.getName());
-            }
-        }
-
-        return eventSinkList;
-    }
-
+    /**
+     * Encrypts and encodes a string
+     *
+     * @param plainText the String to be converted
+     * @return Encrypted and endoed String
+     */
     public String encryptAndBase64Encode(String plainText) {
         CryptographyManager cryptographyManager = new CryptographyManager();
         return cryptographyManager.encryptAndBase64Encode(plainText);
