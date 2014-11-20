@@ -23,59 +23,60 @@ package org.wso2.carbon.event.sink.config;
  */
 public class EventSink {
 
-    private String name;
-    private String username;
-    private String password;
-    private String receiverUrl;
-    private String authenticatorUrl;
+	private String name;
+	private String username;
+	private String password;
+	private String receiverUrl;
+	private String authenticatorUrl;
 
-    public EventSink(){}
+	public EventSink() {
+	}
 
-    public EventSink(String name,String username,String password, String receiverUrl,String authenticatorUrl){
-        this.setName(name);
-        this.setUsername(username);
-        this.setPassword(password);
-        this.setReceiverUrl(receiverUrl);
-        this.setAuthenticatorUrl(authenticatorUrl);
-    }
+	public EventSink(String name, String username, String password, String receiverUrl, String authenticatorUrl) {
+		this.setName(name);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setReceiverUrl(receiverUrl);
+		this.setAuthenticatorUrl(authenticatorUrl);
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getReceiverUrl() {
-        return receiverUrl;
-    }
+	public String getReceiverUrl() {
+		return receiverUrl;
+	}
 
-    public void setReceiverUrl(String receiverUrl) {
-        this.receiverUrl = receiverUrl;
-    }
+	public void setReceiverUrl(String receiverUrl) {
+		this.receiverUrl = receiverUrl;
+	}
 
-    public String getAuthenticatorUrl() {
-        return authenticatorUrl;
-    }
+	public String getAuthenticatorUrl() {
+		return authenticatorUrl;
+	}
 
-    public void setAuthenticatorUrl(String authenticatorUrl) {
-        this.authenticatorUrl = authenticatorUrl;
-    }
+	public void setAuthenticatorUrl(String authenticatorUrl) {
+		this.authenticatorUrl = authenticatorUrl;
+	}
 
-    public String getUsername(){
-        return this.username;
-    }
+	public String getUsername() {
+		return this.username;
+	}
 
-    public void setUsername(String username){
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPassword(){
-        return this.password;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public void setPassword(String password){
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

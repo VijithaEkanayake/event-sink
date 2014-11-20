@@ -24,33 +24,31 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.event.sink.EventSinkService;
-import org.wso2.carbon.utils.CarbonUtils;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
 /**
- *
  * @scr.component name="org.wso2.carbon.event.sink.EventSinkServiceComponent" immediate="true"
  */
 public class EventSinkServiceComponent {
-    private static Log log = LogFactory.getLog(EventSinkServiceComponent.class);
-    private ServiceRegistration serviceRegistration;
+	private static Log log = LogFactory.getLog(EventSinkServiceComponent.class);
+	private ServiceRegistration serviceRegistration;
 
-    protected void activate(final ComponentContext componentContext) {
-        final BundleContext bundleContext = componentContext.getBundleContext();
-        serviceRegistration = bundleContext.
-                registerService(EventSinkService.class.getName(), new EventSinkServiceImpl(), null);
+	protected void activate(final ComponentContext componentContext) {
+		final BundleContext bundleContext = componentContext.getBundleContext();
+		serviceRegistration = bundleContext.
+				                                   registerService(EventSinkService.class.getName(),
+				                                                   new EventSinkServiceImpl(), null);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Started EventSinkService");
-        }
-    }
+		if (log.isDebugEnabled()) {
+			log.debug("Started EventSinkService");
+		}
+	}
 
-    protected void deactivate(ComponentContext componentContext) {
-        if (serviceRegistration != null) {
-            serviceRegistration.unregister();
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("Stopped EventSinkService");
-        }
-    }
+	protected void deactivate(ComponentContext componentContext) {
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("Stopped EventSinkService");
+		}
+	}
 }

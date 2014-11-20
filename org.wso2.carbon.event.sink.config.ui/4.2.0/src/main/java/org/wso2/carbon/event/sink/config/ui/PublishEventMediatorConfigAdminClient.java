@@ -37,50 +37,51 @@ import java.util.ResourceBundle;
  */
 public class PublishEventMediatorConfigAdminClient {
 
-    private static final Log log = LogFactory.getLog(PublishEventMediatorConfigAdminClient.class);
+	private static final Log log = LogFactory.getLog(PublishEventMediatorConfigAdminClient.class);
 	private static final String BUNDLE = "org.wso2.carbon.event.sink.config.ui.i18n.Resources";
-    private PublishEventMediatorConfigAdminStub stub;
+	private PublishEventMediatorConfigAdminStub stub;
 	private ResourceBundle bundle;
 
-    public PublishEventMediatorConfigAdminClient(String cookie, String backendServerURL,
-                                                 ConfigurationContext configCtx, Locale locale) throws AxisFault {
-        String serviceURL = backendServerURL + "PublishEventMediatorConfigAdmin";
-        bundle = ResourceBundle.getBundle(BUNDLE, locale);
+	public PublishEventMediatorConfigAdminClient(String cookie, String backendServerURL,
+	                                             ConfigurationContext configCtx, Locale locale) throws AxisFault {
+		String serviceURL = backendServerURL + "PublishEventMediatorConfigAdmin";
+		bundle = ResourceBundle.getBundle(BUNDLE, locale);
 
-        stub = new PublishEventMediatorConfigAdminStub(configCtx, serviceURL);
-        ServiceClient client = stub._getServiceClient();
-        Options option = client.getOptions();
-        option.setManageSession(true);
-        option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-    }
+		stub = new PublishEventMediatorConfigAdminStub(configCtx, serviceURL);
+		ServiceClient client = stub._getServiceClient();
+		Options option = client.getOptions();
+		option.setManageSession(true);
+		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
+	}
 
-    public boolean writeEventSinkXml(EventSink eventSink) throws RemoteException {
-            stub.writeEventSink(eventSink.getName(),eventSink.getUsername(),eventSink.getPassword(), eventSink.getReceiverUrl(),eventSink.getAuthenticatorUrl());
-            return true;
-    }
+	public boolean writeEventSinkXml(EventSink eventSink) throws RemoteException {
+		stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
+		                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+		return true;
+	}
 
-    public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() throws RemoteException {
-        org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
-        return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
-    }
+	public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() throws RemoteException {
+		org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
+		return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
+	}
 
-    public String deleteEventSink(String name){
-        try {
-            stub.deleteEventSink(name);
-            return "Event Sink Successfully Deleted";
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return "Error Occured while deleting Event Sink";
-        }
-    }
+	public String deleteEventSink(String name) {
+		try {
+			stub.deleteEventSink(name);
+			return "Event Sink Successfully Deleted";
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return "Error Occured while deleting Event Sink";
+		}
+	}
 
-    public void updateEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
-        try {
-            stub.updateEventSink(name,username,password,receiverUrl,authenticatorUrl);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
+	public void updateEventSink(String name, String username, String password, String receiverUrl,
+	                            String authenticatorUrl) {
+		try {
+			stub.updateEventSink(name, username, password, receiverUrl, authenticatorUrl);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -27,36 +27,36 @@ import org.wso2.carbon.event.sink.EventSinkException;
  */
 public class EventSinkConfigBuilder {
 
+	public EventSink createEventSinkConfig(OMElement eventSinkConfigElement, String name) throws EventSinkException {
+		EventSink eventSink = new EventSink();
 
-    public EventSink createEventSinkConfig(OMElement eventSinkConfigElement, String name) throws EventSinkException {
-        EventSink eventSink = new EventSink();
+		eventSink.setName(name);
 
-        eventSink.setName(name);
+		OMElement receiverUrl = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.RECEIVER_URL_Q);
+		if (receiverUrl == null) {
+			throw new EventSinkException(EventSinkConstants.RECEIVER_URL_Q.getLocalPart() + " element missing");
+		}
+		eventSink.setReceiverUrl(receiverUrl.getText());
 
-        OMElement receiverUrl = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.RECEIVER_URL_Q);
-        if (receiverUrl == null) {
-            throw new EventSinkException(EventSinkConstants.RECEIVER_URL_Q.getLocalPart() +" element missing");
-        }
-        eventSink.setReceiverUrl(receiverUrl.getText());
+		OMElement authenticatorUrl =
+				eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.AUTHENTICATOR_URL_Q);
+		if (authenticatorUrl == null) {
+			throw new EventSinkException(EventSinkConstants.AUTHENTICATOR_URL_Q.getLocalPart() + " element missing");
+		}
+		eventSink.setAuthenticatorUrl(authenticatorUrl.getText());
 
-        OMElement authenticatorUrl = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.AUTHENTICATOR_URL_Q);
-        if (authenticatorUrl == null) {
-            throw new EventSinkException(EventSinkConstants.AUTHENTICATOR_URL_Q.getLocalPart() +" element missing");
-        }
-        eventSink.setAuthenticatorUrl(authenticatorUrl.getText());
+		OMElement username = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.USERNAME_Q);
+		if (username == null) {
+			throw new EventSinkException(EventSinkConstants.USERNAME_Q.getLocalPart() + " element missing");
+		}
+		eventSink.setUsername(username.getText());
 
-        OMElement username = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.USERNAME_Q);
-        if (username == null) {
-            throw new EventSinkException(EventSinkConstants.USERNAME_Q.getLocalPart() +" element missing");
-        }
-        eventSink.setUsername(username.getText());
-
-        OMElement password = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.PASSWORD_Q);
-        if (password == null) {
-            throw new EventSinkException(EventSinkConstants.PASSWORD_Q.getLocalPart() +" element missing");
-        }
-        eventSink.setPassword(password.getText());
-        return eventSink;
-    }
+		OMElement password = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.PASSWORD_Q);
+		if (password == null) {
+			throw new EventSinkException(EventSinkConstants.PASSWORD_Q.getLocalPart() + " element missing");
+		}
+		eventSink.setPassword(password.getText());
+		return eventSink;
+	}
 
 }

@@ -4,9 +4,6 @@
     <facet type="Osmorc" name="OSGi">
       <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="org.wso2.carbon.event.sink.config.ui-4.2.0.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="org.wso2.carbon.event.sink.config.ui" bundleVersion="4.2.0" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="false" doNotSynchronizeWithMaven="false">
         <additionalProperties>
-          <property key="Bundle-Description" value="Module which manages event sinks" />
-          <property key="Bundle-Vendor" value="WSO2 Inc" />
-          <property key="Bundle-DocURL" value="http://wso2.org" />
           <property key="Bundle-Name" value="org.wso2.carbon.event.sink.config.ui" />
           <property key="Carbon-Component" value="UIBundle" />
           <property key="Export-Package" value="org.wso2.carbon.event.sink.config.ui.*,!javax.servlet,!javax.servlet.http," />

@@ -207,96 +207,103 @@
     <carbon:jsi18n
             resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
             request="<%=request%>"
-            i18nObjectName="logi18n"/>
+            i18nObjectName="eventSinki18n"/>
+    <carbon:breadcrumb
+            label="publishEvent.configuration.breadcrumb"
+            resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
+            topPage="false"
+            request="<%=request%>"/>
     <div id="middle">
 
-            <div id="workArea">
+        <div id="workArea">
 
-                <table class="normal" width="100%">
-                    <tr>
-                        <td>
-                            <h2><fmt:message key="publishEvent.configuration.header"/></h2>
-                        </td>
-                    </tr>
+            <table class="normal" width="100%">
+                <tr>
+                    <td>
+                        <h2><fmt:message key="publishEvent.configuration.header"/></h2>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>
+                <tr>
+                    <td>
 
 
-                            <div style="margin-top:0px;">
+                        <div style="margin-top:0px;">
 
-                                <table id="propertytable" class="styledInner">
-                                    <thead>
-                                    <tr>
-                                        <th width="15%"><fmt:message
-                                                key="publishEvent.configuration.attribute.name"/></th>
-                                        <th width="10%"><fmt:message
-                                                key="publishEvent.configuration.attribute.username"/></th>
-                                        <th width="15%"><fmt:message
-                                                key="publishEvent.configuration.attribute.receiverUrl"/></th>
-                                        <th width="15%"><fmt:message
-                                                key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
-                                        <th colspan="2" width="15%"><fmt:message key="publishEvent.configuration.action"/></th>
-                                    </tr>
-                                    <tbody id="propertytbody">
-                                    <%
-                                        int i = 0;
-                                        for (EventSink eventSink : eventSinkList) {
-                                    %>
-                                    <tr id="propertyRaw<%=i%>">
-                                        <td>
-                                            <div name="propertyName<%=i%>" id="propertyName<%=i%>">
-                                                <%=eventSink.getName()%>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div name="propertyUsername<%=i%>" id="propertyUsername<%=i%>">
-                                                <%=eventSink.getUsername()%>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>">
-                                                <%=eventSink.getReceiverUrl()%>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>">
-                                                <%=eventSink.getAuthenticatorUrl()%>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="edit-icon-link"
-                                               onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
+                            <table id="propertytable" class="styledInner">
+                                <thead>
+                                <tr>
+                                    <th width="10%"><fmt:message
+                                            key="publishEvent.configuration.attribute.name"/></th>
+                                    <th width="10%"><fmt:message
+                                            key="publishEvent.configuration.attribute.username"/></th>
+                                    <th width="35%"><fmt:message
+                                            key="publishEvent.configuration.attribute.receiverUrl"/></th>
+                                    <th width="35%"><fmt:message
+                                            key="publishEvent.configuration.attribute.authenticatorUrl"/></th>
+                                    <th colspan="2" width="10%"><fmt:message
+                                            key="publishEvent.configuration.action"/></th>
+                                </tr>
+                                <tbody id="propertytbody">
+                                <%
+                                    int i = 0;
+                                    for (EventSink eventSink : eventSinkList) {
+                                %>
+                                <tr id="propertyRaw<%=i%>">
+                                    <td>
+                                        <div name="propertyName<%=i%>" id="propertyName<%=i%>">
+                                            <%=eventSink.getName()%>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div name="propertyUsername<%=i%>" id="propertyUsername<%=i%>">
+                                            <%=eventSink.getUsername()%>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>">
+                                            <%=eventSink.getReceiverUrl()%>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>">
+                                            <%=eventSink.getAuthenticatorUrl()%>
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="edit-icon-link"
+                                           onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
 
-                                        <td><a href="#" class="delete-icon-link"
-                                               onclick="deleteproperty(<%=i%>);return false;"><fmt:message
-                                                key="publishEvent.configuration.action.delete"/></a></td>
+                                    <td><a href="#" class="delete-icon-link"
+                                           onclick="deleteproperty(<%=i%>);return false;"><fmt:message
+                                            key="publishEvent.configuration.action.delete"/></a></td>
 
-                                    </tr>
-                                    <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
-                                    <input type="hidden" name="password" id="password<%=i%>" value="<%=eventSink.getPassword()%>"/>
-                                    <%
-                                            i++;
-                                        }
+                                </tr>
+                                <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
+                                <input type="hidden" name="password" id="password<%=i%>"
+                                       value="<%=eventSink.getPassword()%>"/>
+                                <%
+                                        i++;
+                                    }
 
-                                    %>
+                                %>
 
-                                    </tbody>
-                                    </thead>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="margin-top:10px;">
-                                <a class="add-icon-link"
-                                   href="add_event_sink.jsp?action=add">Add Event Sink</a>
-                            </div>
-                        </td>
-                    </tr>
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="margin-top:10px;">
+                            <a class="add-icon-link"
+                               href="add_event_sink.jsp?action=add">Add Event Sink</a>
+                        </div>
+                    </td>
+                </tr>
 
-                </table>
-            </div>
+            </table>
+        </div>
 
 
     </div>

@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-function addproperty(name,nameemptymsg, valueemptymsg) {
+function addproperty(name, nameemptymsg, valueemptymsg) {
 
     if (!isValidProperties(nameemptymsg, valueemptymsg)) {
         return false;
@@ -41,20 +41,20 @@ function addproperty(name,nameemptymsg, valueemptymsg) {
 
     var nameTD = document.createElement("td");
     nameTD.innerHTML = "<input type='text' name='propertyName" + i + "' id='propertyName" + i + "'" +
-                       " />";
+        " />";
 
     var typeTD = document.createElement("td");
     typeTD.appendChild(createproperttypecombobox('propertyTypeSelection' + i, i, name))
 
     var valueTD = document.createElement("td");
     valueTD.innerHTML = "<input type='text' name='propertyValue" + i + "' id='propertyValue" + i + "'" +
-                        " class='esb-edit small_textbox' />";
+        " class='esb-edit small_textbox' />";
     var nsTD = document.createElement("td");
     nsTD.setAttribute("id", "nsEditorButtonTD" + i);
     nsTD.style.display = displayStyleOfNSEditor;
 
     var deleteTD = document.createElement("td");
-    deleteTD.innerHTML =  "<a href='#' class='delete-icon-link' onclick='deleteproperty(" + i + ");return false;'>" + logi18n["mediator.log.action.delete"] + "</a>";
+    deleteTD.innerHTML = "<a href='#' class='delete-icon-link' onclick='deleteproperty(" + i + ");return false;'>" + logi18n["mediator.log.action.delete"] + "</a>";
 
     propertyRaw.appendChild(nameTD);
     propertyRaw.appendChild(typeTD);
@@ -120,18 +120,18 @@ function createproperttypecombobox(id, i, name) {
 }
 
 function deleteproperty(i) {
-    CARBON.showConfirmationDialog(logi18n["mediator.log.delete.confirm"],function(){
-    var propRow = document.getElementById("propertyRaw" + i);
-    if (propRow != undefined && propRow != null) {
-        var parentTBody = propRow.parentNode;
-        if (parentTBody != undefined && parentTBody != null) {
-            parentTBody.removeChild(propRow);
-            if (!isContainRaw(parentTBody)) {
-                var propertyTable = document.getElementById("propertytable");
-                propertyTable.style.display = "none";
+    CARBON.showConfirmationDialog(logi18n["mediator.log.delete.confirm"], function () {
+        var propRow = document.getElementById("propertyRaw" + i);
+        if (propRow != undefined && propRow != null) {
+            var parentTBody = propRow.parentNode;
+            if (parentTBody != undefined && parentTBody != null) {
+                parentTBody.removeChild(propRow);
+                if (!isContainRaw(parentTBody)) {
+                    var propertyTable = document.getElementById("propertytable");
+                    propertyTable.style.display = "none";
+                }
             }
         }
-    }
     });
 }
 

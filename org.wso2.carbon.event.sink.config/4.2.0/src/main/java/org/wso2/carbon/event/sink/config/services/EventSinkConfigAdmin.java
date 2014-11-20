@@ -30,35 +30,37 @@ import java.util.List;
  * Admin service class to expose all web services
  */
 public class EventSinkConfigAdmin extends AbstractAdmin {
-    private static final Log log = LogFactory.getLog(EventSinkConfigAdmin.class);
+	private static final Log log = LogFactory.getLog(EventSinkConfigAdmin.class);
 
-    public boolean writeEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
-        EventSink eventSink = new EventSink(name,username,password,receiverUrl,authenticatorUrl);
-        EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
-        eventSinkXmlWriter.writeEventSink(eventSink);
-        return true;
-    }
+	public boolean writeEventSink(String name, String username, String password, String receiverUrl,
+	                              String authenticatorUrl) {
+		EventSink eventSink = new EventSink(name, username, password, receiverUrl, authenticatorUrl);
+		EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
+		eventSinkXmlWriter.writeEventSink(eventSink);
+		return true;
+	}
 
-    public List<EventSink> getAllEventSinks(){
-        List<EventSink> eventSinkList;
-        eventSinkList = new EventSinkXmlReader().getAllEventSinks();
-        return eventSinkList;
-    }
+	public List<EventSink> getAllEventSinks() {
+		List<EventSink> eventSinkList;
+		eventSinkList = new EventSinkXmlReader().getAllEventSinks();
+		return eventSinkList;
+	}
 
-    public EventSink getEventSinkFromName(String name){
-        EventSink eventSink;
-        eventSink = new EventSinkXmlReader().getEventSinkFromName(name);
-        return eventSink;
-    }
+	public EventSink getEventSinkFromName(String name) {
+		EventSink eventSink;
+		eventSink = new EventSinkXmlReader().getEventSinkFromName(name);
+		return eventSink;
+	}
 
-    public void deleteEventSink(String name){
-        new EventSinkXmlReader().deleteEventSinkFromName(name);
-    }
+	public void deleteEventSink(String name) {
+		new EventSinkXmlReader().deleteEventSinkFromName(name);
+	}
 
-    public boolean updateEventSink(String name, String username, String password, String receiverUrl,String authenticatorUrl){
-        EventSink eventSink = new EventSink(name,username,password,receiverUrl,authenticatorUrl);
-        EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
-        eventSinkXmlWriter.updateEventSink(eventSink);
-        return true;
-    }
+	public boolean updateEventSink(String name, String username, String password, String receiverUrl,
+	                               String authenticatorUrl) {
+		EventSink eventSink = new EventSink(name, username, password, receiverUrl, authenticatorUrl);
+		EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
+		eventSinkXmlWriter.updateEventSink(eventSink);
+		return true;
+	}
 }

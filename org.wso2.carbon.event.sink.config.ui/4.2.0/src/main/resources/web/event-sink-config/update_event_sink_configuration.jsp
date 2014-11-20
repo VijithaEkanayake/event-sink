@@ -93,7 +93,9 @@
                         String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
                         eventSink.setAuthenticatorUrl(authenticatorUrl);
                     }
-                    publishEventMediatorConfigAdminClient.updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(), eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+                    publishEventMediatorConfigAdminClient
+                            .updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(),
+                                             eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
                     // out.write(responseText);
                 }
 

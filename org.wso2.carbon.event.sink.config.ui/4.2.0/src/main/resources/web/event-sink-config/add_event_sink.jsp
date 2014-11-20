@@ -65,27 +65,27 @@
             if (action == "add") {
                 var name = document.getElementById("propertyName0").value;
                 CARBON.showConfirmationDialog("Are you sure, you want to add event sink '" + name + "'?", function () {
-                jQuery.ajax({
-                    type: "GET",
-                    url: "../event-sink-config/update_event_sink_configuration.jsp",
-                    data: {action: "add", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
-                    success: function (data) {
-                        window.location.href = "event_sinks_configuration.jsp";
-                    }
-                });
+                    jQuery.ajax({
+                        type: "GET",
+                        url: "../event-sink-config/update_event_sink_configuration.jsp",
+                        data: {action: "add", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
+                        success: function (data) {
+                            window.location.href = "event_sinks_configuration.jsp";
+                        }
+                    });
                 });
             } else if (action == "edit") {
                 var name = document.getElementById("propertyName0").innerHTML.trim();
                 CARBON.showConfirmationDialog("Are you sure, you want to update event sink '" + name + "'?", function () {
-                jQuery.ajax({
-                    type: "GET",
-                    url: "../event-sink-config/update_event_sink_configuration.jsp",
-                    data: {action: "edit", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
-                    success: function (data) {
-                        window.location.href = "event_sinks_configuration.jsp";
-                    }
+                    jQuery.ajax({
+                        type: "GET",
+                        url: "../event-sink-config/update_event_sink_configuration.jsp",
+                        data: {action: "edit", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
+                        success: function (data) {
+                            window.location.href = "event_sinks_configuration.jsp";
+                        }
+                    });
                 });
-             });
             }
 
         }
@@ -122,6 +122,11 @@
             resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
             request="<%=request%>"
             i18nObjectName="eventSinki18n"/>
+    <carbon:breadcrumb
+            label="publishEvent.configuration.breadcrumb"
+            resourceBundle="org.wso2.carbon.event.sink.config.ui.i18n.JSResources"
+            topPage="false"
+            request="<%=request%>"/>
     <div id="middle">
 
         <div id="workArea">
@@ -164,9 +169,10 @@
                                                class="esb-edit small_textbox"
                                                value="<%=name%>"/>
                                         <%
-                                            } else {
+                                        } else {
                                         %>
-                                        <div id="propertyName0"><%=name%></div>
+                                        <div id="propertyName0"><%=name%>
+                                        </div>
                                         <%
                                             }
                                         %>
@@ -174,21 +180,24 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.username"/></td>
+                                    <td width="15%"><fmt:message
+                                            key="publishEvent.configuration.attribute.username"/></td>
                                     <td><input type="text" name="propertyUsername0" id="propertyUsername0"
                                                class="esb-edit small_textbox"
                                                value="<%=username%>"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.password"/></td>
+                                    <td width="15%"><fmt:message
+                                            key="publishEvent.configuration.attribute.password"/></td>
                                     <td><input type="password" name="propertyPassword0" id="propertyPassword0"
                                                class="esb-edit small_textbox"
                                                value="<%=password%>"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.receiverUrl"/></td>
+                                    <td width="15%"><fmt:message
+                                            key="publishEvent.configuration.attribute.receiverUrl"/></td>
                                     <td><input style="width: 98%;" type="text" name="propertyReceiverUrl0"
                                                id="propertyReceiverUrl0"
 

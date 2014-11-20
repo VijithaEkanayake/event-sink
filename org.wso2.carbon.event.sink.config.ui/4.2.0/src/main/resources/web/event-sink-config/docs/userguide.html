@@ -28,18 +28,18 @@
 <h1>Configuring BAM Server Profiles and Streams</h1>
 
 <p>Before adding a BAM mediator to a mediator sequence BAM mediator configurations should be updated
-   as below. Configuration information are basically considered as a set of BAM server profiles
-   which contains transport and credential data required to connect to the BAM server. In each BAM
-   server profile one or many Event Stream configurations should be defined. Streams contains CEP
-   event stream related information like Stream Name, Stream Version etc and data to be extracted
-   from the configuration context of the mediation sequence.</p>
+    as below. Configuration information are basically considered as a set of BAM server profiles
+    which contains transport and credential data required to connect to the BAM server. In each BAM
+    server profile one or many Event Stream configurations should be defined. Streams contains CEP
+    event stream related information like Stream Name, Stream Version etc and data to be extracted
+    from the configuration context of the mediation sequence.</p>
 <ol>
     <li>To go to the configuration of BAM Mediator go to&nbsp;ESB management console <strong>Configure&rarr;BAM
-                                                                                             Server
-                                                                                             Profile</strong>
+        Server
+        Profile</strong>
         menu.<br/><br/></li>
     <li>If there are no existing Profiles (in the very first time) click <strong>Add
-                                                                                 Profile</strong> to
+        Profile</strong> to
         add a new BAM Server Profile.<br/><br/><img
                 src="images/no-profiles.png"
                 class="confluence-embedded-image"/><br/><br/></li>
@@ -47,25 +47,26 @@
     <li>If there are Profiles already existing either creation of new profiles or editing an already
         existing Profile is possible by clicking on their <strong>Edit Profile</strong> link. If
         there are unnecessary profiles they can be deleted by clicking on their <strong>Remove
-                                                                                        Profile</strong>
+            Profile</strong>
         link.<br/><br/><img src="images/with-many-profiles.png"
-                          class="confluence-embedded-image"/><br/><br/></li>
+                            class="confluence-embedded-image"/><br/><br/></li>
     <li>Enter a name for BAM server profile in <strong>Profile Name</strong>.<br/><br/></li>
     <li>In <strong>Server Credential</strong> enter <strong>admin</strong> as <strong>User
-                                                                                      Name</strong>
+        Name</strong>
         and <strong>admin</strong> as <strong>Password</strong> by default.<br/><br/></li>
-    <li>In <strong>Server Transport</strong> select <strong>Thrift</strong> as the default <strong>Protocol</strong>.<br/><br/>
+    <li>In <strong>Server Transport</strong> select <strong>Thrift</strong> as the default
+        <strong>Protocol</strong>.<br/><br/>
     </li>
     <li>If message confidentiality is required from ESB server to BAM server tick on <strong>Enable
-                                                                                             Security</strong>.<br/><br/>
+        Security</strong>.<br/><br/>
     </li>
     <li>Enter the IP address of the BAM server's Thrift server as the <strong>IP Address</strong>.
         By default it is the IP address of the localhost.<br/><br/></li>
     <li>If security was not enabled <strong>Receiver Port</strong> will be asked and enter <strong>7611</strong>
         by default which is the Thrift server port.<br/><br/></li>
     <li><strong>Authentication Port</strong> should be given the port number of 100 higher than the
-                                             Receiver Port if it exists. Default Authentication Port
-                                             number is <strong>7711</strong>.<br/><br/><img
+        Receiver Port if it exists. Default Authentication Port
+        number is <strong>7711</strong>.<br/><br/><img
                 src="images/filled-profile.png"
                 class="confluence-embedded-image"/><br/><br/></li>
     <li>Then you can define a set of Stream Configurations among which we select the required Stream
@@ -88,12 +89,12 @@
         <strong>Value</strong> field is considered as an expression and executed on the message to
         get the property. <a rel="nofollow" class="external-link"
                              href="http://rajikak.blogspot.com/2010/04/xpath-functions-and-properties-avilable.html">XPath
-                                                                                                                     properties
-                                                                                                                     and
-                                                                                                                     functions
-                                                                                                                     available
-                                                                                                                     in
-                                                                                                                     ESB</a>
+            properties
+            and
+            functions
+            available
+            in
+            ESB</a>
         are valid in the expression.<br/><br/><img
                 src="images/filled-streams.png"
                 class="confluence-embedded-image"/><br/><br/></li>
@@ -101,7 +102,7 @@
         updated <strong>Update</strong> should be clicked to update them to the specific Stream
         Configuration.<br/><br/></li>
     <li><strong>Add</strong> button adds a new Stream Property to the properties list and <strong>Cancel</strong>
-                             button ignores the updated Stream Properties data.<br/><br/></li>
+        button ignores the updated Stream Properties data.<br/><br/></li>
     <li>After all the changes are properly made to the <strong>BAM Server Profile</strong> click on
         <strong>Save</strong> button to save all the configuration data to the secondary
         storage.<br/><br/></li>

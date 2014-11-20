@@ -27,28 +27,27 @@ import org.wso2.carbon.event.sink.EventSinkConstants;
  */
 public class EventSinkConfigXml {
 
-    private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
+	private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
 
+	public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
+		OMElement eventSinkElement = fac.createOMElement(EventSinkConstants.EVENT_SINK_Q);
 
-    public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
-        OMElement eventSinkElement = fac.createOMElement(EventSinkConstants.EVENT_SINK_Q);
+		OMElement receiverUrlElement = fac.createOMElement(EventSinkConstants.RECEIVER_URL_Q);
+		receiverUrlElement.setText(receiverUrl);
+		eventSinkElement.addChild(receiverUrlElement);
 
-        OMElement receiverUrlElement = fac.createOMElement(EventSinkConstants.RECEIVER_URL_Q);
-        receiverUrlElement.setText(receiverUrl);
-        eventSinkElement.addChild(receiverUrlElement);
+		OMElement authenticatorUrlElement = fac.createOMElement(EventSinkConstants.AUTHENTICATOR_URL_Q);
+		authenticatorUrlElement.setText(authenticatorUrl);
+		eventSinkElement.addChild(authenticatorUrlElement);
 
-        OMElement authenticatorUrlElement = fac.createOMElement(EventSinkConstants.AUTHENTICATOR_URL_Q);
-        authenticatorUrlElement.setText(authenticatorUrl);
-        eventSinkElement.addChild(authenticatorUrlElement);
+		OMElement usernameElement = fac.createOMElement(EventSinkConstants.USERNAME_Q);
+		usernameElement.setText(username);
+		eventSinkElement.addChild(usernameElement);
 
-        OMElement usernameElement = fac.createOMElement(EventSinkConstants.USERNAME_Q);
-        usernameElement.setText(username);
-        eventSinkElement.addChild(usernameElement);
+		OMElement passwordElement = fac.createOMElement(EventSinkConstants.PASSWORD_Q);
+		passwordElement.setText(password);
+		eventSinkElement.addChild(passwordElement);
 
-        OMElement passwordElement = fac.createOMElement(EventSinkConstants.PASSWORD_Q);
-        passwordElement.setText(password);
-        eventSinkElement.addChild(passwordElement);
-
-        return eventSinkElement;
-    }
+		return eventSinkElement;
+	}
 }

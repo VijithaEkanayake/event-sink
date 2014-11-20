@@ -41,48 +41,52 @@ import java.io.FileNotFoundException;
 
 public class EventSinkDeployer extends AbstractDeployer {
 
-    private static final Log log = LogFactory.getLog(EventSinkDeployer.class);
+	private static final Log log = LogFactory.getLog(EventSinkDeployer.class);
 
-    @Override
-    public void init(ConfigurationContext configurationContext) {
-    }
+	@Override
+	public void init(ConfigurationContext configurationContext) {
+	}
 
-    @Override
-    public void deploy(DeploymentFileData deploymentFileData) throws DeploymentException {
-        try {
-            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(new File(deploymentFileData.getAbsolutePath())));
-            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
-            StAXOMBuilder builder = new StAXOMBuilder(reader);
-            OMElement eventSink = builder.getDocumentElement();
-            eventSink.build();
-            String eventSinkName = FilenameUtils.getBaseName(deploymentFileData.getFile().getName());
-            EventSinkStore.getInstance().addEventSink(EventSinkImpl.createEventSink(eventSink, eventSinkName));
-            log.info("Deploying event sink: " + eventSinkName + " - file: " + deploymentFileData.getAbsolutePath());
-        } catch (FileNotFoundException e) {
-            throw new DeploymentException("Deployment artifact file \"" + deploymentFileData.getAbsolutePath() + "\" not found", e);
-        } catch (XMLStreamException e) {
-            throw new DeploymentException("Event sink XML in \"" + deploymentFileData.getAbsolutePath() + "\" is malformed", e);
-        } catch (EventSinkException e) {
-            throw new DeploymentException("Event sink configuration in \"" + deploymentFileData.getAbsolutePath() + "\" is invalid", e);
-        }
-    }
+	@Override
+	public void deploy(DeploymentFileData deploymentFileData) throws DeploymentException {
+		try {
+			BufferedInputStream inputStream =
+					new BufferedInputStream(new FileInputStream(new File(deploymentFileData.getAbsolutePath())));
+			XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
+			StAXOMBuilder builder = new StAXOMBuilder(reader);
+			OMElement eventSink = builder.getDocumentElement();
+			eventSink.build();
+			String eventSinkName = FilenameUtils.getBaseName(deploymentFileData.getFile().getName());
+			EventSinkStore.getInstance().addEventSink(EventSinkImpl.createEventSink(eventSink, eventSinkName));
+			log.info("Deploying event sink: " + eventSinkName + " - file: " + deploymentFileData.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			throw new DeploymentException(
+					"Deployment artifact file \"" + deploymentFileData.getAbsolutePath() + "\" not found", e);
+		} catch (XMLStreamException e) {
+			throw new DeploymentException(
+					"Event sink XML in \"" + deploymentFileData.getAbsolutePath() + "\" is malformed", e);
+		} catch (EventSinkException e) {
+			throw new DeploymentException(
+					"Event sink configuration in \"" + deploymentFileData.getAbsolutePath() + "\" is invalid", e);
+		}
+	}
 
-    @Override
-    public void setDirectory(String s) {
-    }
+	@Override
+	public void setDirectory(String s) {
+	}
 
-    @Override
-    public void setExtension(String s) {
-    }
+	@Override
+	public void setExtension(String s) {
+	}
 
-    @Override
-    public void undeploy(String fileName) throws DeploymentException {
-        String eventSinkName = FilenameUtils.getBaseName(fileName);
-        EventSinkStore.getInstance().removeEventSink(eventSinkName);
-        log.info("Event sink named '" + eventSinkName + "' has been undeployed");
-    }
+	@Override
+	public void undeploy(String fileName) throws DeploymentException {
+		String eventSinkName = FilenameUtils.getBaseName(fileName);
+		EventSinkStore.getInstance().removeEventSink(eventSinkName);
+		log.info("Event sink named '" + eventSinkName + "' has been undeployed");
+	}
 
-    @Override
-    public void cleanup() throws DeploymentException {
-    }
+	@Override
+	public void cleanup() throws DeploymentException {
+	}
 }
