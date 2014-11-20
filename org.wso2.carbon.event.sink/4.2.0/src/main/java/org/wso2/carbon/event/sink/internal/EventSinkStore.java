@@ -24,11 +24,20 @@ import org.wso2.carbon.event.sink.EventSink;
 
 import java.util.*;
 
+/**
+ * Singleton class that stores event sinks deployed in the server. Event sinks are stored in tenant aware manner
+ */
 public class EventSinkStore {
 	private static EventSinkStore instance = new EventSinkStore();
-	private Map<String, EventSink> eventSinkMap = Collections.synchronizedMap(new HashMap<String, EventSink>());
-			//tenant id|sink name -> sink
 
+	//tenant id|sink name -> sink
+	private Map<String, EventSink> eventSinkMap = Collections.synchronizedMap(new HashMap<String, EventSink>());
+
+	/**
+	 * returns singleton instance of EventSinkStore
+	 *
+	 * @return Singleton instance
+	 */
 	public static EventSinkStore getInstance() {
 		return instance;
 	}
@@ -36,21 +45,42 @@ public class EventSinkStore {
 	private EventSinkStore() {
 	}
 
+	/**
+	 * Adds new event sink to current tenant of store
+	 *
+	 * @param eventSink Event sink to be added to the store.
+	 */
 	public void addEventSink(EventSink eventSink) {
 		String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + eventSink.getName();
 		eventSinkMap.put(key, eventSink);
 	}
 
+	/**
+	 * Removes event sink specified from current tenant of store.
+	 *
+	 * @param eventSinkName the name of the event sink to be removed from store
+	 */
 	public void removeEventSink(String eventSinkName) {
 		String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + eventSinkName;
 		eventSinkMap.remove(key);
 	}
 
+	/**
+	 * Finds event sink with given name that is registered in current tenant.
+	 *
+	 * @param name Name of the event sink
+	 * @return Event sink registered in current tenant with given name. If no event sink found with name, returns null
+	 */
 	public EventSink getEventSink(String name) {
 		String key = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|" + name;
 		return eventSinkMap.get(key);
 	}
 
+	/**
+	 * Returns list of all event sinks registered in current tenant
+	 *
+	 * @return list of all event sinks registered in current tenant
+	 */
 	public List<EventSink> getEventSinkList() {
 		String tenantKey = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId() + "|";
 		List<EventSink> list = new ArrayList<EventSink>();

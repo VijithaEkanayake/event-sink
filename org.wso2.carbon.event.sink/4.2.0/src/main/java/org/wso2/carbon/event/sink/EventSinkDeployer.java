@@ -39,6 +39,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * Axis2 deployer which deploys event sinks
+ */
 public class EventSinkDeployer extends AbstractDeployer {
 
 	private static final Log log = LogFactory.getLog(EventSinkDeployer.class);
@@ -47,6 +50,13 @@ public class EventSinkDeployer extends AbstractDeployer {
 	public void init(ConfigurationContext configurationContext) {
 	}
 
+	/**
+	 * Deploys event sink specified by deploymentFileData. This is called whenever an event sink artifact
+	 * is added, modified, deleted from the event sink artifact directory
+	 *
+	 * @param deploymentFileData File data about the event sink artifact to be deployed
+	 * @throws DeploymentException
+	 */
 	@Override
 	public void deploy(DeploymentFileData deploymentFileData) throws DeploymentException {
 		try {
@@ -79,6 +89,14 @@ public class EventSinkDeployer extends AbstractDeployer {
 	public void setExtension(String s) {
 	}
 
+	/**
+	 * Undeploys previously deployed event sink artifact. This is called whenever an event sink artifact is deleted
+	 * from event sink artifact directory. Also, this is called when an already existing artifact is modified, followed
+	 * by a call to deploy()
+	 *
+	 * @param fileName File name of the artifact to be undeployed
+	 * @throws DeploymentException
+	 */
 	@Override
 	public void undeploy(String fileName) throws DeploymentException {
 		String eventSinkName = FilenameUtils.getBaseName(fileName);

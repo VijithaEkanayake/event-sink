@@ -21,8 +21,24 @@ package org.wso2.carbon.event.sink;
 
 import java.util.List;
 
+/**
+ * Interface for event sink OSGI declarative service
+ */
 public interface EventSinkService {
+
+	/**
+	 * Returns a list of all event sinks deployed in current tenant
+	 *
+	 * @return List of all event sinks deployed in current tenant
+	 */
 	public List<EventSink> getEventSinks();
 
+	/**
+	 * Returns event sink with given name that is deployed in current tenant
+	 *
+	 * @param eventSinkName Name of the event sink
+	 * @return Event sink with given name that is deployed in current tenant. If no event sink found with given name,
+	 * null is returned
+	 */
 	public EventSink getEventSink(String eventSinkName);
 }
