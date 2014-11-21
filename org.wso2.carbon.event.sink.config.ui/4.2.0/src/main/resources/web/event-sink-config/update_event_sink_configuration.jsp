@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%--
 ~  Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 ~
@@ -26,6 +25,7 @@
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%
     String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
@@ -68,11 +68,10 @@
         }
     } else if (action.equals("delete")) {
         String name = request.getParameter("name");
-        System.out.println(name);
-        String responseText = publishEventMediatorConfigAdminClient.deleteEventSink(name);
-        out.write(responseText);
+       if(!(publishEventMediatorConfigAdminClient.deleteEventSink(name))){
+           out.write("false");
+       }
     } else if (action.equals("edit")) {
-        //String propertyCountParameter = request.getParameter("propertyCount");
         if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
             int propertyCount = 0;
             try {
@@ -96,7 +95,6 @@
                     publishEventMediatorConfigAdminClient
                             .updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(),
                                              eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
-                    // out.write(responseText);
                 }
 
             } catch (NumberFormatException ignored) {

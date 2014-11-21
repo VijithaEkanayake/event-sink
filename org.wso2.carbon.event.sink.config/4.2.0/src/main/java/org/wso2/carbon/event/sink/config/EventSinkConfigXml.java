@@ -23,12 +23,21 @@ import org.apache.axiom.om.OMElement;
 import org.wso2.carbon.event.sink.EventSinkConstants;
 
 /**
- * Creates the XML string to be stored in the Registry
+ * Creates the XML string to be written to file
  */
 public class EventSinkConfigXml {
 
 	private org.apache.axiom.om.OMFactory fac = OMAbstractFactory.getOMFactory();
 
+	/**
+	 * Creates XML representation of the Event Sink
+	 *
+	 * @param username Username to be set to Event Sink
+	 * @param password Password to be set to Event Sink
+	 * @param receiverUrl Endpoint Url to be set to Event Sink
+	 * @param authenticatorUrl Credential authentication url to be set to Event Sink
+	 * @return The Created XML representation of Event Sink` as an OMElement
+	 */
 	public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
 		OMElement eventSinkElement = fac.createOMElement(EventSinkConstants.EVENT_SINK_Q);
 

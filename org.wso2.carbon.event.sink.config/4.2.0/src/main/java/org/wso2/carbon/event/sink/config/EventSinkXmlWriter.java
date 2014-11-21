@@ -18,7 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 
 /**
- * Created by vijithae on 11/17/14.
+ *
  */
 public class EventSinkXmlWriter {
 	private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
@@ -96,18 +96,18 @@ public class EventSinkXmlWriter {
 	 *
 	 * @param eventSink the Event Sink to be updated
 	 */
-	public void updateEventSink(EventSink eventSink) {
+	public boolean updateEventSink(EventSink eventSink) {
 		String filePath = "";
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + File.separator + eventSink.getName() + ".xml");
 		if (eventSinkFile.exists()) {
-			try {
-				eventSinkFile.delete();
-				writeEventSink(eventSink);
-			} catch (Exception e) {
-				log.error("Error occured while updating event-sink xmml file");
-			}
+			eventSinkFile.delete();
+			writeEventSink(eventSink);
+			return true;
+		}else {
+			log.error("file cannot be found with name : "+ eventSink.getName() +" in location " + filePath);
 		}
+		return false;
 	}
 
 	private void createEventSinkDirectory(String filePath) {

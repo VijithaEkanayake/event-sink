@@ -98,11 +98,6 @@ public class EventSinkXmlReader {
 					          e.getLocalizedMessage());
 				}
 			}
-		} else {
-			// Handle the case where dir is not really a directory.
-			// Checking dir.isDirectory() above would not be sufficient
-			// to avoid race conditions with another process that deletes
-			// directories.
 		}
 
 		return eventSinkList;
@@ -145,17 +140,21 @@ public class EventSinkXmlReader {
 	 * @param name the Event Sink name to delete
 	 */
 
-	public void deleteEventSinkFromName(String name) {
+	public boolean deleteEventSinkFromName(String name) {
 		String filePath = "";
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
 		if (eventSinkFile.exists()) {
 			try {
 				eventSinkFile.delete();
+				return true;
 			} catch (Exception e) {
 				log.error("Error occured while deleting event-sink xml file");
 			}
+		}else {
+			log.error("file cannot be found with name : "+ name +" in location " + filePath);
 		}
+		return false;
 	}
 
 	/**

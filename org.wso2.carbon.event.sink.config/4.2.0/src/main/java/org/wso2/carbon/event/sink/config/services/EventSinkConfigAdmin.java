@@ -32,35 +32,25 @@ import java.util.List;
 public class EventSinkConfigAdmin extends AbstractAdmin {
 	private static final Log log = LogFactory.getLog(EventSinkConfigAdmin.class);
 
-	public boolean writeEventSink(String name, String username, String password, String receiverUrl,
+	public void writeEventSink(String name, String username, String password, String receiverUrl,
 	                              String authenticatorUrl) {
-		EventSink eventSink = new EventSink(name, username, password, receiverUrl, authenticatorUrl);
-		EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
-		eventSinkXmlWriter.writeEventSink(eventSink);
-		return true;
+		new EventSinkXmlWriter().writeEventSink(new EventSink(name, username, password, receiverUrl, authenticatorUrl));
 	}
 
 	public List<EventSink> getAllEventSinks() {
-		List<EventSink> eventSinkList;
-		eventSinkList = new EventSinkXmlReader().getAllEventSinks();
-		return eventSinkList;
+		return new EventSinkXmlReader().getAllEventSinks();
 	}
 
 	public EventSink getEventSinkFromName(String name) {
-		EventSink eventSink;
-		eventSink = new EventSinkXmlReader().getEventSinkFromName(name);
-		return eventSink;
+		return new EventSinkXmlReader().getEventSinkFromName(name);
 	}
 
-	public void deleteEventSink(String name) {
-		new EventSinkXmlReader().deleteEventSinkFromName(name);
+	public boolean deleteEventSink(String name) {
+		return new EventSinkXmlReader().deleteEventSinkFromName(name);
 	}
 
 	public boolean updateEventSink(String name, String username, String password, String receiverUrl,
 	                               String authenticatorUrl) {
-		EventSink eventSink = new EventSink(name, username, password, receiverUrl, authenticatorUrl);
-		EventSinkXmlWriter eventSinkXmlWriter = new EventSinkXmlWriter();
-		eventSinkXmlWriter.updateEventSink(eventSink);
-		return true;
+		return new EventSinkXmlWriter().updateEventSink(new EventSink(name, username, password, receiverUrl, authenticatorUrl));
 	}
 }

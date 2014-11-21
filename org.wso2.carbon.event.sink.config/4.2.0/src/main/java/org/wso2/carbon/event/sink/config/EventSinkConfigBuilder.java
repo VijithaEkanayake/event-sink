@@ -23,10 +23,17 @@ import org.wso2.carbon.event.sink.EventSinkConstants;
 import org.wso2.carbon.event.sink.EventSinkException;
 
 /**
- * Builder of EventSinkConfig from OMElements from the string fetched from EventSink xml file
+ * Creates the Event Sink with given configuration XML.
  */
 public class EventSinkConfigBuilder {
 
+	/**
+	 * Creates the Event Sink with given configuration XML.
+	 * @param eventSinkConfigElement
+	 * @param name
+	 * @return
+	 * @throws EventSinkException
+	 */
 	public EventSink createEventSinkConfig(OMElement eventSinkConfigElement, String name) throws EventSinkException {
 		EventSink eventSink = new EventSink();
 

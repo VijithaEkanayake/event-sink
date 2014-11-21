@@ -54,34 +54,49 @@ public class PublishEventMediatorConfigAdminClient {
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
 	}
 
-	public boolean writeEventSinkXml(EventSink eventSink) throws RemoteException {
-		stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
-		                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
-		return true;
+	public void writeEventSinkXml(EventSink eventSink) {
+		try {
+			stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
+			                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+		} catch (RemoteException e) {
+			log.error("Error occured while wring Event Sink");
+		}
 	}
 
-	public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() throws RemoteException {
-		org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList = stub.getAllEventSinks();
+	public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() {
+		org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList =
+				new org.wso2.carbon.event.sink.config.xsd.EventSink[0];
+		try {
+			eventSinkList = stub.getAllEventSinks();
+		} catch (RemoteException e) {
+			log.error("Error Occured while obtaining list of Event Sinks");
+		}
 		return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
 	}
 
-	public String deleteEventSink(String name) {
+	public boolean deleteEventSink(String name) {
 		try {
-			stub.deleteEventSink(name);
-			return "Event Sink Successfully Deleted";
+			if(stub.deleteEventSink(name)){
+				System.out.print("deleted+++++++++++++++");
+				return true;
+			}else {
+				System.out.print("not deleted+++++++++++++++");
+			}
+
 		} catch (RemoteException e) {
-			e.printStackTrace();
-			return "Error Occured while deleting Event Sink";
+				log.error("Event Sink cannot be deleted");
 		}
+		return false;
 	}
 
-	public void updateEventSink(String name, String username, String password, String receiverUrl,
+	public boolean updateEventSink(String name, String username, String password, String receiverUrl,
 	                            String authenticatorUrl) {
 		try {
-			stub.updateEventSink(name, username, password, receiverUrl, authenticatorUrl);
+			return stub.updateEventSink(name, username, password, receiverUrl, authenticatorUrl);
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			log.error("Error occured while updating Event Sink");
 		}
+		return false;
 	}
 
 }
