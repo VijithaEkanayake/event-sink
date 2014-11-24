@@ -27,46 +27,39 @@
 <body>
 <h1>Configuring Event Sinks</h1>
 
-<p>Before adding a BAM mediator to a mediator sequence BAM mediator configurations should be updated
-    as below. Configuration information are basically considered as a set of BAM server profiles
-    which contains transport and credential data required to connect to the BAM server. In each BAM
-    server profile one or many Event Stream configurations should be defined. Streams contains CEP
-    event stream related information like Stream Name, Stream Version etc and data to be extracted
-    from the configuration context of the mediation sequence.</p>
-<ol>
+<p>Event sinks contain information about transport endpoints provided by other systems. Events can be published to these endpoints.
+ Endpoint transport and authentication URLs and credentials are captured in event sinks.</p>
+<ul>
     <li>To go to the configuration of Event Sinks go to&nbsp;ESB management console <strong>Configure&rarr;Event
         Sinks</strong>
         menu.<br/><br/></li>
     <li>If there are no existing Event Sinks (in the very first time) click <strong>Add
         Event Sink</strong> to
-        add a new Event Sink.<br/><br/><img
-                src="images/no-event-sinks.png"
-                class="confluence-embedded-image"/><br/><br/></li>
-
-    <li>If there are Event Sinks already existing either creation of new Event or editing an already
-        existing Event Sink is possible by clicking on their <strong>Edit</strong> link. If
+        add a new Event Sink.<br/><br/></li>
+    <li>New event sinks can be added by clicking <strong>Add Event Sink</strong> button. Already existing event sinks
+        can be modified by clicking on their <strong>Edit</strong> link. If
         there are unnecessary Event Sink they can be deleted by clicking on their <strong>
             delete</strong>
-        link.<br/><br/><img src="images/with_event_sinks.png"
-                            class="confluence-embedded-image"/><br/><br/></li>
+        link.<br/><br/></li>
+</ul>
+<img src="images/with_event_sinks.png" class="confluence-embedded-image"/><br/>
+<strong>Figure1: Event Sink management UI</strong>
+
+<br/><br/>
+<h3><strong>Creating a new event sink</strong></h3>
+<img src="images/filled-event-sink.png" class="confluence-embedded-image"/></body><br/>
+<strong>Figure2: Create new event sink form</strong>
+<ul>
     <li>Enter a name for Event Sink in <strong>Name</strong>.<br/><br/></li>
-    <li>Enter Credentials revelant to the data-bridge end point in Username and Password.<br/><br/></li>
-    <li>In <strong>Server Transport</strong> select <strong>Thrift</strong> as the default
-        <strong>Protocol</strong>.<br/><br/>
+    <li>Enter Credentials of the data-bridge endpoint in <strong>Username</strong> and
+        <strong>Password</strong>.<br/><br/></li>
+    <li>Enter URL of the data-bridge endpoint in <strong>Receiver URL</strong>. Multiple endpoints can be specified for
+        load balancing and multiple receiver mode by using correct URL set format<br/><br/></li>
+    <li>Enter Secure data-bridge endpoint URL which should be used for authentication in <strong>Authenticator
+        URL</strong>. If a URL set is specified for <strong>Receiver URL</strong>, <strong>Authenticator URL</strong>
+        should also be a matching URL set.
     </li>
-    <li>If message confidentiality is required from ESB server to BAM server tick on <strong>Enable
-        Security</strong>.<br/><br/>
-    </li>
-    <li>Enter the IP address of the BAM server's Thrift server as the <strong>IP Address</strong>.
-        By default it is the IP address of the localhost.<br/><br/></li>
-    <li>If security was not enabled <strong>Receiver Port</strong> will be asked and enter <strong>7611</strong>
-        by default which is the Thrift server port.<br/><br/></li>
-    <li><strong>Authentication Port</strong> should be given the port number of 100 higher than the
-        Receiver Port if it exists. Default Authentication Port
-        number is <strong>7711</strong>.<br/><br/><img
-                src="images/filled-event-sink.png"
-                class="confluence-embedded-image"/><br/><br/></li>
-</ol>
+</ul>
 
 </body>
 
