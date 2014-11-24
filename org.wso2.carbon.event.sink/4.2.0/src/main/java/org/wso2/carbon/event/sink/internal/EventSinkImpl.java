@@ -89,7 +89,7 @@ public class EventSinkImpl implements EventSink {
 	}
 
 	@Override
-	public LoadBalancingDataPublisher getLoadBalancingDataPublisher() {
+	public LoadBalancingDataPublisher getDataPublisher() {
 		return loadBalancingDataPublisher;
 	}
 

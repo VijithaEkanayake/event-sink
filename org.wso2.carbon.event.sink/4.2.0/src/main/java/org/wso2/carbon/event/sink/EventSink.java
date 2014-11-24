@@ -32,5 +32,5 @@ public interface EventSink {
 
 	public String getAuthenticationUrlSet();
 
-	public LoadBalancingDataPublisher getLoadBalancingDataPublisher();
+	public LoadBalancingDataPublisher getDataPublisher();
 }
