@@ -22,7 +22,6 @@ package org.wso2.carbon.event.sink.internal;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.core.util.CryptoException;
 import org.wso2.carbon.core.util.CryptoUtil;
 import org.wso2.carbon.databridge.agent.thrift.lb.DataPublisherHolder;
 import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
@@ -100,8 +99,9 @@ public class EventSinkImpl implements EventSink {
 
 	/**
 	 * Generates an event sink from XML configuration element
+	 *
 	 * @param eventSinkElement XML configuration element of event sink
-	 * @param name Name to be set for the created event sink
+	 * @param name             Name to be set for the created event sink
 	 * @return Generated event sink
 	 * @throws EventSinkException
 	 */

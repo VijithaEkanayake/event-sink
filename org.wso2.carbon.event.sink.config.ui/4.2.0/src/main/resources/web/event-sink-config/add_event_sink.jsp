@@ -1,3 +1,9 @@
+<%@ page import="org.apache.axis2.context.ConfigurationContext" %>
+<%@ page import="org.wso2.carbon.CarbonConstants" %>
+<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
+<%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
+<%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%--
 ~  Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 ~
@@ -20,6 +26,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 
 <script>
     function eventSinkValidate() {
@@ -44,10 +52,28 @@
             CARBON.showErrorDialog(eventSinki18n["specify.ReceiverUrl"]);
             return false;
         }
+
+        var receiverUrlCheck
+                =
+                (receiverUrl.value).match(/(http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]*/g);
+        if (!(receiverUrlCheck == (receiverUrl.value))) {
+            CARBON.showErrorDialog("Invalid url format in Receiver url");
+            return false;
+
+        }
         var authenticatorUrl = document.getElementById('propertyAuthenticatorUrl0');
         if (authenticatorUrl && authenticatorUrl.value == "") {
             CARBON.showErrorDialog(eventSinki18n["specify.AuthenticatorUrl"]);
             return false;
+        }
+
+        var authenticatorUrlCheck
+                =
+                (authenticatorUrl.value).match(/(http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]*/g);
+        if (!(authenticatorUrlCheck == (authenticatorUrl.value))) {
+            CARBON.showErrorDialog("Invalid url format in Authenticator url");
+            return false;
+
         }
         return true;
     }
@@ -70,7 +96,7 @@
                         url: "../event-sink-config/update_event_sink_configuration.jsp",
                         data: {action: "add", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
                         success: function (data) {
-                            window.location.href = "event_sinks_configuration.jsp";
+                            window.location.href = "event_sinks_configuration.jsp?ordinal=1";
                         }
                     });
                 });
@@ -82,7 +108,7 @@
                         url: "../event-sink-config/update_event_sink_configuration.jsp",
                         data: {action: "edit", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
                         success: function (data) {
-                            window.location.href = "event_sinks_configuration.jsp";
+                            window.location.href = "event_sinks_configuration.jsp?ordinal=1";
                         }
                     });
                 });
@@ -96,17 +122,26 @@
 <%
     response.setHeader("Cache-Control", "no-cache");
     String action = request.getParameter("action");
-    String name = "";
-    String username = "";
-    String password = "";
-    String receiverUrl = "";
-    String authenticatorUrl = "";
+
+
+    EventSink eventSink = null;
     if (action.equals("edit")) {
-        name = request.getParameter("name");
-        username = request.getParameter("username");
-        password = request.getParameter("password");
-        receiverUrl = request.getParameter("receiverUrl");
-        authenticatorUrl = request.getParameter("authenticatorUrl");
+        String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
+        String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
+        ConfigurationContext configContext =
+                (ConfigurationContext) config.getServletContext().getAttribute(CarbonConstants.CONFIGURATION_CONTEXT);
+
+        PublishEventMediatorConfigAdminClient publishEventMediatorConfigAdminClient =
+                new PublishEventMediatorConfigAdminClient(cookie, backendServerURL, configContext, request.getLocale());
+         eventSink =
+                 publishEventMediatorConfigAdminClient.getEventSinkByName(request.getParameter("name"));
+    }else if(action.equals("add")){
+        eventSink = new EventSink();
+        eventSink.setName("");
+        eventSink.setUsername("");
+        eventSink.setPassword("");
+        eventSink.setReceiverUrl("");
+        eventSink.setAuthenticatorUrl("");
     }
 
 %>
@@ -152,26 +187,29 @@
 
                         <div style="margin-top:0px;">
 
-                            <table id="propertytable" class="styledInner">
+                            <table id="propertytable" class="styledLeft">
                                 <tbody id="propertytbody">
                                 <%
                                     int i = 0;
 
                                 %>
                                 <tr>
-                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/></td>
-                                    <td>
+
                                         <%
                                             if (!action.equals("edit")) {
                                         %>
+                                    <td width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/><span class="required">*</span></td>
+                                    <td>
 
                                         <input type="text" name="propertyName0" id="propertyName0"
                                                class="esb-edit small_textbox"
-                                               value="<%=name%>"/>
+                                               value="<%=eventSink.getName()%>"/>
                                         <%
                                         } else {
                                         %>
-                                        <div id="propertyName0"><%=name%>
+                                        <td width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/></td>
+                                        <td>
+                                        <div id="propertyName0"><%=eventSink.getName()%>
                                         </div>
                                         <%
                                             }
@@ -181,36 +219,36 @@
                                 </tr>
                                 <tr>
                                     <td width="15%"><fmt:message
-                                            key="publishEvent.configuration.attribute.username"/></td>
+                                            key="publishEvent.configuration.attribute.username"/><span class="required">*</span></td>
                                     <td><input type="text" name="propertyUsername0" id="propertyUsername0"
                                                class="esb-edit small_textbox"
-                                               value="<%=username%>"/>
+                                               value="<%=eventSink.getUsername()%>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><fmt:message
-                                            key="publishEvent.configuration.attribute.password"/></td>
+                                            key="publishEvent.configuration.attribute.password"/><span class="required">*</span></td>
                                     <td><input type="password" name="propertyPassword0" id="propertyPassword0"
                                                class="esb-edit small_textbox"
-                                               value="<%=password%>"/>
+                                               value="<%=eventSink.getPassword()%>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><fmt:message
-                                            key="publishEvent.configuration.attribute.receiverUrl"/></td>
-                                    <td><input style="width: 98%;" type="text" name="propertyReceiverUrl0"
+                                            key="publishEvent.configuration.attribute.receiverUrl"/><span class="required">*</span></td>
+                                    <td><input style="width: 600px;" type="text" name="propertyReceiverUrl0"
                                                id="propertyReceiverUrl0"
 
-                                               value="<%=receiverUrl%>"/>
+                                               value="<%=eventSink.getReceiverUrl()%>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><fmt:message
-                                            key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
-                                    <td><input style="width: 98%;" type="text" name="propertyAuthenticatorUrl0"
+                                            key="publishEvent.configuration.attribute.authenticatorUrl"/><span class="required">*</span></td>
+                                    <td><input style="width: 600px;" type="text" name="propertyAuthenticatorUrl0"
                                                id="propertyAuthenticatorUrl0"
 
-                                               value="<%=authenticatorUrl%>"/>
+                                               value="<%=eventSink.getAuthenticatorUrl()%>"/>
                                     </td>
                                 </tr>
                                 <%
@@ -228,12 +266,18 @@
         </div>
         <tr>
             <td>
-                <div style="margin-top:10px;">
+                <div style="margin-top:30px;margin-left: 25px;margin-right:30px;display: inline;">
                                     <span><a onClick='javaScript:configureEventSink();' style='background-image:
                                         url(images/save-button.gif);' class='icon-link addIcon'>Save</a></span>
 
                 </div>
+                <div style="margin-top:30px;display: inline;">
+                                    <span><a href="event_sinks_configuration.jsp?ordinal=1" style='background-image:
+                                        url(../admin/images/cancel.gif);' class='icon-link addIcon'>Cancel</a></span>
+
+                </div>
             </td>
+
         </tr>
     </div>
 </fmt:bundle>

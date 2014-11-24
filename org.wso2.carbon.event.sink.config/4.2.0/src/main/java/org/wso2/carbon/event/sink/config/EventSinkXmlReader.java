@@ -1,12 +1,15 @@
-/**
- * Copyright (c) WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- * <p/>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Does Event Sinks xml file reading
+ * Reads Event Sinks xml file does operation on it
  */
 public class EventSinkXmlReader {
 
@@ -53,7 +56,7 @@ public class EventSinkXmlReader {
 		String filePath = "";
 		int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
 		String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
-		if (tenantId > 0 && !(tenantId == -1234)) {
+		if (tenantId > 0 ) {
 			filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks" + File.separator;
 		} else if (tenantId == -1234) {
 			String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
@@ -117,18 +120,21 @@ public class EventSinkXmlReader {
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
 
-		// if the directory does not exist, create it
+		// if the directory does not exist
 		if (eventSinkFile.exists()) {
 			eventSink.setName(eventSinkFile.getName());
 			try {
 				FileInputStream fileInputStream = new FileInputStream(eventSinkFile);
 				eventSink =
-						eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream), eventSink.getName());
+						eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),
+						                                           FilenameUtils.removeExtension(eventSink.getName()));
 				eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				log.error("File not found. File: " + eventSinkFile.getName() + ", Error: " +
+				          e.getLocalizedMessage());
 			} catch (EventSinkException e) {
-				e.printStackTrace();
+				log.error("Error Occured in Obtaining Event Sink. With name : " + eventSink.getName() + ", Error: " +
+				          e.getLocalizedMessage());
 			}
 		}
 		return eventSink;
@@ -151,8 +157,8 @@ public class EventSinkXmlReader {
 			} catch (Exception e) {
 				log.error("Error occured while deleting event-sink xml file");
 			}
-		}else {
-			log.error("file cannot be found with name : "+ name +" in location " + filePath);
+		} else {
+			log.error("file cannot be found with name : " + name + " in location " + filePath);
 		}
 		return false;
 	}

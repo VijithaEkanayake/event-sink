@@ -68,9 +68,9 @@
         }
     } else if (action.equals("delete")) {
         String name = request.getParameter("name");
-       if(!(publishEventMediatorConfigAdminClient.deleteEventSink(name))){
-           out.write("false");
-       }
+        if (!(publishEventMediatorConfigAdminClient.deleteEventSink(name))) {
+            out.write("false");
+        }
     } else if (action.equals("edit")) {
         if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {
             int propertyCount = 0;

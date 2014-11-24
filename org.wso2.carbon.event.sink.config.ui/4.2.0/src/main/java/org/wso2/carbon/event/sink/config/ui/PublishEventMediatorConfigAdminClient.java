@@ -54,47 +54,84 @@ public class PublishEventMediatorConfigAdminClient {
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
 	}
 
+	/**
+	 * Invokes services' writeEventSinkXml method to get All Event Sinks
+	 *
+	 * @param eventSink details of the Event Sink to be written
+	 */
 	public void writeEventSinkXml(EventSink eventSink) {
 		try {
 			stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
 			                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
 		} catch (RemoteException e) {
-			log.error("Error occured while wring Event Sink");
+			log.error("Error occured while wring Event Sink, Error: " +
+			          e.getLocalizedMessage());
 		}
 	}
 
+	/**
+	 * Invokes services' getAllEventSinks method to get All Event Sinks
+	 *
+	 * @return list of Event Sinks in the deployment directory
+	 */
 	public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() {
 		org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList =
 				new org.wso2.carbon.event.sink.config.xsd.EventSink[0];
 		try {
 			eventSinkList = stub.getAllEventSinks();
 		} catch (RemoteException e) {
-			log.error("Error Occured while obtaining list of Event Sinks");
+			log.error("Error Occured while obtaining list of Event Sinks, Error: " +
+			          e.getLocalizedMessage());
 		}
 		return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
 	}
 
-	public boolean deleteEventSink(String name) {
+	/**
+	 * Invokes services' getEventSinkFromName method to get Specific Event Sink  detail
+	 *
+	 * @return Event Sink corresponds to the given name
+	 */
+	public org.wso2.carbon.event.sink.config.xsd.EventSink getEventSinkByName(String name) {
+		org.wso2.carbon.event.sink.config.xsd.EventSink eventSink =
+				new org.wso2.carbon.event.sink.config.xsd.EventSink();
 		try {
-			if(stub.deleteEventSink(name)){
-				System.out.print("deleted+++++++++++++++");
-				return true;
-			}else {
-				System.out.print("not deleted+++++++++++++++");
-			}
+			eventSink = stub.getEventSinkFromName(name);
 
 		} catch (RemoteException e) {
-				log.error("Event Sink cannot be deleted");
+			log.error("Event Sink cannot be deleted, Error: " +
+			          e.getLocalizedMessage());
+		}
+		return eventSink;
+	}
+
+	/**
+	 * Invokes services' deleteEventSink method to get All Event Sinks
+	 *
+	 * @return status of the deletion as boolean value
+	 */
+	public boolean deleteEventSink(String name) {
+		try {
+			return stub.deleteEventSink(name);
+
+		} catch (RemoteException e) {
+			log.error("Event Sink cannot be deleted, Error: " +
+			          e.getLocalizedMessage());
 		}
 		return false;
 	}
 
+	/**
+	 * Invokes services' updateEventSink method to get All Event Sinks
+	 *
+	 * @return status of the update as boolean value
+	 */
 	public boolean updateEventSink(String name, String username, String password, String receiverUrl,
-	                            String authenticatorUrl) {
+	                               String authenticatorUrl) {
 		try {
 			return stub.updateEventSink(name, username, password, receiverUrl, authenticatorUrl);
 		} catch (RemoteException e) {
-			log.error("Error occured while updating Event Sink");
+			log.error("Error occured while updating Event Sink, Error: " +
+			          e.getLocalizedMessage());
 		}
 		return false;
 	}

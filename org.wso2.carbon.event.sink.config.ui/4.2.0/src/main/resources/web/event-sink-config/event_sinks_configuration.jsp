@@ -169,21 +169,24 @@
         }
     }
 
-    function editEventSink(i) {
+    function editEveSinkWithPost(url,i){
         var name = document.getElementById("propertyName" + i).innerHTML.trim();
-        var username = document.getElementById("propertyUsername" + i).innerHTML.trim();
-        var password = document.getElementById("password" + i).value;
-        var receiverUrl = document.getElementById("propertyReceiverUrl" + i).innerHTML.trim();
-        var authenticatorUrl = document.getElementById("propertyAuthenticatorUrl" + i).innerHTML.trim();
-
-        var eventSinkParams = "name=" + name + "&"
-                + "username=" + username + "&"
-                + "password=" + password + "&"
-                + "receiverUrl=" + receiverUrl + "&"
-                + "authenticatorUrl=" + authenticatorUrl + "&"
-                + "action=edit";
-        window.location.href = "add_event_sink.jsp?" + eventSinkParams;
-
+        var form = document.createElement("FORM");
+        form.method = "POST";
+        form.style.display = "none";
+        document.body.appendChild(form);
+        form.action = url;
+        var inputName = document.createElement("INPUT")
+        inputName.type = "hidden"
+        inputName.name = "name";
+        inputName.value = name;
+        form.appendChild(inputName);
+        var inputAction = document.createElement("INPUT")
+        inputAction.type = "hidden"
+        inputAction.name = "action";
+        inputAction.value = "edit";
+        form.appendChild(inputAction);
+        form.submit();
     }
 
 
@@ -271,7 +274,8 @@
                                         </div>
                                     </td>
                                     <td><a href="#" class="edit-icon-link"
-                                           onclick="editEventSink(<%=i%>);return false;">Edit</a></td>
+                                           onclick="editEveSinkWithPost('add_event_sink.jsp',<%=i%>);return false;
+                                        ">Edit</a></td>
 
                                     <td><a href="#" class="delete-icon-link"
                                            onclick="deleteproperty(<%=i%>);return false;"><fmt:message
@@ -279,8 +283,6 @@
 
                                 </tr>
                                 <input type="hidden" name="propertyCount" id="propertyCount" value="<%=i%>"/>
-                                <input type="hidden" name="password" id="password<%=i%>"
-                                       value="<%=eventSink.getPassword()%>"/>
                                 <%
                                         i++;
                                     }
