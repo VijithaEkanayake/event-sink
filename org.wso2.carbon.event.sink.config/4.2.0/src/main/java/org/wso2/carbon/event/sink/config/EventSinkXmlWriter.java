@@ -50,9 +50,9 @@ public class EventSinkXmlWriter {
 		String filePath = "";
 		int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
 		String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
-		if (tenantId > 0 && !(tenantId == -1234)) {
+		if (tenantId != org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID) {
 			filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks";
-		} else if (tenantId == -1234) {
+		} else {
 			String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
 			filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator +
 			           "server" + File.separator + "event-sinks";
