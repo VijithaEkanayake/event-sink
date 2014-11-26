@@ -1,9 +1,3 @@
-<%@ page import="org.apache.axis2.context.ConfigurationContext" %>
-<%@ page import="org.wso2.carbon.CarbonConstants" %>
-<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
-<%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
-<%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
-<%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%--
 ~  Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 ~
@@ -22,11 +16,18 @@
 ~  See the License for the specific language governing permissions and
 ~  limitations under the License.
 --%>
-
+<%@ page import="org.apache.axis2.context.ConfigurationContext" %>
+<%@ page import="org.wso2.carbon.CarbonConstants" %>
+<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
+<%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
+<%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    response.setHeader("Cache-Control", "no-cache");
+%>
 
 
 <script>
@@ -55,8 +56,8 @@
 
         var receiverUrlCheck
                 =
-                (receiverUrl.value).match(/(http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]*/g);
-        if (!(receiverUrlCheck == (receiverUrl.value))) {
+                (receiverUrl.value.trim()).match(/(({(((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+) ?,+ ?)* *((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+)} *,+ *)* *{(((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+) *,+ *)* *((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+)})|((((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+) *,+ *)* *((http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]+))/g);
+        if (!(receiverUrlCheck == (receiverUrl.value.trim()))) {
             CARBON.showErrorDialog("Invalid url format in Receiver url");
             return false;
 
@@ -143,12 +144,6 @@
         eventSink.setReceiverUrl("");
         eventSink.setAuthenticatorUrl("");
     }
-
-%>
-
-
-<%
-    //String propertyTableStyle = mediatorPropertyList.isEmpty() ? "display:none;" : "";
 
 %>
 

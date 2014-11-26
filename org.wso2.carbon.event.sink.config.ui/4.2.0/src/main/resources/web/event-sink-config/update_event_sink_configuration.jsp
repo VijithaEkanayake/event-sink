@@ -16,7 +16,7 @@
 ~  See the License for the specific language governing permissions and
 ~  limitations under the License.
 --%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
@@ -25,7 +25,6 @@
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%
     String backendServerURL = CarbonUIUtil.getServerURL(config.getServletContext(), session);
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
@@ -36,6 +35,7 @@
             new PublishEventMediatorConfigAdminClient(cookie, backendServerURL, configContext, request.getLocale());
 
     String action = request.getParameter("action");
+    String responseText="";
     String propertyCountParameter = request.getParameter("propertyCount");
     if (action.equals("add")) {
 
@@ -69,7 +69,8 @@
     } else if (action.equals("delete")) {
         String name = request.getParameter("name");
         if (!(publishEventMediatorConfigAdminClient.deleteEventSink(name))) {
-            out.write("false");
+            responseText="false";
+            out.write(responseText);
         }
     } else if (action.equals("edit")) {
         if (propertyCountParameter != null && !"".equals(propertyCountParameter)) {

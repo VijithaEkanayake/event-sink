@@ -16,7 +16,7 @@
 ~  See the License for the specific language governing permissions and
 ~  limitations under the License.
 --%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
@@ -25,7 +25,6 @@
 <%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     response.setHeader("Cache-Control", "no-cache");
@@ -202,8 +201,6 @@
     PublishEventMediatorConfigAdminClient publishEventMediatorConfigAdminClient =
             new PublishEventMediatorConfigAdminClient(cookie, backendServerURL, configContext, request.getLocale());
     EventSink[] eventSinkList = publishEventMediatorConfigAdminClient.getAllEventSinks();
-    //String propertyTableStyle = mediatorPropertyList.isEmpty() ? "display:none;" : "";
-
 %>
 
 <fmt:bundle basename="org.wso2.carbon.event.sink.config.ui.i18n.Resources">

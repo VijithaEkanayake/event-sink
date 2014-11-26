@@ -23,10 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
-import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
-import org.wso2.carbon.utils.CarbonUtils;
-import org.wso2.carbon.utils.ServerConstants;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -36,30 +33,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 
 /**
- *
+ * Creates Event Sink xml artifact and does operation on it
  */
 public class EventSinkXmlWriter {
 	private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
 
-	/**
-	 * Obtain corresponding tenant Event Sink deployment directory path
-	 *
-	 * @return directorypath
-	 */
-	public String getTenantDeployementDirectoryPath() {
-		String filePath = "";
-		int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
-		String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
-		if (tenantId != org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID) {
-			filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks";
-		} else {
-			String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
-			filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator +
-			           "server" + File.separator + "event-sinks";
-		}
 
-		return filePath;
-	}
 
 	/**
 	 * Writes given Event Sink details to xml file
@@ -68,7 +47,7 @@ public class EventSinkXmlWriter {
 	 */
 	public void writeEventSink(EventSink eventSink) {
 		String filePath = "";
-		filePath = this.getTenantDeployementDirectoryPath();
+		filePath = EventSinkXmlReader.getTenantDeployementDirectoryPath();
 		this.createEventSinkDirectory(filePath);
 		EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
 		try {
@@ -116,18 +95,24 @@ public class EventSinkXmlWriter {
 	 */
 	public boolean updateEventSink(EventSink eventSink) {
 		String filePath = "";
-		filePath = this.getTenantDeployementDirectoryPath();
-		File eventSinkFile = new File(filePath + File.separator + eventSink.getName() + ".xml");
+		filePath = EventSinkXmlReader.getTenantDeployementDirectoryPath();
+		File eventSinkFile = new File(filePath + eventSink.getName() + ".xml");
 		if (eventSinkFile.exists()) {
 			eventSinkFile.delete();
 			writeEventSink(eventSink);
 			return true;
 		} else {
-			log.error("file cannot be found with name : " + eventSink.getName() + " in location " + filePath);
+			log.error("Event Sink file cannot be found with name : " + eventSink.getName() + " in location " +
+			          filePath);
 		}
 		return false;
 	}
 
+	/**
+	 * Creates a directory in the specified location
+	 *
+	 * @param filePath location the directory should be created
+	 */
 	private void createEventSinkDirectory(String filePath) {
 		File eventSinksDir = new File(filePath);
 
@@ -135,8 +120,8 @@ public class EventSinkXmlWriter {
 		if (!eventSinksDir.exists()) {
 			try {
 				eventSinksDir.mkdir();
-			} catch (Exception e) {
-				log.error("Error occured while creating event-sinks directory");
+			} catch (SecurityException e) {
+				log.error("Couldn't create event-Sinks directory in following location"+filePath+" with ERROR : "+e.getLocalizedMessage());
 			}
 		}
 	}
@@ -145,7 +130,7 @@ public class EventSinkXmlWriter {
 	 * Encrypts and encodes a string
 	 *
 	 * @param plainText the String to be converted
-	 * @return Encrypted and endoed String
+	 * @return Encrypted and encoded String
 	 */
 	public String encryptAndBase64Encode(String plainText) {
 		CryptographyManager cryptographyManager = new CryptographyManager();

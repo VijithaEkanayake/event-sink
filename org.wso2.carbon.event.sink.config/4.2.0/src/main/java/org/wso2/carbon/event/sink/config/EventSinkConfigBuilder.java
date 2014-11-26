@@ -32,7 +32,7 @@ public class EventSinkConfigBuilder {
 	 * Creates the Event Sink with given configuration XML.
 	 *
 	 * @param eventSinkConfigElement OMElement to be converted EventSink Object
-	 * @param name                   Event Sink name to be set
+	 * @param name Event Sink name to be set
 	 * @return Created EventSink Object
 	 * @throws EventSinkException
 	 */

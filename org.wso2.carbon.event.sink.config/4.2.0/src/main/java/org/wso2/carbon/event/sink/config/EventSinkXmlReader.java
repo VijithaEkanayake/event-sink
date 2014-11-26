@@ -33,10 +33,7 @@ import org.wso2.carbon.utils.ServerConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +47,9 @@ public class EventSinkXmlReader {
 	/**
 	 * Obtain corresponding tenant Event Sink deployment directory path
 	 *
-	 * @return directorypath
+	 * @return directory path
 	 */
-	public String getTenantDeployementDirectoryPath() {
+	public static String getTenantDeployementDirectoryPath() {
 		String filePath = "";
 		int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
 		String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
@@ -120,22 +117,34 @@ public class EventSinkXmlReader {
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
 
-		// if the directory does not exist
+
 		if (eventSinkFile.exists()) {
 			eventSink.setName(eventSinkFile.getName());
+			FileInputStream fileInputStream = null;
 			try {
-				FileInputStream fileInputStream = new FileInputStream(eventSinkFile);
+				fileInputStream = new FileInputStream(eventSinkFile);
 				eventSink =
 						eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),
 						                                           FilenameUtils.removeExtension(eventSink.getName()));
 				eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
+
 			} catch (FileNotFoundException e) {
-				log.error("File not found. File: " + eventSinkFile.getName() + ", Error: " +
+				log.error("File not found. File: " + eventSinkFile.getName() + ", Error : " +
 				          e.getLocalizedMessage());
 			} catch (EventSinkException e) {
 				log.error("Error Occured in Obtaining Event Sink. With name : " + eventSink.getName() + ", Error: " +
 				          e.getLocalizedMessage());
+			} finally {
+				try {
+					if(fileInputStream != null){
+						fileInputStream.close();
+					}
+				} catch (IOException e) {
+					log.error("Error Occured while closing FileInputStream , Error : " +
+					          e.getLocalizedMessage());
+				}
 			}
+
 		}
 		return eventSink;
 	}
@@ -154,8 +163,8 @@ public class EventSinkXmlReader {
 			try {
 				eventSinkFile.delete();
 				return true;
-			} catch (Exception e) {
-				log.error("Error occured while deleting event-sink xml file");
+			} catch (SecurityException e) {
+				log.error("Error occured while deleting event-sink xml file. Error : "+e.getLocalizedMessage());
 			}
 		} else {
 			log.error("file cannot be found with name : " + name + " in location " + filePath);
@@ -167,7 +176,7 @@ public class EventSinkXmlReader {
 	 * Converts an XML inputStream into an OMElement
 	 *
 	 * @param inputStream the XML inputStream to be converted
-	 * @return <code>OMElement</code> instance
+	 * @return OMElement instance
 	 */
 	public OMElement toOM(InputStream inputStream) throws EventSinkException {
 

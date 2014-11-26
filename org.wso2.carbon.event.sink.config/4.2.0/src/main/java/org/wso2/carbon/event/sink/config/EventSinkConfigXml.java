@@ -33,10 +33,10 @@ public class EventSinkConfigXml {
 	/**
 	 * Creates XML representation of the Event Sink
 	 *
-	 * @param username         Username to be set to Event Sink
-	 * @param password         Password to be set to Event Sink
-	 * @param receiverUrl      Endpoint Url to be set to Event Sink
-	 * @param authenticatorUrl Credential authentication url to be set to Event Sink
+	 * @param username         Username to be set to Event Sink OMElement
+	 * @param password         Password to be set to Event Sink OMElement
+	 * @param receiverUrl      Endpoint Url to be set to Event Sink OMElement
+	 * @param authenticatorUrl Credential authentication url to be set to Event Sink OMElement
 	 * @return The Created XML representation of Event Sink` as an OMElement
 	 */
 	public OMElement buildEventSink(String username, String password, String receiverUrl, String authenticatorUrl) {
