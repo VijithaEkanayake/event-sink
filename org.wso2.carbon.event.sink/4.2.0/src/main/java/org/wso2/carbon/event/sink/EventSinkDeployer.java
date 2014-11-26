@@ -28,16 +28,12 @@ import org.apache.axis2.deployment.repository.util.DeploymentFileData;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.event.sink.internal.EventSinkImpl;
 import org.wso2.carbon.event.sink.internal.EventSinkStore;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 /**
  * Axis2 deployer which deploys event sinks
@@ -59,15 +55,16 @@ public class EventSinkDeployer extends AbstractDeployer {
 	 */
 	@Override
 	public void deploy(DeploymentFileData deploymentFileData) throws DeploymentException {
+
+		BufferedInputStream inputStream = null;
 		try {
-			BufferedInputStream inputStream =
-					new BufferedInputStream(new FileInputStream(new File(deploymentFileData.getAbsolutePath())));
+			inputStream = new BufferedInputStream(new FileInputStream(new File(deploymentFileData.getAbsolutePath())));
 			XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
 			StAXOMBuilder builder = new StAXOMBuilder(reader);
 			OMElement eventSink = builder.getDocumentElement();
-			eventSink.build();
+
 			String eventSinkName = FilenameUtils.getBaseName(deploymentFileData.getFile().getName());
-			EventSinkStore.getInstance().addEventSink(EventSinkImpl.createEventSink(eventSink, eventSinkName));
+			EventSinkStore.getInstance().addEventSink(EventSink.createEventSink(eventSink, eventSinkName));
 			log.info("Deploying event sink: " + eventSinkName + " - file: " + deploymentFileData.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			throw new DeploymentException(
@@ -78,6 +75,15 @@ public class EventSinkDeployer extends AbstractDeployer {
 		} catch (EventSinkException e) {
 			throw new DeploymentException(
 					"Event sink configuration in \"" + deploymentFileData.getAbsolutePath() + "\" is invalid", e);
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					log.warn("Failed to close file input stream after deploying event sink from file "
+					         + deploymentFileData.getAbsolutePath());
+				}
+			}
 		}
 	}
 
