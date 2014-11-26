@@ -26,8 +26,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.apache.axis2.wso2:axis2:1.6.1.wso2v10" level="project" />
     <orderEntry type="library" name="Maven: wsdl4j.wso2:wsdl4j:1.6.2.wso2v4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.axis2.wso2:axis2:1.6.1.wso2v10" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi.wso2:neethi:2.0.4.wso2v4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.commons.schema.wso2:XmlSchema:1.4.7.wso2v2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7-wso2v2" level="project" />

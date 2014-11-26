@@ -4,6 +4,9 @@
     <facet type="Osmorc" name="OSGi">
       <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="org.wso2.carbon.event.sink-4.2.0.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="org.wso2.carbon.event.sink" bundleVersion="4.2.0" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="false" doNotSynchronizeWithMaven="false">
         <additionalProperties>
+          <property key="Bundle-Description" value="Module which manages event sinks" />
+          <property key="Bundle-Vendor" value="WSO2 Inc" />
+          <property key="Bundle-DocURL" value="http://wso2.org" />
           <property key="Bundle-Name" value="org.wso2.carbon.event.sink" />
           <property key="Private-Package" value="org.wso2.carbon.event.sink.internal" />
           <property key="Import-Package" value="org.apache.commons.logging.*;version=&quot;1.0.4&quot;,org.osgi.framework,*;resolution:=optional," />
@@ -26,8 +29,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons:4.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.agent.thrift:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.osgi:org.eclipse.osgi:3.8.1.v20120830-144521" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.osgi:org.eclipse.osgi.services:3.3.100.v20120522-1822" level="project" />
+    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.logging:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.equinox:org.apache.log4j:1.2.13.v200706111418" level="project" />
@@ -35,8 +40,6 @@
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.bootstrap:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: wrapper:wrapper:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.json.wso2:json:2.0.0.wso2v1" level="project" />
-    <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.agent.thrift:4.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.osgi:org.eclipse.osgi.services:3.3.100.v20120522-1822" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.databridge.commons.thrift:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: libthrift.wso2:libthrift:0.7.wso2v1" level="project" />
     <orderEntry type="library" name="Maven: slf4j.wso2:slf4j:1.5.10.wso2v1" level="project" />
@@ -85,8 +88,6 @@
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents.wso2:httpclient:4.1.1-wso2v1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents.wso2:httpcore:4.1.0-wso2v1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.carbon:org.wso2.carbon.core:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.hazelcast.wso2:hazelcast:3.0.1.wso2v1" level="project" />
     <orderEntry type="library" name="Maven: com.hazelcast:hazelcast:3.0.1" level="project" />
