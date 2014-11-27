@@ -1,8 +1,8 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ax2126="http://config.sink.event.carbon.wso2.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://services.config.sink.event.carbon.wso2.org" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.config.sink.event.carbon.wso2.org">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ax2127="http://lb.thrift.agent.databridge.carbon.wso2.org/xsd" xmlns:ax2126="http://sink.event.carbon.wso2.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://services.config.sink.event.carbon.wso2.org" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.config.sink.event.carbon.wso2.org">
     <wsdl:documentation>PublishEventMediatorConfigAdmin</wsdl:documentation>
     <wsdl:types>
-        <xs:schema xmlns:ns="http://org.apache.axis2/xsd" xmlns:ax2127="http://config.sink.event.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://org.apache.axis2/xsd">
-            <xs:import namespace="http://config.sink.event.carbon.wso2.org/xsd"></xs:import>
+        <xs:schema xmlns:ns="http://org.apache.axis2/xsd" xmlns:ax2129="http://sink.event.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://org.apache.axis2/xsd">
+            <xs:import namespace="http://sink.event.carbon.wso2.org/xsd"></xs:import>
             <xs:element name="writeEventSink">
                 <xs:complexType>
                     <xs:sequence>
@@ -11,6 +11,13 @@
                         <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
                         <xs:element minOccurs="0" name="receiverUrl" nillable="true" type="xs:string"></xs:element>
                         <xs:element minOccurs="0" name="authenticatorUrl" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="writeEventSinkResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" type="xs:boolean"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -42,7 +49,7 @@
             <xs:element name="getEventSinkFromNameResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2127:EventSink"></xs:element>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2126:EventSink"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -54,7 +61,7 @@
             <xs:element name="getAllEventSinksResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2127:EventSink"></xs:element>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2126:EventSink"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -73,15 +80,22 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://config.sink.event.carbon.wso2.org/xsd">
+        <xs:schema xmlns:ax2128="http://lb.thrift.agent.databridge.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://sink.event.carbon.wso2.org/xsd">
+            <xs:import namespace="http://lb.thrift.agent.databridge.carbon.wso2.org/xsd"></xs:import>
             <xs:complexType name="EventSink">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="authenticatorUrl" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="authenticationUrlSet" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="dataPublisher" nillable="true" type="ax2127:LoadBalancingDataPublisher"></xs:element>
                     <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="receiverUrl" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="receiverUrlSet" nillable="true" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="username" nillable="true" type="xs:string"></xs:element>
                 </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://lb.thrift.agent.databridge.carbon.wso2.org/xsd">
+            <xs:complexType name="LoadBalancingDataPublisher">
+                <xs:sequence></xs:sequence>
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
@@ -106,6 +120,9 @@
     <wsdl:message name="writeEventSinkRequest">
         <wsdl:part name="parameters" element="ns1:writeEventSink"></wsdl:part>
     </wsdl:message>
+    <wsdl:message name="writeEventSinkResponse">
+        <wsdl:part name="parameters" element="ns1:writeEventSinkResponse"></wsdl:part>
+    </wsdl:message>
     <wsdl:message name="updateEventSinkRequest">
         <wsdl:part name="parameters" element="ns1:updateEventSink"></wsdl:part>
     </wsdl:message>
@@ -127,6 +144,7 @@
         </wsdl:operation>
         <wsdl:operation name="writeEventSink">
             <wsdl:input message="tns:writeEventSinkRequest" wsaw:Action="urn:writeEventSink"></wsdl:input>
+            <wsdl:output message="tns:writeEventSinkResponse" wsaw:Action="urn:writeEventSinkResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateEventSink">
             <wsdl:input message="tns:updateEventSinkRequest" wsaw:Action="urn:updateEventSink"></wsdl:input>
@@ -167,6 +185,9 @@
             <wsdl:input>
                 <soap:body use="literal"></soap:body>
             </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateEventSink">
             <soap:operation soapAction="urn:updateEventSink" style="document"></soap:operation>
@@ -212,6 +233,9 @@
             <wsdl:input>
                 <soap12:body use="literal"></soap12:body>
             </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateEventSink">
             <soap12:operation soapAction="urn:updateEventSink" style="document"></soap12:operation>
@@ -257,6 +281,9 @@
             <wsdl:input>
                 <mime:content type="text/xml" part="parameters"></mime:content>
             </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateEventSink">
             <http:operation location="updateEventSink"></http:operation>
@@ -270,14 +297,13 @@
     </wsdl:binding>
     <wsdl:service name="PublishEventMediatorConfigAdmin">
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap11Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap11Binding">
-            <soap:address
-                    location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
+            <soap:address location="https://Lahirus-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
         </wsdl:port>
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap12Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap12Binding">
-            <soap12:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
+            <soap12:address location="https://Lahirus-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
         </wsdl:port>
         <wsdl:port name="PublishEventMediatorConfigAdminHttpsEndpoint" binding="tns:PublishEventMediatorConfigAdminHttpBinding">
-            <http:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
+            <http:address location="https://Lahirus-MacBook-Pro.local:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

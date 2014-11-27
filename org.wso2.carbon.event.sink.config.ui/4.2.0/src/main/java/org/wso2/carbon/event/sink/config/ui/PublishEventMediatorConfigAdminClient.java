@@ -24,10 +24,10 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.event.sink.EventSink;
-import org.wso2.carbon.event.sink.config.stub.PublishEventMediatorConfigAdminStub;
 
+import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.event.sink.config.stub.PublishEventMediatorConfigAdminStub;
+import org.wso2.carbon.event.sink.xsd.EventSink;
 import java.rmi.RemoteException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -64,8 +64,7 @@ public class PublishEventMediatorConfigAdminClient {
 			stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
 			                    eventSink.getReceiverUrlSet(), eventSink.getAuthenticationUrlSet());
 		} catch (RemoteException e) {
-			log.error("Error occured while wring Event Sink, Error: " +
-			          e.getLocalizedMessage());
+			log.error("Error occurred while wring Event Sink, Error: " + e.getLocalizedMessage());
 		}
 	}
 
@@ -74,16 +73,15 @@ public class PublishEventMediatorConfigAdminClient {
 	 *
 	 * @return list of Event Sinks in the deployment directory
 	 */
-	public org.wso2.carbon.event.sink.config.xsd.EventSink[] getAllEventSinks() {
-		org.wso2.carbon.event.sink.config.xsd.EventSink[] eventSinkList =
-				new org.wso2.carbon.event.sink.config.xsd.EventSink[0];
+	public EventSink[] getAllEventSinks() {
+		EventSink[] eventSinkList = new EventSink[0];
 		try {
 			eventSinkList = stub.getAllEventSinks();
 		} catch (RemoteException e) {
-			log.error("Error Occured while obtaining list of Event Sinks, Error: " +
+			log.error("Error Occurred while obtaining list of Event Sinks, Error: " +
 			          e.getLocalizedMessage());
 		}
-		return eventSinkList == null ? new org.wso2.carbon.event.sink.config.xsd.EventSink[0] : eventSinkList;
+		return eventSinkList == null ? new EventSink[0] : eventSinkList;
 	}
 
 	/**
@@ -91,9 +89,9 @@ public class PublishEventMediatorConfigAdminClient {
 	 *
 	 * @return Event Sink corresponds to the given name
 	 */
-	public org.wso2.carbon.event.sink.config.xsd.EventSink getEventSinkByName(String name) {
-		org.wso2.carbon.event.sink.config.xsd.EventSink eventSink =
-				new org.wso2.carbon.event.sink.config.xsd.EventSink();
+	public org.wso2.carbon.event.sink.xsd.EventSink getEventSinkByName(String name) {
+		org.wso2.carbon.event.sink.xsd.EventSink eventSink =
+				new org.wso2.carbon.event.sink.xsd.EventSink();
 		try {
 			eventSink = stub.getEventSinkFromName(name);
 
@@ -112,10 +110,8 @@ public class PublishEventMediatorConfigAdminClient {
 	public boolean deleteEventSink(String name) {
 		try {
 			return stub.deleteEventSink(name);
-
 		} catch (RemoteException e) {
-			log.error("Event Sink cannot be deleted, Error: " +
-			          e.getLocalizedMessage());
+			log.error("Event Sink cannot be deleted, Error: " + e.getLocalizedMessage());
 		}
 		return false;
 	}
@@ -130,10 +126,9 @@ public class PublishEventMediatorConfigAdminClient {
 		try {
 			return stub.updateEventSink(name, username, password, receiverUrl, authenticatorUrl);
 		} catch (RemoteException e) {
-			log.error("Error occured while updating Event Sink, Error: " +
+			log.error("Error occurred while updating Event Sink, Error: " +
 			          e.getLocalizedMessage());
 		}
 		return false;
 	}
-
 }

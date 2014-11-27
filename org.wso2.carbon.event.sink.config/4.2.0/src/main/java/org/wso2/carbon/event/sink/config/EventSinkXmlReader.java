@@ -75,18 +75,13 @@ public class EventSinkXmlReader {
 	 *
 	 * @return EventSinks List
 	 */
-//TODO : get events from deployer
 	public List<EventSink> getAllEventSinks() {
-
 		List<EventSink> eventSinkList;
 		Object serviceObject = PrivilegedCarbonContext
 				.getThreadLocalCarbonContext().getOSGiService(EventSinkService.class);
 		if (serviceObject instanceof EventSinkService) {
 			EventSinkService service = (EventSinkService) serviceObject;
 			eventSinkList = service.getEventSinks();
-			if (eventSinkList.isEmpty()) {
-				throw new SynapseException("Event sinks not found");
-			}
 		} else {
 			throw new SynapseException("Internal error occurred. Failed to obtain EventSinkService");
 		}

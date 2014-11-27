@@ -22,7 +22,7 @@
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
-<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.xsd.EventSink" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 
@@ -262,12 +262,12 @@
                                     </td>
                                     <td>
                                         <div name="propertyReceiverUrl<%=i%>" id="propertyReceiverUrl<%=i%>">
-                                            <%=eventSink.getReceiverUrl()%>
+                                            <%=eventSink.getReceiverUrlSet()%>
                                         </div>
                                     </td>
                                     <td>
                                         <div name="propertyAuthenticatorUrl<%=i%>" id="propertyAuthenticatorUrl<%=i%>">
-                                            <%=eventSink.getAuthenticatorUrl()%>
+                                            <%=eventSink.getAuthenticationUrlSet()%>
                                         </div>
                                     </td>
                                     <td><a href="#" class="edit-icon-link"
