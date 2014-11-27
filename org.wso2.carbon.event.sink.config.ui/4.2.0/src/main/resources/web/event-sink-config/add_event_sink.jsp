@@ -62,20 +62,6 @@
             return false;
 
         }
-        var authenticatorUrl = document.getElementById('propertyAuthenticatorUrl0');
-        if (authenticatorUrl && authenticatorUrl.value == "") {
-            CARBON.showErrorDialog(eventSinki18n["specify.AuthenticatorUrl"]);
-            return false;
-        }
-
-        var authenticatorUrlCheck
-                =
-                (authenticatorUrl.value).match(/(http|https|tcp|ssl):\/\/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|localhost|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}):[0-9]*/g);
-        if (!(authenticatorUrlCheck == (authenticatorUrl.value))) {
-            CARBON.showErrorDialog("Invalid url format in Authenticator url");
-            return false;
-
-        }
         return true;
     }
     function configureEventSink() {
@@ -196,7 +182,7 @@
                                     <td width="15%"><fmt:message key="publishEvent.configuration.attribute.name"/><span class="required">*</span></td>
                                     <td>
 
-                                        <input type="text" name="propertyName0" id="propertyName0"
+                                        <input style="width: 300px;" type="text" name="propertyName0" id="propertyName0"
                                                class="esb-edit small_textbox"
                                                value="<%=eventSink.getName()%>"/>
                                         <%
@@ -215,7 +201,8 @@
                                 <tr>
                                     <td width="15%"><fmt:message
                                             key="publishEvent.configuration.attribute.username"/><span class="required">*</span></td>
-                                    <td><input type="text" name="propertyUsername0" id="propertyUsername0"
+                                    <td><input style="width: 300px;" type="text" name="propertyUsername0"
+                                               id="propertyUsername0"
                                                class="esb-edit small_textbox"
                                                value="<%=eventSink.getUsername()%>"/>
                                     </td>
@@ -223,7 +210,8 @@
                                 <tr>
                                     <td width="15%"><fmt:message
                                             key="publishEvent.configuration.attribute.password"/><span class="required">*</span></td>
-                                    <td><input type="password" name="propertyPassword0" id="propertyPassword0"
+                                    <td><input style="width: 300px;" type="password" name="propertyPassword0"
+                                               id="propertyPassword0"
                                                class="esb-edit small_textbox"
                                                value="<%=eventSink.getPassword()%>"/>
                                     </td>
@@ -239,7 +227,7 @@
                                 </tr>
                                 <tr>
                                     <td width="15%"><fmt:message
-                                            key="publishEvent.configuration.attribute.authenticatorUrl"/><span class="required">*</span></td>
+                                            key="publishEvent.configuration.attribute.authenticatorUrl"/></td>
                                     <td><input style="width: 600px;" type="text" name="propertyAuthenticatorUrl0"
                                                id="propertyAuthenticatorUrl0"
 
