@@ -18,7 +18,7 @@
 --%>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
-<%@ page import="org.wso2.carbon.event.sink.config.xsd.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.xsd.EventSink" %>
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
@@ -141,8 +141,8 @@
         eventSink.setName("");
         eventSink.setUsername("");
         eventSink.setPassword("");
-        eventSink.setReceiverUrl("");
-        eventSink.setAuthenticatorUrl("");
+        eventSink.setReceiverUrlSet("");
+        eventSink.setAuthenticationUrlSet("");
     }
 
 %>
@@ -234,7 +234,7 @@
                                     <td><input style="width: 600px;" type="text" name="propertyReceiverUrl0"
                                                id="propertyReceiverUrl0"
 
-                                               value="<%=eventSink.getReceiverUrl()%>"/>
+                                               value="<%=eventSink.getReceiverUrlSet()%>"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -243,7 +243,7 @@
                                     <td><input style="width: 600px;" type="text" name="propertyAuthenticatorUrl0"
                                                id="propertyAuthenticatorUrl0"
 
-                                               value="<%=eventSink.getAuthenticatorUrl()%>"/>
+                                               value="<%=eventSink.getAuthenticationUrlSet()%>"/>
                                     </td>
                                 </tr>
                                 <%

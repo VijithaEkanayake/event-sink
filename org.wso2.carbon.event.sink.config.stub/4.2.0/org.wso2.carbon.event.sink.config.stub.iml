@@ -6,7 +6,7 @@
         <additionalProperties>
           <property key="Bundle-Description" value="Platform Parent pom hold the properties, plugins which are required to build carbon components, carbon features and products" />
           <property key="Bundle-Name" value="org.wso2.carbon.event.sink.config.stub" />
-          <property key="Export-Package" value="org.wso2.carbon.event.sink.config.stub.*;version=&quot;4.2.0&quot;,org.wso2.carbon.event.sink.config.xsd.*," />
+          <property key="Export-Package" value="org.wso2.carbon.event.sink.config.stub.*;version=&quot;4.2.0&quot;,org.wso2.carbon.event.sink.xsd.*," />
           <property key="Import-Package" value="!org.wso2.carbon.event.sink.config.stub.*" />
           <property key="DynamicImport-Package" value="*" />
           <property key="Include-Resource" value="publishEventMediatorConfigAdmin.wsdl=$MODULE_DIR$/src/main/resources/publishEventMediatorConfigAdmin.wsdl" />
