@@ -23,9 +23,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
+import org.wso2.carbon.core.util.CryptoException;
+import org.wso2.carbon.core.util.CryptoUtil;
 import org.wso2.carbon.event.sink.EventSink;
 import org.wso2.carbon.event.sink.EventSinkException;
-import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -33,6 +34,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.charset.Charset;
 
 /**
  * Creates Event Sink xml artifact and does operation on it
@@ -57,7 +59,9 @@ public class EventSinkXmlWriter {
 			bufferedWriter =
 					new BufferedWriter(new FileWriter(new File(filePath, eventSink.getName() + ".xml")));
 			String unFormattedXml = eventSinkConfigXml
-					.buildEventSink(eventSink.getUsername(), encryptAndBase64Encode(eventSink.getPassword()),
+					.buildEventSink(eventSink.getUsername(),CryptoUtil.getDefaultCryptoUtil()
+					                              .encryptAndBase64Encode(eventSink.getPassword().getBytes(
+							                                                              Charset.forName("UTF-8"))),
 					                eventSink.getReceiverUrlSet(), eventSink.getAuthenticationUrlSet()).toString();
 
 			///formatting xml
@@ -85,8 +89,9 @@ public class EventSinkXmlWriter {
 		} catch (SAXException e) {
 			log.error(
 					"Internal error occurred while writing event sink. Invalid XML. error: " + e);
-		}
-		finally {
+		} catch (CryptoException e) {
+			log.error("Password encryption failed. error: " + e);
+		} finally {
 			if (bufferedWriter!=null){
 				try {
 					bufferedWriter.flush();
@@ -134,19 +139,8 @@ public class EventSinkXmlWriter {
 			try {
 				eventSinksDir.mkdir();
 			} catch (SecurityException e) {
-				log.error("Couldn't create event-Sinks directory in following location"+filePath+" with ERROR : "+e.getLocalizedMessage());
+				log.error("Couldn't create event-Sinks directory in following location"+filePath+" with ERROR : "+e);
 			}
 		}
-	}
-
-	/**
-	 * Encrypts and encodes a string
-	 *
-	 * @param plainText the String to be converted
-	 * @return Encrypted and encoded String
-	 */
-	public String encryptAndBase64Encode(String plainText) {
-		CryptographyManager cryptographyManager = new CryptographyManager();
-		return cryptographyManager.encryptAndBase64Encode(plainText);
 	}
 }

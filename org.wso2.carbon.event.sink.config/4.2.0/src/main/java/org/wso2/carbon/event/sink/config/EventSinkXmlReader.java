@@ -26,10 +26,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.SynapseException;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.core.util.CryptoException;
+import org.wso2.carbon.core.util.CryptoUtil;
 import org.wso2.carbon.event.sink.EventSink;
 import org.wso2.carbon.event.sink.EventSinkException;
 import org.wso2.carbon.event.sink.EventSinkService;
-import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
 
@@ -37,6 +38,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -101,8 +103,6 @@ public class EventSinkXmlReader {
 		EventSink eventSink = new EventSink();
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
-
-//TODO : use full stacktrace
 		if (eventSinkFile.exists()) {
 			eventSink.setName(eventSinkFile.getName());
 			FileInputStream fileInputStream = null;
@@ -111,14 +111,18 @@ public class EventSinkXmlReader {
 				eventSink =
 						eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),
 						                                           FilenameUtils.removeExtension(eventSink.getName()));
-				eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
+				eventSink.setPassword(new String(CryptoUtil.getDefaultCryptoUtil().base64DecodeAndDecrypt(eventSink.getPassword())
+						, Charset
+						.forName("UTF-8")));
 
 			} catch (FileNotFoundException e) {
 				log.error("File not found. File: " + eventSinkFile.getName() + ", Error : " +
-				          e.getLocalizedMessage());
+				          e);
 			} catch (EventSinkException e) {
 				log.error("Error occured in Obtaining Event Sink. With name : " + eventSink.getName() + ", Error: " +
-				          e.getLocalizedMessage());
+				          e);
+			} catch (CryptoException e) {
+				log.error("Password decryption failed. error: " + e);
 			} finally {
 				try {
 					if(fileInputStream != null){
@@ -126,7 +130,7 @@ public class EventSinkXmlReader {
 					}
 				} catch (IOException e) {
 					log.error("Error Occured while closing FileInputStream , Error : " +
-					          e.getLocalizedMessage());
+					          e);
 				}
 			}
 
@@ -170,16 +174,5 @@ public class EventSinkXmlReader {
 			throw new EventSinkException("Error creating a OMElement from an input stream : ",
 			                             e);
 		}
-	}
-
-	/**
-	 * Decode and decrypts a given encrypted and encoded string
-	 *
-	 * @param cipherText the String to be converted
-	 * @return Decoded and decrypted String
-	 */
-	public String base64DecodeAndDecrypt(String cipherText) {
-		CryptographyManager cryptographyManager = new CryptographyManager();
-		return cryptographyManager.base64DecodeAndDecrypt(cipherText);
 	}
 }
