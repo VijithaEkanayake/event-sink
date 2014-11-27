@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
  * Encrypts and decrypts passwords. These operations are Base64 encoded to assure printable characters
  */
 public class CryptographyManager {
-
+//ToDO make it static  and throw exception
 	private static final Log log = LogFactory.getLog(CryptographyManager.class);
 	private CryptoUtil cryptoUtil;
 

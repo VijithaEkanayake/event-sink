@@ -23,6 +23,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
+import org.wso2.carbon.event.sink.EventSink;
+import org.wso2.carbon.event.sink.EventSinkException;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -37,7 +39,7 @@ import java.io.*;
  */
 public class EventSinkXmlWriter {
 	private static final Log log = LogFactory.getLog(EventSinkXmlWriter.class);
-
+//TODO: send a feedback to writing if an exception occurs(throw axis2 fault)
 
 
 	/**
@@ -45,17 +47,18 @@ public class EventSinkXmlWriter {
 	 *
 	 * @param eventSink the Event Sink to be write
 	 */
-	public void writeEventSink(EventSink eventSink) {
+	public boolean writeEventSink(EventSink eventSink) throws EventSinkException {
 		String filePath = "";
 		filePath = EventSinkXmlReader.getTenantDeployementDirectoryPath();
 		this.createEventSinkDirectory(filePath);
 		EventSinkConfigXml eventSinkConfigXml = new EventSinkConfigXml();
+		BufferedWriter bufferedWriter=null;
 		try {
-			BufferedWriter bufferedWriter =
+			bufferedWriter =
 					new BufferedWriter(new FileWriter(new File(filePath, eventSink.getName() + ".xml")));
 			String unFormattedXml = eventSinkConfigXml
 					.buildEventSink(eventSink.getUsername(), encryptAndBase64Encode(eventSink.getPassword()),
-					                eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl()).toString();
+					                eventSink.getReceiverUrlSet(), eventSink.getAuthenticationUrlSet()).toString();
 
 			///formatting xml
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -69,23 +72,33 @@ public class EventSinkXmlWriter {
 			Writer out = new StringWriter();
 			XMLSerializer serializer = new XMLSerializer(out, format);
 			serializer.serialize(document);
-			///
-
 			bufferedWriter.write(out.toString());
-			bufferedWriter.flush();
-			bufferedWriter.close();
+
 		} catch (FileNotFoundException e) {
 			log.error("Failed to open file to write event sink. File: " + filePath + ", error: " +
-			          e.getLocalizedMessage());
+			          e);
 		} catch (IOException e) {
-			log.error("Failed to write event sink to file. File: " + filePath + ", error: " + e.getLocalizedMessage());
+			log.error("Failed to write event sink to file. File: " + filePath + ", error: " + e);
 		} catch (ParserConfigurationException e) {
 			log.error("Internal error occurred while writing event sink. Failed to format XML. error: " +
-			          e.getLocalizedMessage());
+			          e);
 		} catch (SAXException e) {
 			log.error(
-					"Internal error occurred while writing event sink. Invalid XML. error: " + e.getLocalizedMessage());
+					"Internal error occurred while writing event sink. Invalid XML. error: " + e);
 		}
+		finally {
+			if (bufferedWriter!=null){
+				try {
+					bufferedWriter.flush();
+					bufferedWriter.close();
+					return true;
+				} catch (IOException e) {
+					log.error("Failed to close stream, error: " +
+					          e);
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -93,7 +106,7 @@ public class EventSinkXmlWriter {
 	 *
 	 * @param eventSink the Event Sink to be updated
 	 */
-	public boolean updateEventSink(EventSink eventSink) {
+	public boolean updateEventSink(EventSink eventSink) throws EventSinkException {
 		String filePath = "";
 		filePath = EventSinkXmlReader.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + eventSink.getName() + ".xml");

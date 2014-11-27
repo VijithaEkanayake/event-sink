@@ -21,7 +21,7 @@
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
-<%@ page import="org.wso2.carbon.event.sink.config.EventSink" %>
+<%@ page import="org.wso2.carbon.event.sink.EventSink" %>
 <%@ page import="org.wso2.carbon.event.sink.config.ui.PublishEventMediatorConfigAdminClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
@@ -55,9 +55,9 @@
                         String password = request.getParameter("propertyPassword" + i);
                         eventSink.setPassword(password);
                         String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
-                        eventSink.setReceiverUrl(receiverUrl);
+                        eventSink.setReceiverUrlSet(receiverUrl);
                         String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
-                        eventSink.setAuthenticatorUrl(authenticatorUrl);
+                        eventSink.setAuthenticationUrlSet(authenticatorUrl);
                     }
                     publishEventMediatorConfigAdminClient.writeEventSinkXml(eventSink);
 
@@ -89,13 +89,13 @@
                         String password = request.getParameter("propertyPassword" + i);
                         eventSink.setPassword(password);
                         String receiverUrl = request.getParameter("propertyReceiverUrl" + i);
-                        eventSink.setReceiverUrl(receiverUrl);
+                        eventSink.setReceiverUrlSet(receiverUrl);
                         String authenticatorUrl = request.getParameter("propertyAuthenticatorUrl" + i);
-                        eventSink.setAuthenticatorUrl(authenticatorUrl);
+                        eventSink.setAuthenticationUrlSet(authenticatorUrl);
                     }
                     publishEventMediatorConfigAdminClient
                             .updateEventSink(name, eventSink.getUsername(), eventSink.getPassword(),
-                                             eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+                                             eventSink.getReceiverUrlSet(), eventSink.getAuthenticationUrlSet());
                 }
 
             } catch (NumberFormatException ignored) {

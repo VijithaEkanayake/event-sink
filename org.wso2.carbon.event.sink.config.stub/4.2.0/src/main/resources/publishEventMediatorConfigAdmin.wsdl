@@ -1,15 +1,7 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd"
-                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
-                  xmlns:tns="http://services.config.sink.event.carbon.wso2.org"
-                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
-                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-                  targetNamespace="http://services.config.sink.event.carbon.wso2.org">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ax2126="http://config.sink.event.carbon.wso2.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://services.config.sink.event.carbon.wso2.org" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.config.sink.event.carbon.wso2.org">
     <wsdl:documentation>PublishEventMediatorConfigAdmin</wsdl:documentation>
     <wsdl:types>
-        <xs:schema xmlns:ax2127="http://config.sink.event.carbon.wso2.org/xsd"
-                   attributeFormDefault="qualified" elementFormDefault="qualified"
-                   targetNamespace="http://org.apache.axis2/xsd">
+        <xs:schema xmlns:ns="http://org.apache.axis2/xsd" xmlns:ax2127="http://config.sink.event.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://org.apache.axis2/xsd">
             <xs:import namespace="http://config.sink.event.carbon.wso2.org/xsd"></xs:import>
             <xs:element name="writeEventSink">
                 <xs:complexType>
@@ -62,8 +54,7 @@
             <xs:element name="getAllEventSinksResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true"
-                                    type="ax2127:EventSink"></xs:element>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2127:EventSink"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -82,8 +73,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified"
-                   targetNamespace="http://config.sink.event.carbon.wso2.org/xsd">
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://config.sink.event.carbon.wso2.org/xsd">
             <xs:complexType name="EventSink">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="authenticatorUrl" nillable="true" type="xs:string"></xs:element>
@@ -125,13 +115,11 @@
     <wsdl:portType name="PublishEventMediatorConfigAdminPortType">
         <wsdl:operation name="getAllEventSinks">
             <wsdl:input message="tns:getAllEventSinksRequest" wsaw:Action="urn:getAllEventSinks"></wsdl:input>
-            <wsdl:output message="tns:getAllEventSinksResponse"
-                         wsaw:Action="urn:getAllEventSinksResponse"></wsdl:output>
+            <wsdl:output message="tns:getAllEventSinksResponse" wsaw:Action="urn:getAllEventSinksResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getEventSinkFromName">
             <wsdl:input message="tns:getEventSinkFromNameRequest" wsaw:Action="urn:getEventSinkFromName"></wsdl:input>
-            <wsdl:output message="tns:getEventSinkFromNameResponse"
-                         wsaw:Action="urn:getEventSinkFromNameResponse"></wsdl:output>
+            <wsdl:output message="tns:getEventSinkFromNameResponse" wsaw:Action="urn:getEventSinkFromNameResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="deleteEventSink">
             <wsdl:input message="tns:deleteEventSinkRequest" wsaw:Action="urn:deleteEventSink"></wsdl:input>
@@ -145,8 +133,7 @@
             <wsdl:output message="tns:updateEventSinkResponse" wsaw:Action="urn:updateEventSinkResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="PublishEventMediatorConfigAdminSoap11Binding"
-                  type="tns:PublishEventMediatorConfigAdminPortType">
+    <wsdl:binding name="PublishEventMediatorConfigAdminSoap11Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
         <wsdl:operation name="getAllEventSinks">
             <soap:operation soapAction="urn:getAllEventSinks" style="document"></soap:operation>
@@ -191,8 +178,7 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:binding name="PublishEventMediatorConfigAdminSoap12Binding"
-                  type="tns:PublishEventMediatorConfigAdminPortType">
+    <wsdl:binding name="PublishEventMediatorConfigAdminSoap12Binding" type="tns:PublishEventMediatorConfigAdminPortType">
         <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
         <wsdl:operation name="getAllEventSinks">
             <soap12:operation soapAction="urn:getAllEventSinks" style="document"></soap12:operation>
@@ -283,20 +269,15 @@
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="PublishEventMediatorConfigAdmin">
-        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap11Endpoint"
-                   binding="tns:PublishEventMediatorConfigAdminSoap11Binding">
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap11Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap11Binding">
             <soap:address
                     location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap11Endpoint"></soap:address>
         </wsdl:port>
-        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap12Endpoint"
-                   binding="tns:PublishEventMediatorConfigAdminSoap12Binding">
-            <soap12:address
-                    location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsSoap12Endpoint" binding="tns:PublishEventMediatorConfigAdminSoap12Binding">
+            <soap12:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsSoap12Endpoint"></soap12:address>
         </wsdl:port>
-        <wsdl:port name="PublishEventMediatorConfigAdminHttpsEndpoint"
-                   binding="tns:PublishEventMediatorConfigAdminHttpBinding">
-            <http:address
-                    location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
+        <wsdl:port name="PublishEventMediatorConfigAdminHttpsEndpoint" binding="tns:PublishEventMediatorConfigAdminHttpBinding">
+            <http:address location="https://localhost:8245/services/PublishEventMediatorConfigAdmin.PublishEventMediatorConfigAdminHttpsEndpoint"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

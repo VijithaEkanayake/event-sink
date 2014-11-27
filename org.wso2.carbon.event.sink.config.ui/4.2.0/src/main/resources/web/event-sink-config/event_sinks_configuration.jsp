@@ -115,7 +115,7 @@
         CARBON.showConfirmationDialog("Are you sure, you want to delete event sink '" + eventSinkName + "'?", function () {
             jQuery.ajax({
                 type: "GET",
-                url: "../event-sink-config/update_event_sink_configuration.jsp",
+                url: "../event-sink-config/update_event_sink_ajaxprocessor.jsp",
                 data: {action: "delete", name: eventSinkName},
                 success: function (data) {
                     CARBON.showInfoDialog("Deleted");

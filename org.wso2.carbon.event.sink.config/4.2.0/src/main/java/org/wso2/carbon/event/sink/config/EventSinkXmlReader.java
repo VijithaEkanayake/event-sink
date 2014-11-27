@@ -24,8 +24,11 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.synapse.SynapseException;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.event.sink.EventSink;
 import org.wso2.carbon.event.sink.EventSinkException;
+import org.wso2.carbon.event.sink.EventSinkService;
 import org.wso2.carbon.event.sink.config.services.utils.CryptographyManager;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ServerConstants;
@@ -34,7 +37,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,16 +51,20 @@ public class EventSinkXmlReader {
 	 *
 	 * @return directory path
 	 */
-	public static String getTenantDeployementDirectoryPath() {
+
+	//TODO: first super tenant ,invalid tenants and tenants
+	public static String getTenantDeployementDirectoryPath() throws EventSinkException {
 		String filePath = "";
 		int tenantId = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantId();
 		String tenantFilePath = CarbonUtils.getCarbonTenantsDirPath();
-		if (tenantId > 0 ) {
-			filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks" + File.separator;
-		} else if (tenantId == org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID) {
+		if (tenantId == org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID) {
 			String carbonHome = System.getProperty(ServerConstants.CARBON_HOME);
 			filePath = carbonHome + File.separator + "repository" + File.separator + "deployment" + File.separator +
 			           "server" + File.separator + "event-sinks" + File.separator;
+		}else if (tenantId > 0 ) {
+			filePath = tenantFilePath + File.separator + tenantId + File.separator + "event-sinks" + File.separator;
+		}else {
+			throw new EventSinkException("Invalid tenant");
 		}
 
 		return filePath;
@@ -69,37 +75,21 @@ public class EventSinkXmlReader {
 	 *
 	 * @return EventSinks List
 	 */
-
+//TODO : get events from deployer
 	public List<EventSink> getAllEventSinks() {
-		String filePath = "";
-		EventSink eventSink;
-		EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
-		List<EventSink> eventSinkList = new ArrayList<EventSink>();
-		filePath = this.getTenantDeployementDirectoryPath();
-		File dir = new File(filePath);
-		File[] directoryListing = dir.listFiles();
-		if (directoryListing != null) {
-			for (File sink : directoryListing) {
 
-				try {
-					if (FilenameUtils.getExtension(sink.getName()).equals("xml")) {
-						FileInputStream fileInputStream = new FileInputStream(sink);
-						eventSink = eventSinkConfigBuilder.createEventSinkConfig(this.toOM(fileInputStream),
-						                                                         FilenameUtils.removeExtension(
-								                                                         sink.getName()));
-						eventSink.setPassword(base64DecodeAndDecrypt(eventSink.getPassword()));
-						eventSinkList.add(eventSink);
-					}
-
-				} catch (FileNotFoundException e) {
-					log.error("Failed to read file to load event sink. Error: " + e.getLocalizedMessage());
-				} catch (EventSinkException e) {
-					log.error("Failed to read event sink from file. File: " + sink.getAbsolutePath() + ", Error: " +
-					          e.getLocalizedMessage());
-				}
+		List<EventSink> eventSinkList;
+		Object serviceObject = PrivilegedCarbonContext
+				.getThreadLocalCarbonContext().getOSGiService(EventSinkService.class);
+		if (serviceObject instanceof EventSinkService) {
+			EventSinkService service = (EventSinkService) serviceObject;
+			eventSinkList = service.getEventSinks();
+			if (eventSinkList.isEmpty()) {
+				throw new SynapseException("Event sinks not found");
 			}
+		} else {
+			throw new SynapseException("Internal error occurred. Failed to obtain EventSinkService");
 		}
-
 		return eventSinkList;
 	}
 
@@ -110,14 +100,14 @@ public class EventSinkXmlReader {
 	 * @return EventSink
 	 */
 
-	public EventSink getEventSinkFromName(String name) {
+	public EventSink getEventSinkFromName(String name) throws EventSinkException {
 		String filePath = "";
 		EventSinkConfigBuilder eventSinkConfigBuilder = new EventSinkConfigBuilder();
 		EventSink eventSink = new EventSink();
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
 
-
+//TODO : use full stacktrace
 		if (eventSinkFile.exists()) {
 			eventSink.setName(eventSinkFile.getName());
 			FileInputStream fileInputStream = null;
@@ -132,7 +122,7 @@ public class EventSinkXmlReader {
 				log.error("File not found. File: " + eventSinkFile.getName() + ", Error : " +
 				          e.getLocalizedMessage());
 			} catch (EventSinkException e) {
-				log.error("Error Occured in Obtaining Event Sink. With name : " + eventSink.getName() + ", Error: " +
+				log.error("Error occured in Obtaining Event Sink. With name : " + eventSink.getName() + ", Error: " +
 				          e.getLocalizedMessage());
 			} finally {
 				try {
@@ -154,18 +144,13 @@ public class EventSinkXmlReader {
 	 *
 	 * @param name the Event Sink name to delete
 	 */
-
-	public boolean deleteEventSinkFromName(String name) {
+	public boolean deleteEventSinkFromName(String name) throws EventSinkException {
 		String filePath = "";
 		filePath = this.getTenantDeployementDirectoryPath();
 		File eventSinkFile = new File(filePath + name + ".xml");
 		if (eventSinkFile.exists()) {
-			try {
-				eventSinkFile.delete();
-				return true;
-			} catch (SecurityException e) {
-				log.error("Error occured while deleting event-sink xml file. Error : "+e.getLocalizedMessage());
-			}
+			eventSinkFile.delete();
+			return true;
 		} else {
 			log.error("file cannot be found with name : " + name + " in location " + filePath);
 		}

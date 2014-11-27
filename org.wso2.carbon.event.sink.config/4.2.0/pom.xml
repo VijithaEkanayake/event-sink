@@ -70,6 +70,11 @@
             <artifactId>org.wso2.carbon.event.sink</artifactId>
             <version>4.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.synapse</groupId>
+            <artifactId>synapse-core</artifactId>
+            <version>${synapse.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

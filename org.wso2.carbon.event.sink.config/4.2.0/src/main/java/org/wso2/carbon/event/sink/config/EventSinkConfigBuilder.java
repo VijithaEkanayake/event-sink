@@ -20,6 +20,7 @@
 package org.wso2.carbon.event.sink.config;
 
 import org.apache.axiom.om.OMElement;
+import org.wso2.carbon.event.sink.EventSink;
 import org.wso2.carbon.event.sink.EventSinkConstants;
 import org.wso2.carbon.event.sink.EventSinkException;
 
@@ -45,14 +46,14 @@ public class EventSinkConfigBuilder {
 		if (receiverUrl == null) {
 			throw new EventSinkException(EventSinkConstants.RECEIVER_URL_Q.getLocalPart() + " element missing");
 		}
-		eventSink.setReceiverUrl(receiverUrl.getText());
+		eventSink.setReceiverUrlSet(receiverUrl.getText());
 
 		OMElement authenticatorUrl =
 				eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.AUTHENTICATOR_URL_Q);
 		if (authenticatorUrl == null) {
 			throw new EventSinkException(EventSinkConstants.AUTHENTICATOR_URL_Q.getLocalPart() + " element missing");
 		}
-		eventSink.setAuthenticatorUrl(authenticatorUrl.getText());
+		eventSink.setAuthenticationUrlSet(authenticatorUrl.getText());
 
 		OMElement username = eventSinkConfigElement.getFirstChildWithName(EventSinkConstants.USERNAME_Q);
 		if (username == null) {

@@ -21,7 +21,8 @@ package org.wso2.carbon.event.sink.config.services;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.core.AbstractAdmin;
-import org.wso2.carbon.event.sink.config.EventSink;
+import org.wso2.carbon.event.sink.EventSink;
+import org.wso2.carbon.event.sink.EventSinkException;
 import org.wso2.carbon.event.sink.config.EventSinkXmlReader;
 import org.wso2.carbon.event.sink.config.EventSinkXmlWriter;
 
@@ -42,9 +43,15 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
 	 * @param receiverUrl      String to set as Event Sink receiverUrl
 	 * @param authenticatorUrl String to set as Event Sink authenticatorUrl
 	 */
-	public void writeEventSink(String name, String username, String password, String receiverUrl,
+	public boolean writeEventSink(String name, String username, String password, String receiverUrl,
 	                           String authenticatorUrl) {
-		new EventSinkXmlWriter().writeEventSink(new EventSink(name, username, password, receiverUrl, authenticatorUrl));
+		try {
+			return new EventSinkXmlWriter().writeEventSink(new EventSink(name, username, password, receiverUrl,
+			                                                       authenticatorUrl));
+		} catch (EventSinkException e) {
+			log.error("Event Sink "+name+" cannot be created.",e);
+		}
+		return false;
 	}
 
 	/**
@@ -63,7 +70,12 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
 	 * @return Requested Event Sink
 	 */
 	public EventSink getEventSinkFromName(String name) {
-		return new EventSinkXmlReader().getEventSinkFromName(name);
+		try {
+			return new EventSinkXmlReader().getEventSinkFromName(name);
+		} catch (EventSinkException e) {
+			log.error("Event Sink "+name+" cannot be found.",e);
+		}
+		return new EventSink();
 	}
 
 	/**
@@ -73,7 +85,12 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
 	 * @return Status of the deletion as boolean value
 	 */
 	public boolean deleteEventSink(String name) {
-		return new EventSinkXmlReader().deleteEventSinkFromName(name);
+		try {
+			return new EventSinkXmlReader().deleteEventSinkFromName(name);
+		} catch (EventSinkException e) {
+			log.error("Event Sink " + name + " cannot be deleted.", e);
+		}
+		return false;
 	}
 
 	/**
@@ -88,7 +105,12 @@ public class EventSinkConfigAdmin extends AbstractAdmin {
 	 */
 	public boolean updateEventSink(String name, String username, String password, String receiverUrl,
 	                               String authenticatorUrl) {
-		return new EventSinkXmlWriter()
-				.updateEventSink(new EventSink(name, username, password, receiverUrl, authenticatorUrl));
+		try {
+			return new EventSinkXmlWriter()
+					.updateEventSink(new EventSink(name, username, password, receiverUrl, authenticatorUrl));
+		} catch (EventSinkException e) {
+			log.error("Event Sink " + name + " cannot be updated.", e);
+		}
+		return false;
 	}
 }

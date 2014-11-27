@@ -94,7 +94,7 @@
                 CARBON.showConfirmationDialog("Are you sure, you want to add event sink '" + name + "'?", function () {
                     jQuery.ajax({
                         type: "GET",
-                        url: "../event-sink-config/update_event_sink_configuration.jsp",
+                        url: "../event-sink-config/update_event_sink_ajaxprocessor.jsp",
                         data: {action: "add", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
                         success: function (data) {
                             window.location.href = "event_sinks_configuration.jsp?ordinal=1";
@@ -106,7 +106,7 @@
                 CARBON.showConfirmationDialog("Are you sure, you want to update event sink '" + name + "'?", function () {
                     jQuery.ajax({
                         type: "GET",
-                        url: "../event-sink-config/update_event_sink_configuration.jsp",
+                        url: "../event-sink-config/update_event_sink_ajaxprocessor.jsp",
                         data: {action: "edit", propertyName0: name, propertyCount: propertyCount, propertyUsername0: username, propertyPassword0: password, propertyReceiverUrl0: receiverUrl, propertyAuthenticatorUrl0: authenticatorUrl},
                         success: function (data) {
                             window.location.href = "event_sinks_configuration.jsp?ordinal=1";

@@ -25,7 +25,7 @@ import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.event.sink.config.EventSink;
+import org.wso2.carbon.event.sink.EventSink;
 import org.wso2.carbon.event.sink.config.stub.PublishEventMediatorConfigAdminStub;
 
 import java.rmi.RemoteException;
@@ -62,7 +62,7 @@ public class PublishEventMediatorConfigAdminClient {
 	public void writeEventSinkXml(EventSink eventSink) {
 		try {
 			stub.writeEventSink(eventSink.getName(), eventSink.getUsername(), eventSink.getPassword(),
-			                    eventSink.getReceiverUrl(), eventSink.getAuthenticatorUrl());
+			                    eventSink.getReceiverUrlSet(), eventSink.getAuthenticationUrlSet());
 		} catch (RemoteException e) {
 			log.error("Error occured while wring Event Sink, Error: " +
 			          e.getLocalizedMessage());

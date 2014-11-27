@@ -42,6 +42,17 @@ public class EventSink {
 	private String password;
 	private LoadBalancingDataPublisher dataPublisher;
 
+	public EventSink(){};
+
+	public EventSink(String name, String username,String password,String receiverUrlSet,String authenticationUrlSet){
+		this.setName(name);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setReceiverUrlSet(receiverUrlSet);
+		this.setAuthenticationUrlSet(authenticationUrlSet);
+	}
+
+
 	public String getName() {
 		return name;
 	}
